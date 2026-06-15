@@ -249,43 +249,68 @@
 
     .books-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 36px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
 
     .book-card {
       cursor: pointer;
+      position: relative;
       transition: transform 0.3s ease;
     }
 
-    .book-card:hover { transform: translateY(-6px); }
+    .book-card:hover { transform: translateY(-8px); }
 
     .book-cover {
       width: 100%;
-      aspect-ratio: 3/4;
+      aspect-ratio: 2/3;
       background: #e0dbd3;
-      margin-bottom: 16px;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      color: #bbb;
-      letter-spacing: 0.08em;
+      font-size: 28px;
+      font-weight: 700;
+      color: #8a8078;
+      letter-spacing: -0.02em;
       transition: background 0.3s;
       overflow: hidden;
+      box-shadow: 4px 4px 16px rgba(0,0,0,0.12);
     }
 
     .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+
     .book-card:hover .book-cover { background: #d8d2ca; }
 
-    .book-title {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 5px;
+    .book-hover-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      padding: 32px 14px 14px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
-    .book-sub { font-size: 13px; color: #888; line-height: 1.6; }
+    .book-card:hover .book-hover-info { opacity: 1; }
+
+    .book-hover-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    .book-hover-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .book-title { display: none; }
+    .book-sub   { display: none; }
 
     /* ── Book Modal ── */
     .modal-overlay {
@@ -745,7 +770,7 @@
       .hero-stat { gap: 32px; flex-wrap: wrap; }
       .stat-num { font-size: 24px; }
 
-      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .modal-box { grid-template-columns: 1fr; }
       .modal-cover { aspect-ratio: 3/4; max-height: 260px; }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
@@ -831,7 +856,9 @@
           data-desc="알피니즘의 살아 있는 전설, 크리스 보닝턴의 자서전. 1962년 누프체 남벽을 시작으로 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반의 역사를 담았다."
           data-year="등반가② 시리즈 7" data-lang="영어 번역"
           data-img="images/books/ascent.jpg">
-          <div class="book-cover"><img src="images/books/ascent.jpg" alt="ASCENT"></div>
+          <div class="book-cover"><img src="images/books/ascent.jpg" alt="ASCENT">
+            <div class="book-hover-info"><div class="book-hover-title">ASCENT</div><div class="book-hover-sub">크리스 보닝턴 자서전</div></div>
+          </div>
           <div class="book-title">ASCENT</div>
           <div class="book-sub">크리스 보닝턴 자서전</div>
         </div>
@@ -841,7 +868,9 @@
           data-desc="요세미티 엘 캐피탄 900미터 암벽을 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작."
           data-year="등반가⑤ 시리즈 8" data-lang="영어 번역"
           data-img="images/books/free-solo.jpg">
-          <div class="book-cover"><img src="images/books/free-solo.jpg" alt="프리솔로"></div>
+          <div class="book-cover"><img src="images/books/free-solo.jpg" alt="프리솔로">
+            <div class="book-hover-info"><div class="book-hover-title">프리솔로</div><div class="book-hover-sub">알렉스 호놀드의 엘 캐피탄</div></div>
+          </div>
           <div class="book-title">프리솔로</div>
           <div class="book-sub">알렉스 호놀드의 엘 캐피탄</div>
         </div>
@@ -851,7 +880,9 @@
           data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. 파타고니아의 최난봉 세로 토레에 얽힌 반세기의 논쟁을 파헤친다. BANFF 산악영화제 및 NOBA 2015 수상."
           data-year="등반가② 시리즈 6" data-lang="영어 번역"
           data-img="images/books/the-tower.jpg">
-          <div class="book-cover"><img src="images/books/the-tower.jpg" alt="THE TOWER"></div>
+          <div class="book-cover"><img src="images/books/the-tower.jpg" alt="THE TOWER">
+            <div class="book-hover-info"><div class="book-hover-title">THE TOWER</div><div class="book-hover-sub">세로 토레의 논란과 동반기록</div></div>
+          </div>
           <div class="book-title">THE TOWER</div>
           <div class="book-sub">세로 토레의 논란과 동반기록</div>
         </div>
@@ -861,7 +892,9 @@
           data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 라인홀드 메스너가 재조명한다. (Absturz des Himmels)"
           data-year="등반가② 시리즈 4" data-lang="독일어 번역"
           data-img="images/books/sky-fall.jpg">
-          <div class="book-cover"><img src="images/books/sky-fall.jpg" alt="하늘에서 추락하다"></div>
+          <div class="book-cover"><img src="images/books/sky-fall.jpg" alt="하늘에서 추락하다">
+            <div class="book-hover-info"><div class="book-hover-title">하늘에서 추락하다</div><div class="book-hover-sub">마터호른 초등의 비극</div></div>
+          </div>
           <div class="book-title">하늘에서 추락하다</div>
           <div class="book-sub">마터호른 초등의 비극</div>
         </div>
@@ -871,7 +904,9 @@
           data-desc="에드워드 윔퍼의 일생. Shadow of the Matterhorn — 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다."
           data-year="등반가⑦ 시리즈 9" data-lang="영어 번역"
           data-img="images/books/matterhorn.jpg">
-          <div class="book-cover"><img src="images/books/matterhorn.jpg" alt="마터호른의 그림자"></div>
+          <div class="book-cover"><img src="images/books/matterhorn.jpg" alt="마터호른의 그림자">
+            <div class="book-hover-info"><div class="book-hover-title">마터호른의 그림자</div><div class="book-hover-sub">에드워드 윔퍼의 일생</div></div>
+          </div>
           <div class="book-title">마터호른의 그림자</div>
           <div class="book-sub">에드워드 윔퍼의 일생</div>
         </div>
@@ -881,7 +916,9 @@
           data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기."
           data-year="등반가② 시리즈 5" data-lang="독일어 번역"
           data-img="images/books/san-bimil.jpg">
-          <div class="book-cover"><img src="images/books/san-bimil.jpg" alt="산의 비밀"></div>
+          <div class="book-cover"><img src="images/books/san-bimil.jpg" alt="산의 비밀">
+            <div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div>
+          </div>
           <div class="book-title">산의 비밀</div>
           <div class="book-sub">8000미터 카메라맨의 알피니즘</div>
         </div>
@@ -891,7 +928,9 @@
           data-desc="사람·역사·이야기를 따라 걷고 사유하고 성찰하는 알피니즘 여행. 산을 오르는 것을 넘어 산과 함께한 인간의 역사를 탐구한다."
           data-year="하루재 클럽 시리즈" data-lang="한국어"
           data-img="images/books/sancheck-yeohaeng.jpg">
-          <div class="book-cover"><img src="images/books/sancheck-yeohaeng.jpg" alt="산책여행"></div>
+          <div class="book-cover"><img src="images/books/sancheck-yeohaeng.jpg" alt="산책여행">
+            <div class="book-hover-info"><div class="book-hover-title">산책여행</div><div class="book-hover-sub">알피니즘 인문 여행</div></div>
+          </div>
           <div class="book-title">산책여행</div>
           <div class="book-sub">알피니즘 인문 여행</div>
         </div>
