@@ -4,14 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
+    :root {
+      --bg: #FAFAF7;
+      --text: #1A1A1A;
+      --muted: #8A8A8A;
+      --accent: #2C4A1E;
+      --accent-light: #3D6428;
+      --border: #E6E2DA;
+      --dark: #1A2820;
+      --gold: #C8A96E;
+    }
+
     body {
-      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-      background: #f5f3ef;
-      color: #1a1a1a;
+      font-family: 'Noto Serif KR', 'Apple SD Gothic Neo', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.8;
     }
 
@@ -27,10 +39,50 @@
     .animate-delay-3 { transition-delay: 0.3s; }
     .animate-delay-4 { transition-delay: 0.4s; }
 
+    /* ── 등반 진행률 인디케이터 ── */
+    .climb-mountain {
+      position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+      width: 52px; z-index: 90;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .climb-label {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 8px; letter-spacing: 0.14em; color: var(--border);
+      margin-bottom: 10px;
+    }
+    .mountain-stack { position: relative; width: 52px; height: 56px; }
+    .mountain-outline, .mountain-fill-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .mountain-outline path { fill: none; stroke: var(--border); stroke-width: 1.4; stroke-linejoin: round; }
+    .mountain-fill-svg path { fill: var(--accent); }
+    .mountain-fill-svg { clip-path: inset(100% 0 0 0); transition: clip-path 0.1s linear; }
+    .climb-pct {
+      margin-top: 10px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
+    }
+
+    /* ── 안개 전환 ── */
+    .mist-divider {
+      position: relative; height: 140px;
+      margin-top: -70px; margin-bottom: -70px;
+      z-index: 5; pointer-events: none;
+    }
+    .mist-divider::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      animation: mistDrift 8s ease-in-out infinite;
+    }
+    @keyframes mistDrift {
+      0%, 100% { opacity: 0.15; transform: translateX(-2%) scale(1); }
+      50% { opacity: 0.35; transform: translateX(2%) scale(1.05); }
+    }
+
     /* ── Announcement Banner ── */
     #banner {
-      background: #1a1a1a;
-      color: #f5f3ef;
+      background: var(--dark);
+      color: var(--bg);
       text-align: center;
       padding: 11px 48px;
       font-size: 13px;
@@ -43,9 +95,9 @@
     }
 
     #banner a {
-      color: #c8a96e;
+      color: var(--gold);
       text-decoration: none;
-      border-bottom: 1px solid #c8a96e;
+      border-bottom: 1px solid var(--gold);
     }
 
     .banner-close {
@@ -53,7 +105,7 @@
       right: 20px;
       background: none;
       border: none;
-      color: #666;
+      color: #7A8A7E;
       cursor: pointer;
       font-size: 18px;
       line-height: 1;
@@ -61,17 +113,17 @@
       transition: color 0.2s;
     }
 
-    .banner-close:hover { color: #f5f3ef; }
+    .banner-close:hover { color: var(--bg); }
 
     /* ── Navigation ── */
     nav {
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(245, 243, 239, 0.96);
+      background: rgba(250, 250, 247, 0.96);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid #e0dbd3;
-      height: 60px;
+      border-bottom: 1px solid var(--border);
+      height: 64px;
       padding: 0 48px;
       display: flex;
       align-items: center;
@@ -83,29 +135,43 @@
 
     .nav-logo {
       font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #1a1a1a;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text);
       text-decoration: none;
     }
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 36px;
       list-style: none;
       align-items: center;
     }
 
     .nav-links a {
       font-size: 13px;
-      color: #666;
+      color: var(--muted);
       text-decoration: none;
       letter-spacing: 0.02em;
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: #1a1a1a; }
-    .nav-cta { background: #1a1a1a; color: #f5f3ef !important; padding: 9px 20px; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-link { position: relative; padding-bottom: 4px; }
+    .nav-link svg {
+      position: absolute; bottom: -2px; left: 0; width: 100%; height: 8px;
+      overflow: visible;
+    }
+    .nav-link svg path {
+      stroke: var(--accent); stroke-width: 1.4; fill: none;
+      stroke-dasharray: 60; stroke-dashoffset: 60;
+      transition: stroke-dashoffset 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .nav-link:hover svg path { stroke-dashoffset: 0; }
+
+    .nav-cta { background: var(--accent); color: var(--bg) !important; padding: 9px 20px; }
+    .nav-cta:hover { background: var(--accent-light) !important; }
 
     .hamburger {
       display: none;
@@ -119,7 +185,7 @@
       display: block;
       width: 22px;
       height: 1.5px;
-      background: #1a1a1a;
+      background: var(--text);
       transition: all 0.3s;
     }
 
@@ -130,9 +196,9 @@
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 60px; left: 0; right: 0;
-      background: #f5f3ef;
-      border-bottom: 1px solid #e0dbd3;
+      top: 64px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
       padding: 16px 24px;
       z-index: 199;
     }
@@ -141,10 +207,10 @@
     .mobile-menu a {
       display: block;
       font-size: 15px;
-      color: #333;
+      color: var(--text);
       text-decoration: none;
       padding: 12px 0;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border);
     }
 
     /* ── Section Base ── */
@@ -155,23 +221,32 @@
     .section-tag {
       font-size: 11px;
       letter-spacing: 0.2em;
-      color: #aaa;
+      color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 12px;
     }
 
     .section-title {
       font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       margin-bottom: 52px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 3px;
+      background: repeating-linear-gradient(-35deg, var(--border) 0px, var(--border) 3px, transparent 3px, transparent 6px);
+    }
+    #philosophy .section-title::after, #faq .section-title::after {
+      background: repeating-linear-gradient(-35deg, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0.2) 3px, transparent 3px, transparent 6px);
     }
 
     /* ── Hero ── */
     #hero {
-      min-height: calc(100vh - 60px);
+      min-height: calc(100vh - 64px);
       display: flex;
       align-items: center;
     }
@@ -179,7 +254,7 @@
     .hero-label {
       font-size: 11px;
       letter-spacing: 0.2em;
-      color: #aaa;
+      color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 28px;
       opacity: 0;
@@ -188,56 +263,68 @@
 
     .hero-title {
       font-size: 52px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.25;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
       margin-bottom: 32px;
       max-width: 680px;
+    }
+    .hero-title .title-line {
+      display: block;
       opacity: 0;
-      animation: fadeUp 0.9s ease 0.4s forwards;
+      filter: blur(10px);
+      transform: translateY(18px);
+      animation: titleReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hero-title .title-line:nth-child(1) { animation-delay: 0.4s; }
+    .hero-title .title-line:nth-child(2) { animation-delay: 0.75s; }
+    .hero-title .title-line:nth-child(3) { animation-delay: 1.1s; }
+    @keyframes titleReveal {
+      to { opacity: 1; filter: blur(0); transform: translateY(0); }
     }
 
     .hero-desc {
       font-size: 16px;
-      color: #666;
+      color: var(--muted);
       max-width: 480px;
       line-height: 2;
       margin-bottom: 52px;
       opacity: 0;
-      animation: fadeUp 0.9s ease 0.6s forwards;
+      animation: fadeUp 0.9s ease 1.5s forwards;
     }
 
     .hero-cta {
       display: inline-block;
-      background: #1a1a1a;
-      color: #f5f3ef;
+      background: var(--accent);
+      color: #fff;
       font-size: 14px;
       padding: 15px 36px;
       text-decoration: none;
       letter-spacing: 0.03em;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: background 0.2s, transform 0.2s;
       opacity: 0;
-      animation: fadeUp 0.9s ease 0.8s forwards;
+      animation: fadeUp 0.9s ease 1.7s forwards;
     }
 
-    .hero-cta:hover { opacity: 0.8; transform: translateY(-2px); }
+    .hero-cta:hover { background: var(--accent-light); transform: translateY(-2px); }
 
     .hero-stat {
       margin-top: 80px;
       display: flex;
       gap: 60px;
       opacity: 0;
-      animation: fadeUp 0.9s ease 1s forwards;
+      animation: fadeUp 0.9s ease 1.9s forwards;
     }
 
     .stat-num {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 32px;
       font-weight: 700;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
 
-    .stat-label { font-size: 12px; color: #999; letter-spacing: 0.05em; }
+    .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -245,47 +332,76 @@
     }
 
     /* ── Books ── */
-    #books { background: #f5f3ef; }
+    #books { background: var(--bg); }
 
     .books-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 24px;
     }
 
     .book-card {
       cursor: pointer;
       position: relative;
-      transition: transform 0.3s ease;
     }
-
-    .book-card:hover { transform: translateY(-8px); }
 
     .book-cover {
       width: 100%;
       aspect-ratio: 2/3;
-      background: #e0dbd3;
+      background: var(--border);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 28px;
-      font-weight: 700;
-      color: #8a8078;
+      font-weight: 600;
+      color: var(--muted);
       letter-spacing: -0.02em;
-      transition: background 0.3s;
       overflow: hidden;
-      box-shadow: 4px 4px 16px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 16px rgba(26,40,32,0.1);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .book-card:hover .book-cover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 40px -20px rgba(26,40,32,0.3);
+    }
 
-    .book-card:hover .book-cover { background: #d8d2ca; }
+    .book-cover img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .book-card:hover .book-cover img { transform: scale(1.04); }
+
+    /* 카라비너 — 찜하기 */
+    .carabiner-btn {
+      position: absolute; top: 10px; left: 10px;
+      width: 20px; height: 26px;
+      background: none; border: none; padding: 0; cursor: pointer;
+      color: rgba(255,255,255,0.9);
+      opacity: 0; transform: translateY(-6px);
+      transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s, color 0.3s;
+      z-index: 2;
+    }
+    .carabiner-btn::before {
+      content: ''; position: absolute; inset: -5px;
+      background: rgba(0,0,0,0.32); border-radius: 50%; z-index: -1;
+    }
+    .book-card:hover .carabiner-btn { opacity: 1; transform: translateY(0); }
+    .carabiner-svg { width: 100%; height: 100%; overflow: visible; }
+    .carabiner-gate {
+      transform-origin: bottom left;
+      transform: rotate(-20deg) translateX(-3px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .carabiner-btn.saved { color: #fff; }
+    .carabiner-btn.saved .carabiner-gate { transform: rotate(0deg) translateX(0); }
 
     .book-hover-info {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, rgba(0,0,0,0.72));
+      background: linear-gradient(transparent, rgba(0,0,0,0.74));
       padding: 32px 14px 14px;
       opacity: 0;
       transition: opacity 0.25s ease;
@@ -304,7 +420,7 @@
 
     .book-hover-sub {
       font-size: 11px;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.72);
       margin-top: 3px;
       line-height: 1.4;
     }
@@ -317,7 +433,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(26,40,32,0.55);
       z-index: 500;
       align-items: center;
       justify-content: center;
@@ -332,7 +448,7 @@
     }
 
     .modal-box {
-      background: #f5f3ef;
+      background: var(--bg);
       max-width: 640px;
       width: 100%;
       display: grid;
@@ -348,14 +464,16 @@
     }
 
     .modal-cover {
-      background: #e0dbd3;
+      background: var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
-      color: #bbb;
+      color: var(--muted);
       letter-spacing: 0.08em;
       aspect-ratio: 3/4;
+      overflow: hidden;
     }
 
     .modal-cover img { width: 100%; height: 100%; object-fit: cover; }
@@ -368,78 +486,89 @@
       background: none;
       border: none;
       font-size: 22px;
-      color: #aaa;
+      color: var(--muted);
       cursor: pointer;
       transition: color 0.2s;
     }
 
-    .modal-close:hover { color: #1a1a1a; }
+    .modal-close:hover { color: var(--text); }
 
     .modal-tag {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       letter-spacing: 0.15em;
-      color: #aaa;
+      color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 12px;
     }
 
     .modal-title {
       font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       margin-bottom: 6px;
     }
 
     .modal-author {
       font-size: 13px;
-      color: #888;
+      color: var(--muted);
       margin-bottom: 24px;
     }
 
     .modal-desc {
       font-size: 14px;
-      color: #444;
+      color: var(--text);
       line-height: 2;
       margin-bottom: 24px;
     }
 
     .modal-meta {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
-      color: #aaa;
+      color: var(--muted);
       letter-spacing: 0.05em;
     }
 
     /* ── Philosophy ── */
-    #philosophy { background: #1a1a1a; color: #f5f3ef; }
-    #philosophy .section-tag { color: #555; }
-    #philosophy .section-title { color: #f5f3ef; border-bottom-color: #333; }
+    #philosophy { background: var(--accent); color: #fff; position: relative; overflow: hidden; }
+    #philosophy .section-tag { color: rgba(255,255,255,0.55); }
+    #philosophy .section-title { color: #fff; }
+
+    .headlamp-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle 280px at var(--mx, 50%) var(--my, 40%), rgba(255,255,255,0.14), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    #philosophy .inner { position: relative; z-index: 1; }
 
     .philosophy-lead {
       font-size: 22px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.7;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.9;
       max-width: 680px;
       margin-bottom: 64px;
-      color: #ddd;
+      color: rgba(255,255,255,0.92);
     }
 
     .philosophy-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 
     .phil-label {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #555;
+      color: rgba(255,255,255,0.55);
       margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid #2a2a2a;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
-    .phil-text { font-size: 15px; color: #888; line-height: 2; }
+    .phil-text { font-size: 15px; color: rgba(255,255,255,0.78); line-height: 2; }
 
     /* ── About ── */
-    #about { background: #eee9e2; }
+    #about { background: #EFEAE2; }
 
     .about-grid {
       display: grid;
@@ -451,32 +580,33 @@
     .about-photo {
       width: 100%;
       aspect-ratio: 3/4;
-      background: #ddd8d0;
+      background: var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
-      color: #bbb;
+      color: var(--muted);
       letter-spacing: 0.08em;
       overflow: hidden;
     }
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .about-name { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .about-role { font-size: 13px; color: #888; line-height: 1.8; margin-bottom: 36px; }
-    .about-body { font-size: 15px; color: #444; line-height: 2.1; }
+    .about-name { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .about-role { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.02em; }
+    .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
     .about-quote {
       margin-top: 32px;
       padding: 20px 24px;
-      border-left: 3px solid #1a1a1a;
-      background: #e6e0d8;
+      border-left: 3px solid var(--accent);
+      background: #E6E0D5;
     }
 
-    .about-quote p { font-size: 14px; color: #555; line-height: 1.9; }
+    .about-quote p { font-size: 14px; color: #5A5A52; line-height: 1.9; }
 
     /* ── Reviews ── */
-    #reviews { background: #f5f3ef; }
+    #reviews { background: var(--bg); }
 
     .reviews-grid {
       display: grid;
@@ -488,43 +618,43 @@
     .review-card {
       background: #fff;
       padding: 28px;
-      border: 1px solid #e8e3dc;
+      border: 1px solid var(--border);
     }
 
-    .review-stars { font-size: 14px; color: #c8a96e; margin-bottom: 14px; letter-spacing: 2px; }
-    .review-book { font-size: 11px; letter-spacing: 0.1em; color: #aaa; text-transform: uppercase; margin-bottom: 12px; }
-    .review-text { font-size: 14px; color: #444; line-height: 1.9; margin-bottom: 20px; }
-    .review-author { font-size: 12px; color: #999; }
+    .review-stars { font-size: 14px; color: var(--gold); margin-bottom: 14px; letter-spacing: 2px; }
+    .review-book { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+    .review-text { font-size: 14px; color: var(--text); line-height: 1.9; margin-bottom: 20px; }
+    .review-author { font-size: 12px; color: var(--muted); }
 
     /* ── Forms ── */
     .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
 
-    .form-box { background: #fff; padding: 36px; border: 1px solid #e8e3dc; }
+    .form-box { background: #fff; padding: 36px; border: 1px solid var(--border); }
 
     .form-section-title {
       font-size: 18px;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       margin-bottom: 28px;
       padding-bottom: 16px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid var(--border);
     }
 
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 12px; color: #888; letter-spacing: 0.05em; }
+    .form-group label { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-      background: #f5f3ef;
-      border: 1px solid #e0dbd3;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      background: var(--bg);
+      border: 1px solid var(--border);
       padding: 12px 16px;
       font-size: 14px;
-      color: #1a1a1a;
-      font-family: inherit;
+      color: var(--text);
       outline: none;
       transition: border-color 0.2s;
       -webkit-appearance: none;
@@ -533,49 +663,49 @@
 
     .form-group input:focus,
     .form-group select:focus,
-    .form-group textarea:focus { border-color: #1a1a1a; }
+    .form-group textarea:focus { border-color: var(--accent); }
 
     .form-group textarea { resize: vertical; min-height: 120px; }
 
     .form-submit {
-      background: #1a1a1a;
-      color: #f5f3ef;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      background: var(--accent);
+      color: #fff;
       border: none;
       padding: 14px 32px;
       font-size: 14px;
-      font-family: inherit;
       letter-spacing: 0.03em;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: background 0.2s, transform 0.2s;
       margin-top: 8px;
     }
 
-    .form-submit:hover { opacity: 0.8; transform: translateY(-1px); }
+    .form-submit:hover { background: var(--accent-light); transform: translateY(-1px); }
 
     .form-success {
       display: none;
-      background: #eee9e2;
-      border: 1px solid #d0c9bf;
+      background: #EFEAE2;
+      border: 1px solid var(--border);
       padding: 14px 18px;
       font-size: 14px;
-      color: #555;
+      color: var(--text);
       margin-top: 16px;
     }
 
     /* ── FAQ ── */
-    #faq { background: #1a1a1a; color: #f5f3ef; }
-    #faq .section-tag { color: #555; }
-    #faq .section-title { color: #f5f3ef; border-bottom-color: #333; }
+    #faq { background: var(--dark); color: var(--bg); }
+    #faq .section-tag { color: rgba(255,255,255,0.4); }
+    #faq .section-title { color: var(--bg); }
 
     .faq-list { display: flex; flex-direction: column; }
 
-    .faq-item { border-bottom: 1px solid #2a2a2a; }
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.12); }
 
     .faq-question {
       width: 100%;
       background: none;
       border: none;
-      color: #f5f3ef;
+      color: var(--bg);
       font-family: inherit;
       font-size: 16px;
       font-weight: 500;
@@ -590,17 +720,17 @@
       transition: color 0.2s;
     }
 
-    .faq-question:hover { color: #ccc; }
+    .faq-question:hover { color: var(--gold); }
 
     .faq-icon {
       font-size: 20px;
-      color: #555;
+      color: rgba(255,255,255,0.4);
       flex-shrink: 0;
       transition: transform 0.3s, color 0.2s;
       line-height: 1;
     }
 
-    .faq-item.open .faq-icon { transform: rotate(45deg); color: #c8a96e; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--gold); }
 
     .faq-answer {
       max-height: 0;
@@ -610,14 +740,14 @@
 
     .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
 
-    .faq-answer p { font-size: 15px; color: #888; line-height: 2; }
+    .faq-answer p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 2; }
 
     /* ── Membership ── */
-    #membership { background: #f5f3ef; }
+    #membership { background: var(--bg); }
 
     .membership-intro {
       font-size: 15px;
-      color: #555;
+      color: var(--text);
       max-width: 560px;
       line-height: 2;
       margin-bottom: 52px;
@@ -628,71 +758,81 @@
 
     .mem-card {
       padding: 40px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       background: #fff;
       transition: transform 0.3s;
     }
 
     .mem-card:hover { transform: translateY(-4px); }
-    .mem-card.featured { background: #1a1a1a; color: #f5f3ef; border-color: #1a1a1a; }
+    .mem-card.featured { background: var(--dark); color: var(--bg); border-color: var(--dark); }
 
-    .mem-type { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; margin-bottom: 20px; }
-    .mem-card.featured .mem-type { color: #555; }
+    .mem-type { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .mem-card.featured .mem-type { color: rgba(255,255,255,0.5); }
 
-    .mem-price { font-size: 36px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
-    .mem-period { font-size: 13px; color: #aaa; margin-bottom: 36px; }
-    .mem-card.featured .mem-period { color: #555; }
+    .mem-price { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+    .mem-card.featured .mem-period { color: rgba(255,255,255,0.5); }
 
-    .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid #eee; }
-    .mem-card.featured .mem-list { border-top-color: #2a2a2a; }
+    .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
+    .mem-card.featured .mem-list { border-top-color: rgba(255,255,255,0.15); }
 
     .mem-list li {
       font-size: 14px;
-      color: #555;
+      color: var(--text);
       padding: 12px 0;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border);
       display: flex;
       gap: 12px;
     }
 
-    .mem-card.featured .mem-list li { color: #aaa; border-bottom-color: #2a2a2a; }
+    .mem-card.featured .mem-list li { color: rgba(255,255,255,0.8); border-bottom-color: rgba(255,255,255,0.15); }
 
-    .mem-list li::before { content: "—"; color: #ccc; flex-shrink: 0; }
-    .mem-card.featured .mem-list li::before { color: #444; }
+    .mem-list li::before { content: "—"; color: var(--accent); flex-shrink: 0; }
+    .mem-card.featured .mem-list li::before { color: var(--gold); }
 
     .mem-btn {
-      display: block;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       text-align: center;
       padding: 15px;
       font-size: 14px;
       text-decoration: none;
       letter-spacing: 0.03em;
-      border: 1px solid #1a1a1a;
-      color: #1a1a1a;
+      border: 1px solid var(--accent);
+      color: var(--accent);
       transition: all 0.2s;
     }
 
-    .mem-btn:hover { background: #1a1a1a; color: #f5f3ef; }
-    .mem-card.featured .mem-btn { background: #f5f3ef; border-color: #f5f3ef; color: #1a1a1a; }
+    .mem-btn:hover { background: var(--accent); color: #fff; }
+    .mem-card.featured .mem-btn { background: var(--bg); border-color: var(--bg); color: var(--dark); }
     .mem-card.featured .mem-btn:hover { opacity: 0.85; }
+
+    .book-icon { position: relative; width: 17px; height: 13px; perspective: 50px; }
+    .book-page { position: absolute; top: 0; width: 8.5px; height: 13px; background: currentColor; opacity: 0.85; }
+    .book-page-left { left: 0; border-radius: 2px 0 1px 1px; transform-origin: right center; }
+    .book-page-right { left: 8.5px; border-radius: 0 2px 1px 1px; transform-origin: left center; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mem-btn:hover .book-page-right { transform: rotateY(-165deg); }
 
     /* ── Newsletter ── */
     #newsletter {
-      background: #eee9e2;
+      background: #EFEAE2;
       padding: 80px 48px;
       text-align: center;
     }
 
     .newsletter-title {
       font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       margin-bottom: 12px;
     }
 
     .newsletter-desc {
       font-size: 15px;
-      color: #666;
+      color: var(--text);
       margin-bottom: 36px;
     }
 
@@ -704,62 +844,66 @@
     }
 
     .newsletter-input {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
       flex: 1;
       background: #fff;
-      border: 1px solid #d0c9bf;
+      border: 1px solid var(--border);
       border-right: none;
       padding: 14px 18px;
       font-size: 14px;
-      font-family: inherit;
-      color: #1a1a1a;
+      color: var(--text);
       outline: none;
       transition: border-color 0.2s;
       -webkit-appearance: none;
       appearance: none;
     }
 
-    .newsletter-input:focus { border-color: #1a1a1a; }
+    .newsletter-input:focus { border-color: var(--accent); }
     .newsletter-input::placeholder { color: #bbb; }
 
     .newsletter-btn {
-      background: #1a1a1a;
-      color: #f5f3ef;
-      border: 1px solid #1a1a1a;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
       padding: 14px 24px;
       font-size: 14px;
-      font-family: inherit;
       letter-spacing: 0.03em;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: background 0.2s;
       white-space: nowrap;
     }
 
-    .newsletter-btn:hover { opacity: 0.8; }
+    .newsletter-btn:hover { background: var(--accent-light); }
 
     .newsletter-success {
       display: none;
       font-size: 14px;
-      color: #666;
+      color: var(--text);
       margin-top: 16px;
     }
 
     /* ── Footer ── */
-    footer { background: #1a1a1a; padding: 56px 48px; }
+    footer { background: var(--dark); padding: 56px 48px; }
 
     .footer-inner {
       max-width: 1000px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
     }
 
-    .footer-logo { font-size: 16px; font-weight: 700; color: #f5f3ef; margin-bottom: 10px; }
-    .footer-copy { font-size: 12px; color: #444; }
-    .footer-tagline { font-size: 13px; color: #444; line-height: 1.9; text-align: right; }
+    .footer-logo { font-size: 16px; font-weight: 600; color: var(--bg); margin-bottom: 10px; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.9; text-align: right; }
+    .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
+    .compass:hover { opacity: 1; }
+    .compass-needle { transform-origin: 16px 16px; transition: transform 0.15s ease-out; }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+      .climb-mountain { display: none; }
       section { padding: 80px 24px; }
       nav { padding: 0 24px; }
       #banner { padding: 10px 40px 10px 16px; font-size: 12px; text-align: left; }
@@ -770,7 +914,7 @@
       .hero-stat { gap: 32px; flex-wrap: wrap; }
       .stat-num { font-size: 24px; }
 
-      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .modal-box { grid-template-columns: 1fr; }
       .modal-cover { aspect-ratio: 3/4; max-height: 260px; }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
@@ -780,13 +924,28 @@
       .form-grid { grid-template-columns: 1fr; }
       .membership-grid { grid-template-columns: 1fr; }
       .newsletter-form { flex-direction: column; }
-      .newsletter-input { border-right: 1px solid #d0c9bf; border-bottom: none; }
+      .newsletter-input { border-right: 1px solid var(--border); border-bottom: none; }
       .footer-inner { flex-direction: column; gap: 24px; align-items: flex-start; }
       .footer-tagline { text-align: left; }
+      .compass { display: none; }
     }
   </style>
 </head>
 <body>
+
+  <!-- 등반 진행률 인디케이터 -->
+  <div class="climb-mountain" aria-hidden="true">
+    <span class="climb-label">SUMMIT</span>
+    <div class="mountain-stack">
+      <svg class="mountain-outline" viewBox="0 0 64 80" preserveAspectRatio="none">
+        <path d="M2 76 L18 40 L28 56 L34 30 L46 56 L54 42 L62 76 Z"/>
+      </svg>
+      <svg class="mountain-fill-svg" id="mountainFill" viewBox="0 0 64 80" preserveAspectRatio="none">
+        <path d="M2 76 L18 40 L28 56 L34 30 L46 56 L54 42 L62 76 Z"/>
+      </svg>
+    </div>
+    <span class="climb-pct" id="climbPct">0%</span>
+  </div>
 
   <!-- Announcement Banner -->
   <div id="banner">
@@ -798,11 +957,21 @@
   <nav id="mainNav">
     <a href="#hero" class="nav-logo">하루재클럽</a>
     <ul class="nav-links">
-      <li><a href="#books">책 소개</a></li>
-      <li><a href="#philosophy">출판사 철학</a></li>
-      <li><a href="#about">대표 소개</a></li>
-      <li><a href="#reviews">독자 후기</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#books" class="nav-link">책 소개
+        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
+      </a></li>
+      <li><a href="#philosophy" class="nav-link">출판사 철학
+        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
+      </a></li>
+      <li><a href="#about" class="nav-link">대표 소개
+        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
+      </a></li>
+      <li><a href="#reviews" class="nav-link">독자 후기
+        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
+      </a></li>
+      <li><a href="#faq" class="nav-link">FAQ
+        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
+      </a></li>
       <li><a href="#membership" class="nav-cta">멤버십 가입</a></li>
     </ul>
     <div class="hamburger" id="hamburger">
@@ -824,7 +993,7 @@
   <section id="hero">
     <div class="inner">
       <div class="hero-label">하루재클럽</div>
-      <h1 class="hero-title">세계가 산에 대해<br>쌓아온 것들,<br>이제 한국어로.</h1>
+      <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
       <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
       <a href="#membership" class="hero-cta">멤버십 알아보기</a>
       <div class="hero-stat">
@@ -851,64 +1020,104 @@
       <h2 class="section-title animate">출간 도서</h2>
       <div class="books-grid">
         <div class="book-card animate animate-delay-1" data-title="세로 토레" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1959년 세로 토레 초등을 둘러싼 반세기의 논쟁. 메스너가 직접 진실을 추적하며 마에스트리의 초등이 거짓임을 증명하는 과정을 담은 책." data-year="등반사① 시리즈 1" data-lang="독일어 번역" data-img="images/books/01-세로토레.jpg">
-          <div class="book-cover"><img src="images/books/01-세로토레.jpg" alt="세로 토레"><div class="book-hover-info"><div class="book-hover-title">세로 토레</div><div class="book-hover-sub">메스너, 수수께끼를 풀다</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/01-세로토레.jpg" alt="세로 토레"><div class="book-hover-info"><div class="book-hover-title">세로 토레</div><div class="book-hover-sub">메스너, 수수께끼를 풀다</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="Fallen Giants" data-author="모리스 이서먼·스튜어트 위버" data-desc="히말라야 8000m 14좌를 둘러싼 등반의 역사를 집대성. 19세기부터 21세기까지 전 세계 산악인들의 도전과 좌절, 승리의 기록. 뉴욕 타임스 극찬." data-year="등산사② 시리즈 2" data-lang="영어 번역" data-img="images/books/02-fallen-giants.jpg">
-          <div class="book-cover"><img src="images/books/02-fallen-giants.jpg" alt="Fallen Giants"><div class="book-hover-info"><div class="book-hover-title">Fallen Giants</div><div class="book-hover-sub">히말라야 도전의 역사</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/02-fallen-giants.jpg" alt="Fallen Giants"><div class="book-hover-info"><div class="book-hover-title">Fallen Giants</div><div class="book-hover-sub">히말라야 도전의 역사</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="에베레스트 정복" data-author="조지 로우·휴 루이스 존스" data-desc="1953년 에베레스트 초등 60주년 기념판. 원정대가 직접 촬영한 사진 163점 수록. 전설적인 초등 당시의 오리지널 사진집." data-year="등반기① 시리즈 1" data-lang="영어 번역" data-img="images/books/03-에베레스트.jpg">
-          <div class="book-cover"><img src="images/books/03-에베레스트.jpg" alt="에베레스트 정복"><div class="book-hover-info"><div class="book-hover-title">에베레스트 정복</div><div class="book-hover-sub">초등 당시의 오리지널 사진집</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/03-에베레스트.jpg" alt="에베레스트 정복"><div class="book-hover-info"><div class="book-hover-title">에베레스트 정복</div><div class="book-hover-sub">초등 당시의 오리지널 사진집</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="무상의 정복자" data-author="리오넬 테레이 (Lionel Terray)" data-desc="위대한 등반가 리오넬 테레이의 자서전. 알프스에서 히말라야까지, 20세기 최고의 등반가 중 한 명이 살아온 등반 인생의 기록. (Les Conquérants de l'Inutile)" data-year="등반가① 시리즈 1" data-lang="프랑스어 번역" data-img="images/books/04-무상의정복자.jpg">
-          <div class="book-cover"><img src="images/books/04-무상의정복자.jpg" alt="무상의 정복자"><div class="book-hover-info"><div class="book-hover-title">무상의 정복자</div><div class="book-hover-sub">리오넬 테레이 자서전</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/04-무상의정복자.jpg" alt="무상의 정복자"><div class="book-hover-info"><div class="book-hover-title">무상의 정복자</div><div class="book-hover-sub">리오넬 테레이 자서전</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="꽃의 계곡" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)" data-year="탐구기⑤ 시리즈 2" data-lang="영어 번역" data-img="images/books/05-꽃의계곡.jpg">
-          <div class="book-cover"><img src="images/books/05-꽃의계곡.jpg" alt="꽃의 계곡"><div class="book-hover-info"><div class="book-hover-title">꽃의 계곡</div><div class="book-hover-sub">난다데비 산군의 식물 탐사 기록</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/05-꽃의계곡.jpg" alt="꽃의 계곡"><div class="book-hover-info"><div class="book-hover-title">꽃의 계곡</div><div class="book-hover-sub">난다데비 산군의 식물 탐사 기록</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="나의 인생 나의 철학" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="세기의 철인 메스너 인생론. 8000m 14좌 전봉 무산소 완등이라는 전인미답의 기록을 세운 메스너가 자신의 삶과 철학을 이야기한다. (ÜBER LEBEN)" data-year="등반가⑤ 시리즈 2" data-lang="독일어 번역" data-img="images/books/06-나의인생.jpg">
-          <div class="book-cover"><img src="images/books/06-나의인생.jpg" alt="나의 인생 나의 철학"><div class="book-hover-info"><div class="book-hover-title">나의 인생 나의 철학</div><div class="book-hover-sub">메스너 인생론</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/06-나의인생.jpg" alt="나의 인생 나의 철학"><div class="book-hover-info"><div class="book-hover-title">나의 인생 나의 철학</div><div class="book-hover-sub">메스너 인생론</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg">
-          <div class="book-cover"><img src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"><div class="book-hover-info"><div class="book-hover-title">엘리자베스 홀리</div><div class="book-hover-sub">히말라야의 영원한 등반 기록가</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"><div class="book-hover-info"><div class="book-hover-title">엘리자베스 홀리</div><div class="book-hover-sub">히말라야의 영원한 등반 기록가</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="Freedom Climbers" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="자유를 찾아 등반에 나서는 폴란드 산악인들의 놀라운 여정. 공산주의 체제 하에서 히말라야 8000m를 정복한 폴란드 산악인들의 이야기." data-year="등반사③ 시리즈 3" data-lang="영어 번역" data-img="images/books/08-freedom-climbers.jpg">
-          <div class="book-cover"><img src="images/books/08-freedom-climbers.jpg" alt="Freedom Climbers"><div class="book-hover-info"><div class="book-hover-title">Freedom Climbers</div><div class="book-hover-sub">폴란드 산악인들의 자유를 향한 등반</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/08-freedom-climbers.jpg" alt="Freedom Climbers"><div class="book-hover-info"><div class="book-hover-title">Freedom Climbers</div><div class="book-hover-sub">폴란드 산악인들의 자유를 향한 등반</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="리카르도 캐신" data-author="리카르도 캐신 (Riccardo Cassin)" data-desc="등반의 역사를 새로 쓴 리카르도 캐신의 등반 50년. 워커 스퍼, 드류 필라 등 전설적인 루트를 개척한 20세기 최고 알피니스트의 자서전." data-year="등반가① 시리즈 2" data-lang="이탈리아어 번역" data-img="images/books/09-리카르도캐신.jpg">
-          <div class="book-cover"><img src="images/books/09-리카르도캐신.jpg" alt="리카르도 캐신"><div class="book-hover-info"><div class="book-hover-title">리카르도 캐신</div><div class="book-hover-sub">등반 50년</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/09-리카르도캐신.jpg" alt="리카르도 캐신"><div class="book-hover-info"><div class="book-hover-title">리카르도 캐신</div><div class="book-hover-sub">등반 50년</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="CAMP SiX" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="에베레스트 원정기의 고전. 1933년 에베레스트 원정의 생생한 기록. 프랭크 스마이드가 기록한 당시의 설산과 도전의 이야기." data-year="등반기③ 시리즈 3" data-lang="영어 번역" data-img="images/books/10-캠프식스.jpg">
-          <div class="book-cover"><img src="images/books/10-캠프식스.jpg" alt="CAMP SiX"><div class="book-hover-info"><div class="book-hover-title">CAMP SiX</div><div class="book-hover-sub">에베레스트 원정기의 고전</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/10-캠프식스.jpg" alt="CAMP SiX"><div class="book-hover-info"><div class="book-hover-title">CAMP SiX</div><div class="book-hover-sub">에베레스트 원정기의 고전</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="하루를 살아도 호랑이처럼" data-author="존 포터 (John Porter)" data-desc="알렉스 매킨타이어와 경량·속공등반의 탄생. BANFF 산악영화제 그랑프리 수상. 전설적인 알피니스트 알렉스 매킨타이어의 짧고 강렬한 삶. (One Day as a Tiger)" data-year="등반가⑤ 시리즈 5" data-lang="영어 번역" data-img="images/books/11-호랑이처럼.jpg">
-          <div class="book-cover"><img src="images/books/11-호랑이처럼.jpg" alt="하루를 살아도 호랑이처럼"><div class="book-hover-info"><div class="book-hover-title">하루를 살아도 호랑이처럼</div><div class="book-hover-sub">알렉스 매킨타이어의 삶</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/11-호랑이처럼.jpg" alt="하루를 살아도 호랑이처럼"><div class="book-hover-info"><div class="book-hover-title">하루를 살아도 호랑이처럼</div><div class="book-hover-sub">알렉스 매킨타이어의 삶</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="중국 등산 운동사" data-author="—" data-desc="중국 근현대 산악 운동의 역사를 체계적으로 정리한 책. 중국 산악인들의 히말라야 도전과 자국 산악 문화의 발전 과정을 담았다." data-year="등반사 시리즈" data-lang="중국어 번역" data-img="images/books/12-중국등산사.jpg">
-          <div class="book-cover"><img src="images/books/12-중국등산사.jpg" alt="중국 등산 운동사"><div class="book-hover-info"><div class="book-hover-title">중국 등산 운동사</div><div class="book-hover-sub">중국 산악 운동의 역사</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/12-중국등산사.jpg" alt="중국 등산 운동사"><div class="book-hover-info"><div class="book-hover-title">중국 등산 운동사</div><div class="book-hover-sub">중국 산악 운동의 역사</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="일본 여성 등산사" data-author="—" data-desc="메이지 시대부터 현대까지, 일본 여성 산악인들이 걸어온 길을 기록한 책. 여성과 산악 문화의 교차점을 조명한다." data-year="등산사 시리즈" data-lang="일본어 번역" data-img="images/books/13-일본여성등산사.jpg">
-          <div class="book-cover"><img src="images/books/13-일본여성등산사.jpg" alt="일본 여성 등산사"><div class="book-hover-info"><div class="book-hover-title">일본 여성 등산사</div><div class="book-hover-sub">여성 산악인의 기록</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/13-일본여성등산사.jpg" alt="일본 여성 등산사"><div class="book-hover-info"><div class="book-hover-title">일본 여성 등산사</div><div class="book-hover-sub">여성 산악인의 기록</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="산책여행 (山册旅行)" data-author="하루재 클럽" data-desc="사람·역사·이야기를 따라 걷고 사유하고 성찰하는 알피니즘 여행. 산을 오르는 것을 넘어 산과 함께한 인간의 역사를 탐구한다." data-year="하루재클럽 시리즈" data-lang="한국어" data-img="images/books/14-산책여행.jpg">
-          <div class="book-cover"><img src="images/books/14-산책여행.jpg" alt="산책여행"><div class="book-hover-info"><div class="book-hover-title">산책여행</div><div class="book-hover-sub">알피니즘 인문 여행</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/14-산책여행.jpg" alt="산책여행"><div class="book-hover-info"><div class="book-hover-title">산책여행</div><div class="book-hover-sub">알피니즘 인문 여행</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="하늘에서 추락하다" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 메스너가 재조명한다. (Absturz des Himmels)" data-year="등반기④ 시리즈 4" data-lang="독일어 번역" data-img="images/books/15-하늘에서추락하다.jpg">
-          <div class="book-cover"><img src="images/books/15-하늘에서추락하다.jpg" alt="하늘에서 추락하다"><div class="book-hover-info"><div class="book-hover-title">하늘에서 추락하다</div><div class="book-hover-sub">마터호른 초등의 비극</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/15-하늘에서추락하다.jpg" alt="하늘에서 추락하다"><div class="book-hover-info"><div class="book-hover-title">하늘에서 추락하다</div><div class="book-hover-sub">마터호른 초등의 비극</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="마터호른의 그림자" data-author="이언 스미스 (Ian Smith)" data-desc="에드워드 윔퍼의 일생. 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다. (Shadow of the Matterhorn)" data-year="등반가⑦ 시리즈 9" data-lang="영어 번역" data-img="images/books/16-마터호른.jpg">
-          <div class="book-cover"><img src="images/books/16-마터호른.jpg" alt="마터호른의 그림자"><div class="book-hover-info"><div class="book-hover-title">마터호른의 그림자</div><div class="book-hover-sub">에드워드 윔퍼의 일생</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/16-마터호른.jpg" alt="마터호른의 그림자"><div class="book-hover-info"><div class="book-hover-title">마터호른의 그림자</div><div class="book-hover-sub">에드워드 윔퍼의 일생</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="ASCENT — 크리스 보닝턴 자서전" data-author="크리스 보닝턴 (Chris Bonington)" data-desc="알피니즘의 살아 있는 전설. 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반 역사를 이끈 크리스 보닝턴의 자서전." data-year="등반가② 시리즈 7" data-lang="영어 번역" data-img="images/books/17-ascent.jpg">
-          <div class="book-cover"><img src="images/books/17-ascent.jpg" alt="ASCENT"><div class="book-hover-info"><div class="book-hover-title">ASCENT</div><div class="book-hover-sub">크리스 보닝턴 자서전</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/17-ascent.jpg" alt="ASCENT"><div class="book-hover-info"><div class="book-hover-title">ASCENT</div><div class="book-hover-sub">크리스 보닝턴 자서전</div></div></div>
         </div>
         <div class="book-card animate animate-delay-3" data-title="THE TOWER — 더 타워" data-author="켈리 코르데스 (Kelly Cordes)" data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. BANFF 산악영화제 및 NOBA 2015 수상. 파타고니아 최난봉에 얽힌 반세기의 논쟁을 파헤친다." data-year="등반가② 시리즈 6" data-lang="영어 번역" data-img="images/books/18-the-tower.jpg">
-          <div class="book-cover"><img src="images/books/18-the-tower.jpg" alt="THE TOWER"><div class="book-hover-info"><div class="book-hover-title">THE TOWER</div><div class="book-hover-sub">세로 토레의 논란과 동반기록</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/18-the-tower.jpg" alt="THE TOWER"><div class="book-hover-info"><div class="book-hover-title">THE TOWER</div><div class="book-hover-sub">세로 토레의 논란과 동반기록</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="프리솔로 (FREE SOLO)" data-author="알렉스 호놀드 & 데이비드 로버츠" data-desc="요세미티 엘 캐피탄 900미터를 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작." data-year="등반가⑤ 시리즈 8" data-lang="영어 번역" data-img="images/books/19-free-solo.jpg">
-          <div class="book-cover"><img src="images/books/19-free-solo.jpg" alt="프리솔로"><div class="book-hover-info"><div class="book-hover-title">프리솔로</div><div class="book-hover-sub">알렉스 호놀드의 엘 캐피탄</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/19-free-solo.jpg" alt="프리솔로"><div class="book-hover-info"><div class="book-hover-title">프리솔로</div><div class="book-hover-sub">알렉스 호놀드의 엘 캐피탄</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="산의 비밀" data-author="쿠르트 딤베르거 (Kurt Diemberger)" data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기." data-year="등반가② 시리즈 5" data-lang="독일어 번역" data-img="images/books/20-산의비밀.jpg">
-          <div class="book-cover"><img src="images/books/20-산의비밀.jpg" alt="산의 비밀"><div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div></div>
+          <div class="book-cover">
+            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            <img src="images/books/20-산의비밀.jpg" alt="산의 비밀"><div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div></div>
         </div>
       </div>
     </div>
@@ -929,8 +1138,11 @@
     </div>
   </div>
 
+  <div class="mist-divider"></div>
+
   <!-- 출판사 철학 -->
   <section id="philosophy">
+    <div class="headlamp-glow" id="headlampGlow"></div>
     <div class="inner">
       <div class="section-tag animate">Philosophy</div>
       <h2 class="section-title animate">출판사 철학</h2>
@@ -952,6 +1164,8 @@
     </div>
   </section>
 
+  <div class="mist-divider"></div>
+
   <!-- 대표 소개 -->
   <section id="about">
     <div class="inner">
@@ -966,7 +1180,7 @@
           <div class="about-role">하루재클럽 대표 · 한국산악회 회장</div>
           <p class="about-body">2015년부터 하루재클럽을 이끌며 총 42권의 산서를 출간했습니다. 고등학교 시절부터 40여 년간 산서를 수집해온 애서가로, 해외 원서를 포함해 5,000여 권의 산서를 소장하고 있습니다. 한국산서회 창립 멤버이며, 현재 한국산악회 회장을 역임하고 있습니다.</p>
           <div class="about-quote">
-            <p>"다른 분야에서는 좋은 책이 많이 나오는데 유독 산서는 찾아보기 힘든 현실이 안타까웠다. 산서 읽기 붐을 일으켜 출판사들이 산서 출간에 의욕을 갖게 만드는 환경을 만들고 싶다."</p>
+            <p>"다른 분야에서는 좋은 책이 많이 나오는데 유독 산서는 찾아보기 힘든 현실이 안타까웠습니다. 산서 읽기 붐을 일으켜 출판사들이 산서 출간에 의욕을 갖게 만드는 환경을 만들고 싶습니다."</p>
           </div>
         </div>
       </div>
@@ -1002,7 +1216,7 @@
   </section>
 
   <!-- 참여하기 -->
-  <section id="forms" style="background: #eee9e2;">
+  <section id="forms" style="background: #EFEAE2;">
     <div class="inner">
       <div class="section-tag animate">Participate</div>
       <h2 class="section-title animate">참여하기</h2>
@@ -1092,6 +1306,8 @@
     </div>
   </section>
 
+  <div class="mist-divider"></div>
+
   <!-- FAQ -->
   <section id="faq">
     <div class="inner">
@@ -1122,6 +1338,8 @@
     </div>
   </section>
 
+  <div class="mist-divider"></div>
+
   <!-- 멤버십 -->
   <section id="membership">
     <div class="inner">
@@ -1139,7 +1357,7 @@
             <li>하루재 큐레이션 도서 선정</li>
             <li>컬러 사진 수록 고품질 도서</li>
           </ul>
-          <a href="#" class="mem-btn">가입하기</a>
+          <a href="#" class="mem-btn">가입하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
         </div>
         <div class="mem-card featured animate animate-delay-2">
           <div class="mem-type">신규 가입 특전</div>
@@ -1151,7 +1369,7 @@
             <li>하루재 큐레이션 도서 선정</li>
             <li>신규 회원 증정 도서 1권 추가</li>
           </ul>
-          <a href="#" class="mem-btn">지금 가입하기</a>
+          <a href="#" class="mem-btn">지금 가입하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
         </div>
       </div>
     </div>
@@ -1170,6 +1388,8 @@
     </div>
   </section>
 
+  <div class="mist-divider"></div>
+
   <!-- Footer -->
   <footer>
     <div class="footer-inner">
@@ -1177,6 +1397,11 @@
         <div class="footer-logo">하루재클럽</div>
         <div class="footer-copy">© 2026 하루재클럽. All rights reserved.</div>
       </div>
+      <svg class="compass" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
+        <line id="compassNeedle" class="compass-needle" x1="16" y1="23" x2="16" y2="9" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="1.3" fill="var(--gold)"/>
+      </svg>
       <div>
         <div class="footer-tagline">세계가 산에 대해 쌓아온 것들,<br>이제 한국어로.</div>
       </div>
@@ -1295,6 +1520,53 @@
       document.getElementById('newsletterSuccess').style.display = 'block';
       this.reset();
     });
+
+    // ── 등반 진행률 인디케이터 ──
+    const mountainFill = document.getElementById('mountainFill');
+    const pctLabel = document.getElementById('climbPct');
+    function updateClimb() {
+      const scrollable = document.body.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+      mountainFill.style.clipPath = `inset(${(1 - pct) * 100}% 0 0 0)`;
+      pctLabel.textContent = Math.round(pct * 100) + '%';
+    }
+    window.addEventListener('scroll', updateClimb);
+    window.addEventListener('resize', updateClimb);
+    updateClimb();
+
+    // ── 카라비너 — 찜하기 ──
+    document.querySelectorAll('.carabiner-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        btn.classList.toggle('saved');
+      });
+    });
+
+    // ── 헤드램프 스포트라이트 ──
+    const philosophySection = document.getElementById('philosophy');
+    const headlampGlow = document.getElementById('headlampGlow');
+    if (philosophySection && headlampGlow) {
+      philosophySection.addEventListener('mousemove', (e) => {
+        const rect = philosophySection.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        headlampGlow.style.setProperty('--mx', x + '%');
+        headlampGlow.style.setProperty('--my', y + '%');
+      });
+    }
+
+    // ── 나침반 ──
+    const compass = document.querySelector('.compass');
+    const compassNeedle = document.getElementById('compassNeedle');
+    if (compass && compassNeedle) {
+      window.addEventListener('mousemove', (e) => {
+        const rect = compass.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const angle = Math.atan2(e.clientX - cx, -(e.clientY - cy)) * (180 / Math.PI);
+        compassNeedle.style.transform = `rotate(${angle}deg)`;
+      });
+    }
   </script>
 </body>
 </html>
