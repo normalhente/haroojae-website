@@ -1043,6 +1043,313 @@
       .footer-tagline { text-align: left; }
       .compass { display: none; }
     }
+
+    /* ── 책 추천 퀴즈 ── */
+    #quiz {
+      background: var(--dark);
+      padding: 100px 0;
+    }
+
+    #quiz .section-tag { color: var(--gold); border-color: rgba(200,169,110,0.3); }
+    #quiz .section-title { color: #fff; }
+    #quiz .section-title::after { background: repeating-linear-gradient(-35deg, rgba(200,169,110,0.3) 0px, rgba(200,169,110,0.3) 3px, transparent 3px, transparent 6px); }
+    #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 15px; }
+
+    .quiz-wrap {
+      max-width: 680px;
+      margin: 56px auto 0;
+    }
+
+    /* 진행 바 */
+    .quiz-progress-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+      width: 0%;
+    }
+
+    .quiz-progress-label {
+      position: absolute;
+      right: 0; top: 8px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* 단계 전환 */
+    .quiz-step { display: none; }
+    .quiz-step.active {
+      display: block;
+      animation: quizFadeIn 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    @keyframes quizFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 인트로 */
+    .quiz-intro {
+      text-align: center;
+      padding: 20px 0 40px;
+    }
+
+    .quiz-intro-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+      display: block;
+      opacity: 0.7;
+    }
+
+    .quiz-intro h3 {
+      font-size: 26px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .quiz-intro p {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .quiz-start-btn {
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 14px 40px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      font-family: 'Noto Serif KR', serif;
+    }
+
+    .quiz-start-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* 질문 */
+    .quiz-q-num {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .quiz-question {
+      font-size: 22px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      margin-bottom: 36px;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 22px 20px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.25s cubic-bezier(0.16,1,0.3,1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option:hover {
+      background: rgba(200,169,110,0.1);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .quiz-option.selected {
+      background: rgba(200,169,110,0.15);
+      border-color: var(--gold);
+    }
+
+    .quiz-opt-icon { font-size: 24px; line-height: 1; }
+
+    .quiz-opt-main {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+
+    .quiz-opt-sub {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    /* 결과 */
+    .quiz-result-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .quiz-result-header p {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .quiz-result-header h3 {
+      font-size: 20px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .quiz-result-card {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 32px;
+    }
+
+    .quiz-result-cover {
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .quiz-result-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .quiz-result-cover-noimg {
+      width: 100%;
+      height: 100%;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      opacity: 0.2;
+    }
+
+    .quiz-result-body {
+      padding: 32px 28px;
+    }
+
+    .quiz-result-lang {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quiz-result-lang::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 1px;
+      background: var(--gold);
+    }
+
+    .quiz-result-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .quiz-result-author {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 20px;
+    }
+
+    .quiz-result-quote {
+      padding: 14px 16px 14px 20px;
+      border-left: 2px solid var(--gold);
+      background: rgba(200,169,110,0.07);
+      margin-bottom: 20px;
+      font-style: italic;
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.8;
+    }
+
+    .quiz-result-reason {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .quiz-result-btn {
+      display: inline-block;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
+      padding: 10px 22px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      font-family: 'Noto Serif KR', serif;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .quiz-result-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    .quiz-retry-btn {
+      display: block;
+      text-align: center;
+      background: none;
+      border: none;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      margin-top: 16px;
+      transition: color 0.2s;
+    }
+
+    .quiz-retry-btn:hover { color: rgba(255,255,255,0.6); }
+
+    @media (max-width: 600px) {
+      .quiz-options { grid-template-columns: 1fr; }
+      .quiz-result-card { grid-template-columns: 1fr; }
+      .quiz-result-cover { aspect-ratio: 3/2; max-height: 200px; }
+      .quiz-result-cover img { object-fit: cover; }
+    }
   </style>
 </head>
 <body>
@@ -1448,6 +1755,164 @@
     </div>
   </section>
 
+  <!-- 책 추천 퀴즈 -->
+  <section id="quiz">
+    <div class="inner">
+      <div class="section-tag animate">Book Finder</div>
+      <h2 class="section-title animate">내게 맞는 책 찾기</h2>
+      <p class="section-sub animate">네 가지 질문으로 당신에게 딱 맞는 산서를 찾아드립니다</p>
+
+      <div class="quiz-wrap">
+        <div class="quiz-progress-track" id="quizProgressTrack" style="display:none;">
+          <div class="quiz-progress-fill" id="quizProgressFill"></div>
+          <span class="quiz-progress-label" id="quizProgressLabel"></span>
+        </div>
+
+        <!-- 인트로 -->
+        <div class="quiz-step active" id="quiz-intro">
+          <div class="quiz-intro">
+            <span class="quiz-intro-icon">⛰️</span>
+            <h3>어떤 산서가 나에게 맞을까?</h3>
+            <p>42권 중에서 고르기 어렵다면,<br>이 테스트가 시작점이 되어드립니다.</p>
+            <button class="quiz-start-btn" onclick="quizStart()">테스트 시작하기</button>
+          </div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-step" id="quiz-q1">
+          <div class="quiz-q-num">Q1 / 4</div>
+          <h3 class="quiz-question">산에서 당신을 가장 끌어당기는 것은?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="quizAnswer(1,'A')">
+              <span class="quiz-opt-icon">🏔️</span>
+              <span class="quiz-opt-main">8000m의 정복</span>
+              <span class="quiz-opt-sub">인간 한계의 끝, 거봉을 향한 도전</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(1,'B')">
+              <span class="quiz-opt-icon">🧗</span>
+              <span class="quiz-opt-main">순수한 기술</span>
+              <span class="quiz-opt-sub">루트, 암벽, 완벽한 동작의 세계</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(1,'C')">
+              <span class="quiz-opt-icon">🌿</span>
+              <span class="quiz-opt-main">탐험과 자연</span>
+              <span class="quiz-opt-sub">아직 알려지지 않은 땅을 향해</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(1,'D')">
+              <span class="quiz-opt-icon">💭</span>
+              <span class="quiz-opt-main">삶과 철학</span>
+              <span class="quiz-opt-sub">산이 내게 가르쳐주는 것들</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-step" id="quiz-q2">
+          <div class="quiz-q-num">Q2 / 4</div>
+          <h3 class="quiz-question">어떤 형식의 이야기를 원하세요?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="quizAnswer(2,'A')">
+              <span class="quiz-opt-icon">⚡</span>
+              <span class="quiz-opt-main">생생한 원정 기록</span>
+              <span class="quiz-opt-sub">현장을 함께 달리는 긴장감</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(2,'B')">
+              <span class="quiz-opt-icon">👤</span>
+              <span class="quiz-opt-main">한 인물의 전 생애</span>
+              <span class="quiz-opt-sub">어떤 사람이 어떻게 살았는가</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(2,'C')">
+              <span class="quiz-opt-icon">🏛️</span>
+              <span class="quiz-opt-main">역사와 시대의 흐름</span>
+              <span class="quiz-opt-sub">등반사를 큰 그림으로 보고 싶어요</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(2,'D')">
+              <span class="quiz-opt-icon">🔍</span>
+              <span class="quiz-opt-main">논쟁과 미스터리</span>
+              <span class="quiz-opt-sub">진실을 파헤치는 집요한 탐구</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-step" id="quiz-q3">
+          <div class="quiz-q-num">Q3 / 4</div>
+          <h3 class="quiz-question">책을 덮고 나서 어떤 여운이 남길 원해요?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="quizAnswer(3,'A')">
+              <span class="quiz-opt-icon">💥</span>
+              <span class="quiz-opt-main">심장이 쿵쾅거리는 긴장감</span>
+              <span class="quiz-opt-sub">읽는 내내 손에 땀을 쥐게</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(3,'B')">
+              <span class="quiz-opt-icon">🥺</span>
+              <span class="quiz-opt-main">오래도록 남는 감동</span>
+              <span class="quiz-opt-sub">며칠 후에도 마음에 남는 이야기</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(3,'C')">
+              <span class="quiz-opt-icon">🧠</span>
+              <span class="quiz-opt-main">새로운 시각과 지식</span>
+              <span class="quiz-opt-sub">몰랐던 세계를 알게 되는 배움</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(3,'D')">
+              <span class="quiz-opt-icon">🌸</span>
+              <span class="quiz-opt-main">아름다운 자연의 여운</span>
+              <span class="quiz-opt-sub">산 속에 있는 듯한 서정적 감각</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-step" id="quiz-q4">
+          <div class="quiz-q-num">Q4 / 4</div>
+          <h3 class="quiz-question">나는 어떤 독자에요?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="quizAnswer(4,'A')">
+              <span class="quiz-opt-icon">🌱</span>
+              <span class="quiz-opt-main">산악 세계가 처음이에요</span>
+              <span class="quiz-opt-sub">가볍게 입문하고 싶어요</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(4,'B')">
+              <span class="quiz-opt-icon">🥾</span>
+              <span class="quiz-opt-main">등산을 좋아하는 일반 독자</span>
+              <span class="quiz-opt-sub">산은 좋아하지만 전문가는 아니에요</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(4,'C')">
+              <span class="quiz-opt-icon">🧭</span>
+              <span class="quiz-opt-main">알피니즘을 꽤 알아요</span>
+              <span class="quiz-opt-sub">산악 용어나 역사에 익숙해요</span>
+            </button>
+            <button class="quiz-option" onclick="quizAnswer(4,'D')">
+              <span class="quiz-opt-icon">🏆</span>
+              <span class="quiz-opt-main">산악 서적 매니아예요</span>
+              <span class="quiz-opt-sub">산서를 꽤 많이 읽어봤어요</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 결과 -->
+        <div class="quiz-step" id="quiz-result">
+          <div class="quiz-result-header">
+            <p>✦ 당신에게 추천하는 책</p>
+            <h3 id="quizResultHeadline"></h3>
+          </div>
+          <div class="quiz-result-card">
+            <div class="quiz-result-cover" id="quizResultCover"></div>
+            <div class="quiz-result-body">
+              <div class="quiz-result-lang" id="quizResultLang"></div>
+              <div class="quiz-result-title" id="quizResultTitle"></div>
+              <div class="quiz-result-author" id="quizResultAuthor"></div>
+              <div class="quiz-result-quote" id="quizResultQuote"></div>
+              <div class="quiz-result-reason" id="quizResultReason"></div>
+              <button class="quiz-result-btn" id="quizResultViewBtn">도서 목록에서 보기 →</button>
+            </div>
+          </div>
+          <button class="quiz-retry-btn" onclick="quizReset()">↺ 다시 테스트하기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 참여하기 -->
   <section id="forms" style="background: #EFEAE2;">
     <div class="inner">
@@ -1817,6 +2282,209 @@
         const angle = Math.atan2(e.clientX - cx, -(e.clientY - cy)) * (180 / Math.PI);
         compassNeedle.style.transform = `rotate(${angle}deg)`;
       });
+    }
+
+    // ── 책 추천 퀴즈 ──
+    const quizBooks = {
+      'fallen-giants': {
+        title: 'Fallen Giants',
+        author: '모리스 이서먼·스튜어트 위버',
+        lang: '영어 번역',
+        quote: '8000미터의 역사는 인간의 야망과 어리석음, 그리고 위대함이 뒤섞인 연대기다.',
+        img: 'images/books/02-fallen-giants.jpg',
+        reason: '히말라야의 큰 역사를 좋아하고, 지적인 배움의 여운을 원하는 당신에게 딱 맞는 책입니다.'
+      },
+      'free-solo': {
+        title: '프리솔로 (FREE SOLO)',
+        author: '알렉스 호놀드 & 데이비드 로버츠',
+        lang: '영어 번역',
+        quote: '900미터 화강암 벽, 로프 없이. 그 순간 두려움과 집중은 하나가 된다.',
+        img: 'images/books/19-free-solo.jpg',
+        reason: '극한의 기술 등반과 숨막히는 긴장감을 원하는 당신에게 가장 강렬한 한 권입니다.'
+      },
+      'one-day-tiger': {
+        title: '하루를 살아도 호랑이처럼',
+        author: '존 포터 (John Porter)',
+        lang: '영어 번역',
+        quote: '하루를 살아도 호랑이처럼. 알렉스는 그렇게 살았고, 27세에 그렇게 떠났다.',
+        img: 'images/books/11-호랑이처럼.jpg',
+        reason: '한 인물의 짧고 강렬한 삶에서 오래도록 남는 감동을 원하는 당신에게.'
+      },
+      'valley-flowers': {
+        title: '꽃의 계곡',
+        author: '프랭크 스마이드 (Frank S. Smythe)',
+        lang: '영어 번역',
+        quote: '히말라야에서 나는 꽃을 발견했다. 죽음보다 아름다운 것들이 그 절벽에 피어 있었다.',
+        img: 'images/books/05-꽃의계곡.jpg',
+        reason: '자연의 아름다움과 서정적 여운을 원하는 당신에게 가장 포근한 산서입니다.'
+      },
+      'cero-torre': {
+        title: '세로 토레',
+        author: '라인홀드 메스너 (Reinhold Messner)',
+        lang: '독일어 번역',
+        quote: '마에스트리는 진실을 정상에 묻어두었다. 메스너는 반세기 후 그것을 파냈다.',
+        img: 'images/books/01-세로토레.jpg',
+        reason: '논쟁과 미스터리, 파타고니아의 극한 환경에 끌리는 당신에게.'
+      },
+      'messner-life': {
+        title: '나의 인생 나의 철학',
+        author: '라인홀드 메스너 (Reinhold Messner)',
+        lang: '독일어 번역',
+        quote: '나는 살기 위해 산에 오른 것이 아니다. 산을 통해 살아가는 법을 배웠다.',
+        img: 'images/books/06-나의인생.jpg',
+        reason: '산과 삶의 철학적 의미를 탐구하는 당신에게, 메스너의 가장 깊은 이야기.'
+      },
+      'freedom-climbers': {
+        title: 'Freedom Climbers',
+        author: '버나데트 맥도널드 (Bernadette McDonald)',
+        lang: '영어 번역',
+        quote: '철의 장막 뒤에서, 그들은 자유를 8000미터 위에서 찾았다.',
+        img: 'images/books/08-freedom-climbers.jpg',
+        reason: '역사적 맥락과 인간 드라마가 함께 있는, 히말라야 등반사의 숨겨진 이야기.'
+      },
+      'lionel-terray': {
+        title: '무상의 정복자',
+        author: '리오넬 테레이 (Lionel Terray)',
+        lang: '프랑스어 번역',
+        quote: '우리는 아무짝에도 쓸모없는 것들의 정복자다 — 그리고 그것이 삶의 의미다.',
+        img: 'images/books/04-무상의정복자.jpg',
+        reason: '알피니즘의 고전. 산을 통해 삶의 의미를 찾는 당신에게 꼭 맞는 자서전.'
+      },
+      'elizabeth-hawley': {
+        title: '엘리자베스 홀리',
+        author: '버나데트 맥도널드 (Bernadette McDonald)',
+        lang: '영어 번역',
+        quote: '그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다.',
+        img: 'images/books/07-엘리자베스홀리.jpg',
+        reason: '한 인물의 독보적인 삶에서 오래 남는 감동을 원하는 당신에게.'
+      },
+      'everest': {
+        title: '에베레스트 정복',
+        author: '조지 로우·휴 루이스 존스',
+        lang: '영어 번역',
+        quote: '1953년 5월 29일, 두 사람이 지구의 정상에 처음으로 섰다.',
+        img: 'images/books/03-에베레스트.jpg',
+        reason: '등반 입문자에게 가장 먼저 권하는 한 권. 인류 최초의 에베레스트 초등 기록.'
+      }
+    };
+
+    const quizScoring = {
+      q1: {
+        A: { 'fallen-giants': 3, 'freedom-climbers': 2, 'messner-life': 2, 'everest': 1 },
+        B: { 'free-solo': 3, 'cero-torre': 2, 'one-day-tiger': 1, 'lionel-terray': 1 },
+        C: { 'valley-flowers': 3, 'elizabeth-hawley': 1 },
+        D: { 'messner-life': 3, 'one-day-tiger': 2, 'lionel-terray': 2 }
+      },
+      q2: {
+        A: { 'everest': 3, 'valley-flowers': 1, 'freedom-climbers': 1 },
+        B: { 'one-day-tiger': 3, 'lionel-terray': 3, 'messner-life': 2, 'elizabeth-hawley': 2 },
+        C: { 'fallen-giants': 3, 'freedom-climbers': 2 },
+        D: { 'cero-torre': 3, 'free-solo': 1 }
+      },
+      q3: {
+        A: { 'free-solo': 3, 'freedom-climbers': 2, 'cero-torre': 2 },
+        B: { 'one-day-tiger': 3, 'elizabeth-hawley': 3, 'lionel-terray': 1 },
+        C: { 'fallen-giants': 2, 'messner-life': 2, 'elizabeth-hawley': 1 },
+        D: { 'valley-flowers': 3 }
+      },
+      q4: {
+        A: { 'everest': 2, 'valley-flowers': 1 },
+        B: { 'one-day-tiger': 1, 'elizabeth-hawley': 1, 'cero-torre': 1 },
+        C: { 'fallen-giants': 1, 'freedom-climbers': 1, 'free-solo': 1 },
+        D: { 'messner-life': 2, 'lionel-terray': 2, 'freedom-climbers': 2 }
+      }
+    };
+
+    let quizAnswers = {};
+
+    function quizStart() {
+      document.getElementById('quizProgressTrack').style.display = 'block';
+      quizShowStep('quiz-q1');
+      quizUpdateProgress(1);
+    }
+
+    function quizShowStep(id) {
+      document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function quizUpdateProgress(step) {
+      const pct = (step / 4) * 100;
+      document.getElementById('quizProgressFill').style.width = pct + '%';
+      document.getElementById('quizProgressLabel').textContent = step + ' / 4';
+    }
+
+    function quizAnswer(q, opt) {
+      quizAnswers['q' + q] = opt;
+
+      // 선택 시각 피드백
+      const stepEl = document.getElementById('quiz-q' + q);
+      stepEl.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      setTimeout(() => {
+        if (q < 4) {
+          quizShowStep('quiz-q' + (q + 1));
+          quizUpdateProgress(q + 1);
+        } else {
+          quizShowResult();
+        }
+      }, 320);
+    }
+
+    function quizShowResult() {
+      // 점수 집계
+      const scores = {};
+      Object.keys(quizBooks).forEach(k => scores[k] = 0);
+
+      Object.entries(quizAnswers).forEach(([q, opt]) => {
+        const map = quizScoring[q][opt] || {};
+        Object.entries(map).forEach(([book, pts]) => {
+          scores[book] = (scores[book] || 0) + pts;
+        });
+      });
+
+      // 최고 점수 책
+      const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+      const book = quizBooks[winner];
+
+      // 결과 표시
+      document.getElementById('quizResultHeadline').textContent = book.title;
+      document.getElementById('quizResultLang').textContent = book.lang;
+      document.getElementById('quizResultTitle').textContent = book.title;
+      document.getElementById('quizResultAuthor').textContent = book.author;
+      document.getElementById('quizResultQuote').textContent = book.quote;
+      document.getElementById('quizResultReason').textContent = book.reason;
+
+      const coverEl = document.getElementById('quizResultCover');
+      if (book.img) {
+        coverEl.innerHTML = `<img src="${book.img}" alt="${book.title}">`;
+      } else {
+        coverEl.innerHTML = `<div class="quiz-result-cover-noimg">⛰️</div>`;
+      }
+
+      // 도서 목록에서 보기 버튼 — 해당 책 카드를 찾아 모달 열기
+      document.getElementById('quizResultViewBtn').onclick = () => {
+        const card = [...document.querySelectorAll('.book-card')]
+          .find(c => c.dataset.title === book.title);
+        if (card) {
+          quizReset();
+          setTimeout(() => {
+            document.getElementById('books').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => card.click(), 600);
+          }, 200);
+        }
+      };
+
+      document.getElementById('quizProgressTrack').style.display = 'none';
+      quizShowStep('quiz-result');
+    }
+
+    function quizReset() {
+      quizAnswers = {};
+      document.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
+      document.getElementById('quizProgressTrack').style.display = 'none';
+      quizShowStep('quiz-intro');
     }
   </script>
 </body>
