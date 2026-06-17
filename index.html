@@ -443,14 +443,15 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(26,40,32,0.55);
+      background: rgba(10,18,14,0.72);
       z-index: 500;
       align-items: center;
       justify-content: center;
       padding: 24px;
+      backdrop-filter: blur(4px);
     }
 
-    .modal-overlay.open { display: flex; animation: fadeOverlay 0.3s ease; }
+    .modal-overlay.open { display: flex; animation: fadeOverlay 0.35s ease; }
 
     @keyframes fadeOverlay {
       from { opacity: 0; }
@@ -459,84 +460,178 @@
 
     .modal-box {
       background: var(--bg);
-      max-width: 640px;
+      max-width: 820px;
       width: 100%;
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 260px 1fr;
       gap: 0;
-      animation: slideUp 0.3s ease;
+      animation: slideUp 0.38s cubic-bezier(0.16,1,0.3,1);
       position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
     }
 
     @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
+      from { transform: translateY(28px); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
     }
 
     .modal-cover {
-      background: var(--border);
+      background: var(--dark);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      aspect-ratio: 3/4;
       overflow: hidden;
+      position: relative;
     }
 
     .modal-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-    .modal-body { padding: 36px; }
+    .modal-cover-noimg {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .modal-cover-noimg::before {
+      content: '⛰';
+      font-size: 56px;
+      opacity: 0.25;
+    }
+
+    .modal-cover-noimg .modal-cover-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+    }
+
+    .modal-body {
+      padding: 40px 40px 36px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
 
     .modal-close {
       position: absolute;
-      top: 12px; right: 16px;
+      top: 14px; right: 18px;
       background: none;
       border: none;
-      font-size: 22px;
+      font-size: 20px;
       color: var(--muted);
       cursor: pointer;
       transition: color 0.2s;
+      z-index: 10;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
     }
 
     .modal-close:hover { color: var(--text); }
 
-    .modal-tag {
+    .modal-lang {
       font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.15em;
+      font-size: 10px;
+      letter-spacing: 0.18em;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-lang::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 1px;
+      background: var(--accent);
     }
 
     .modal-title {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 6px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 8px;
     }
 
     .modal-author {
       font-size: 13px;
       color: var(--muted);
+      margin-bottom: 28px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+    }
+
+    .modal-quote {
+      position: relative;
+      padding: 16px 20px 16px 24px;
       margin-bottom: 24px;
+      border-left: 2px solid var(--gold);
+      background: rgba(200,169,110,0.06);
+    }
+
+    .modal-quote::before {
+      content: '\201C';
+      position: absolute;
+      left: 8px; top: -6px;
+      font-size: 56px;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .modal-quote p {
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      margin: 0;
     }
 
     .modal-desc {
-      font-size: 14px;
-      color: var(--text);
+      font-size: 13.5px;
+      color: #555;
       line-height: 2;
       margin-bottom: 24px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
     }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .modal-tag-item {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11px;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .modal-tag-item:hover { border-color: var(--accent); color: var(--accent); }
 
     .modal-meta {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       color: var(--muted);
       letter-spacing: 0.05em;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
     }
 
     /* ── Philosophy ── */
@@ -932,8 +1027,9 @@
       .stat-num { font-size: 24px; }
 
       .books-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .modal-box { grid-template-columns: 1fr; }
-      .modal-cover { aspect-ratio: 3/4; max-height: 260px; }
+      .modal-box { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+      .modal-cover { aspect-ratio: 3/2; max-height: 220px; }
+      .modal-body { padding: 28px 24px; max-height: none; }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
       .reviews-grid { grid-template-columns: 1fr; }
@@ -1037,102 +1133,102 @@
       <div class="section-tag animate">Books</div>
       <h2 class="section-title animate">출간 도서</h2>
       <div class="books-grid">
-        <div class="book-card animate animate-delay-1" data-title="세로 토레" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1959년 세로 토레 초등을 둘러싼 반세기의 논쟁. 메스너가 직접 진실을 추적하며 마에스트리의 초등이 거짓임을 증명하는 과정을 담은 책." data-year="등반사① 시리즈 1" data-lang="독일어 번역" data-img="images/books/01-세로토레.jpg">
+        <div class="book-card animate animate-delay-1" data-title="세로 토레" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1959년 세로 토레 초등을 둘러싼 반세기의 논쟁. 메스너가 직접 진실을 추적하며 마에스트리의 초등이 거짓임을 증명하는 과정을 담은 책." data-year="등반사① 시리즈 1" data-lang="독일어 번역" data-img="images/books/01-세로토레.jpg" data-quote="마에스트리는 진실을 정상에 묻어두었다. 메스너는 반세기 후 그것을 파냈다." data-tags="세로 토레, 파타고니아, 초등 논쟁, 마에스트리">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/01-세로토레.jpg" alt="세로 토레"><div class="book-hover-info"><div class="book-hover-title">세로 토레</div><div class="book-hover-sub">메스너, 수수께끼를 풀다</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="Fallen Giants" data-author="모리스 이서먼·스튜어트 위버" data-desc="히말라야 8000m 14좌를 둘러싼 등반의 역사를 집대성. 19세기부터 21세기까지 전 세계 산악인들의 도전과 좌절, 승리의 기록. 뉴욕 타임스 극찬." data-year="등산사② 시리즈 2" data-lang="영어 번역" data-img="images/books/02-fallen-giants.jpg">
+        <div class="book-card animate animate-delay-2" data-title="Fallen Giants" data-author="모리스 이서먼·스튜어트 위버" data-desc="히말라야 8000m 14좌를 둘러싼 등반의 역사를 집대성. 19세기부터 21세기까지 전 세계 산악인들의 도전과 좌절, 승리의 기록. 뉴욕 타임스 극찬." data-year="등산사② 시리즈 2" data-lang="영어 번역" data-img="images/books/02-fallen-giants.jpg" data-quote="8000미터의 역사는 인간의 야망과 어리석음, 그리고 위대함이 뒤섞인 연대기다." data-tags="히말라야, 8000m 14좌, 에베레스트, K2, 낭가파르밧, 등반사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/02-fallen-giants.jpg" alt="Fallen Giants"><div class="book-hover-info"><div class="book-hover-title">Fallen Giants</div><div class="book-hover-sub">히말라야 도전의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="에베레스트 정복" data-author="조지 로우·휴 루이스 존스" data-desc="1953년 에베레스트 초등 60주년 기념판. 원정대가 직접 촬영한 사진 163점 수록. 전설적인 초등 당시의 오리지널 사진집." data-year="등반기① 시리즈 1" data-lang="영어 번역" data-img="images/books/03-에베레스트.jpg">
+        <div class="book-card animate animate-delay-3" data-title="에베레스트 정복" data-author="조지 로우·휴 루이스 존스" data-desc="1953년 에베레스트 초등 60주년 기념판. 원정대가 직접 촬영한 사진 163점 수록. 전설적인 초등 당시의 오리지널 사진집." data-year="등반기① 시리즈 1" data-lang="영어 번역" data-img="images/books/03-에베레스트.jpg" data-quote="1953년 5월 29일, 두 사람이 지구의 정상에 처음으로 섰다. 163장의 사진이 그 순간을 증언한다." data-tags="에베레스트, 1953년 초등, 에드먼드 힐러리, 텐징 노르가이, 사진집">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/03-에베레스트.jpg" alt="에베레스트 정복"><div class="book-hover-info"><div class="book-hover-title">에베레스트 정복</div><div class="book-hover-sub">초등 당시의 오리지널 사진집</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="무상의 정복자" data-author="리오넬 테레이 (Lionel Terray)" data-desc="위대한 등반가 리오넬 테레이의 자서전. 알프스에서 히말라야까지, 20세기 최고의 등반가 중 한 명이 살아온 등반 인생의 기록. (Les Conquérants de l'Inutile)" data-year="등반가① 시리즈 1" data-lang="프랑스어 번역" data-img="images/books/04-무상의정복자.jpg">
+        <div class="book-card animate animate-delay-1" data-title="무상의 정복자" data-author="리오넬 테레이 (Lionel Terray)" data-desc="위대한 등반가 리오넬 테레이의 자서전. 알프스에서 히말라야까지, 20세기 최고의 등반가 중 한 명이 살아온 등반 인생의 기록. (Les Conquérants de l'Inutile)" data-year="등반가① 시리즈 1" data-lang="프랑스어 번역" data-img="images/books/04-무상의정복자.jpg" data-quote="우리는 아무짝에도 쓸모없는 것들의 정복자다 — 그리고 그것이 삶의 의미다." data-tags="알프스, 안나푸르나, 마칼루, 히말라야, 자서전, 테레이">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/04-무상의정복자.jpg" alt="무상의 정복자"><div class="book-hover-info"><div class="book-hover-title">무상의 정복자</div><div class="book-hover-sub">리오넬 테레이 자서전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="꽃의 계곡" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)" data-year="탐구기⑤ 시리즈 2" data-lang="영어 번역" data-img="images/books/05-꽃의계곡.jpg">
+        <div class="book-card animate animate-delay-2" data-title="꽃의 계곡" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)" data-year="탐구기⑤ 시리즈 2" data-lang="영어 번역" data-img="images/books/05-꽃의계곡.jpg" data-quote="히말라야에서 나는 꽃을 발견했다. 죽음보다 아름다운 것들이 그 절벽에 피어 있었다." data-tags="난다데비, 히말라야, 식물 탐사, 자연, 영국 등반사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/05-꽃의계곡.jpg" alt="꽃의 계곡"><div class="book-hover-info"><div class="book-hover-title">꽃의 계곡</div><div class="book-hover-sub">난다데비 산군의 식물 탐사 기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="나의 인생 나의 철학" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="세기의 철인 메스너 인생론. 8000m 14좌 전봉 무산소 완등이라는 전인미답의 기록을 세운 메스너가 자신의 삶과 철학을 이야기한다. (ÜBER LEBEN)" data-year="등반가⑤ 시리즈 2" data-lang="독일어 번역" data-img="images/books/06-나의인생.jpg">
+        <div class="book-card animate animate-delay-3" data-title="나의 인생 나의 철학" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="세기의 철인 메스너 인생론. 8000m 14좌 전봉 무산소 완등이라는 전인미답의 기록을 세운 메스너가 자신의 삶과 철학을 이야기한다. (ÜBER LEBEN)" data-year="등반가⑤ 시리즈 2" data-lang="독일어 번역" data-img="images/books/06-나의인생.jpg" data-quote="나는 살기 위해 산에 오른 것이 아니다. 산을 통해 살아가는 법을 배웠다." data-tags="8000m 14좌, 무산소 등반, 에베레스트, K2, 메스너, 철학, 자서전">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/06-나의인생.jpg" alt="나의 인생 나의 철학"><div class="book-hover-info"><div class="book-hover-title">나의 인생 나의 철학</div><div class="book-hover-sub">메스너 인생론</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg">
+        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg" data-quote="그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다." data-tags="히말라야, 카트만두, 등반 기록, 역사 아카이브, 여성">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"><div class="book-hover-info"><div class="book-hover-title">엘리자베스 홀리</div><div class="book-hover-sub">히말라야의 영원한 등반 기록가</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="Freedom Climbers" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="자유를 찾아 등반에 나서는 폴란드 산악인들의 놀라운 여정. 공산주의 체제 하에서 히말라야 8000m를 정복한 폴란드 산악인들의 이야기." data-year="등반사③ 시리즈 3" data-lang="영어 번역" data-img="images/books/08-freedom-climbers.jpg">
+        <div class="book-card animate animate-delay-2" data-title="Freedom Climbers" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="자유를 찾아 등반에 나서는 폴란드 산악인들의 놀라운 여정. 공산주의 체제 하에서 히말라야 8000m를 정복한 폴란드 산악인들의 이야기." data-year="등반사③ 시리즈 3" data-lang="영어 번역" data-img="images/books/08-freedom-climbers.jpg" data-quote="철의 장막 뒤에서, 그들은 자유를 8000미터 위에서 찾았다." data-tags="폴란드, 8000m, K2, 낭가파르밧, 동계 등반, 공산주의">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/08-freedom-climbers.jpg" alt="Freedom Climbers"><div class="book-hover-info"><div class="book-hover-title">Freedom Climbers</div><div class="book-hover-sub">폴란드 산악인들의 자유를 향한 등반</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="리카르도 캐신" data-author="리카르도 캐신 (Riccardo Cassin)" data-desc="등반의 역사를 새로 쓴 리카르도 캐신의 등반 50년. 워커 스퍼, 드류 필라 등 전설적인 루트를 개척한 20세기 최고 알피니스트의 자서전." data-year="등반가① 시리즈 2" data-lang="이탈리아어 번역" data-img="images/books/09-리카르도캐신.jpg">
+        <div class="book-card animate animate-delay-3" data-title="리카르도 캐신" data-author="리카르도 캐신 (Riccardo Cassin)" data-desc="등반의 역사를 새로 쓴 리카르도 캐신의 등반 50년. 워커 스퍼, 드류 필라 등 전설적인 루트를 개척한 20세기 최고 알피니스트의 자서전." data-year="등반가① 시리즈 2" data-lang="이탈리아어 번역" data-img="images/books/09-리카르도캐신.jpg" data-quote="루트를 개척한다는 것은 산과 대화하는 것이다. 나는 50년 동안 그 대화를 멈추지 않았다." data-tags="알프스, 워커 스퍼, 드류 필라, 돌로미테, 개척 등반, 자서전">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/09-리카르도캐신.jpg" alt="리카르도 캐신"><div class="book-hover-info"><div class="book-hover-title">리카르도 캐신</div><div class="book-hover-sub">등반 50년</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="CAMP SiX" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="에베레스트 원정기의 고전. 1933년 에베레스트 원정의 생생한 기록. 프랭크 스마이드가 기록한 당시의 설산과 도전의 이야기." data-year="등반기③ 시리즈 3" data-lang="영어 번역" data-img="images/books/10-캠프식스.jpg">
+        <div class="book-card animate animate-delay-1" data-title="CAMP SiX" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="에베레스트 원정기의 고전. 1933년 에베레스트 원정의 생생한 기록. 프랭크 스마이드가 기록한 당시의 설산과 도전의 이야기." data-year="등반기③ 시리즈 3" data-lang="영어 번역" data-img="images/books/10-캠프식스.jpg" data-quote="캠프 6에서 바라본 세계는 더 이상 인간의 것이 아니었다. 오직 산만이 존재했다." data-tags="에베레스트, 1933년 원정, 노스콜, 영국 등반사, 고소 등반">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/10-캠프식스.jpg" alt="CAMP SiX"><div class="book-hover-info"><div class="book-hover-title">CAMP SiX</div><div class="book-hover-sub">에베레스트 원정기의 고전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="하루를 살아도 호랑이처럼" data-author="존 포터 (John Porter)" data-desc="알렉스 매킨타이어와 경량·속공등반의 탄생. BANFF 산악영화제 그랑프리 수상. 전설적인 알피니스트 알렉스 매킨타이어의 짧고 강렬한 삶. (One Day as a Tiger)" data-year="등반가⑤ 시리즈 5" data-lang="영어 번역" data-img="images/books/11-호랑이처럼.jpg">
+        <div class="book-card animate animate-delay-2" data-title="하루를 살아도 호랑이처럼" data-author="존 포터 (John Porter)" data-desc="알렉스 매킨타이어와 경량·속공등반의 탄생. BANFF 산악영화제 그랑프리 수상. 전설적인 알피니스트 알렉스 매킨타이어의 짧고 강렬한 삶. (One Day as a Tiger)" data-year="등반가⑤ 시리즈 5" data-lang="영어 번역" data-img="images/books/11-호랑이처럼.jpg" data-quote="하루를 살아도 호랑이처럼. 알렉스는 그렇게 살았고, 27세에 그렇게 떠났다." data-tags="알프스, 히말라야, 낭가파르밧, 경량 등반, 알렉스 매킨타이어, BANFF 수상">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/11-호랑이처럼.jpg" alt="하루를 살아도 호랑이처럼"><div class="book-hover-info"><div class="book-hover-title">하루를 살아도 호랑이처럼</div><div class="book-hover-sub">알렉스 매킨타이어의 삶</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="중국 등산 운동사" data-author="—" data-desc="중국 근현대 산악 운동의 역사를 체계적으로 정리한 책. 중국 산악인들의 히말라야 도전과 자국 산악 문화의 발전 과정을 담았다." data-year="등반사 시리즈" data-lang="중국어 번역" data-img="images/books/12-중국등산사.jpg">
+        <div class="book-card animate animate-delay-3" data-title="중국 등산 운동사" data-author="장채진 (张彩珍)" data-desc="중국 근현대 산악 운동의 역사를 체계적으로 정리한 책. 중국 산악인들의 히말라야 도전과 자국 산악 문화의 발전 과정을 담았다." data-year="등반사 시리즈" data-lang="중국어 번역" data-img="images/books/12-중국등산사.jpg" data-quote="중국의 산은 중국인의 발로 올랐다. 그 기록은 세계 등반사의 한 장이다." data-tags="중국, 티베트, 에베레스트 북벽, 무스타그 아타, 등반사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/12-중국등산사.jpg" alt="중국 등산 운동사"><div class="book-hover-info"><div class="book-hover-title">중국 등산 운동사</div><div class="book-hover-sub">중국 산악 운동의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="일본 여성 등산사" data-author="—" data-desc="메이지 시대부터 현대까지, 일본 여성 산악인들이 걸어온 길을 기록한 책. 여성과 산악 문화의 교차점을 조명한다." data-year="등산사 시리즈" data-lang="일본어 번역" data-img="images/books/13-일본여성등산사.jpg">
+        <div class="book-card animate animate-delay-1" data-title="일본 여성 등산사" data-author="사카쿠라 토키코·우메노 요시코" data-desc="메이지 시대부터 현대까지, 일본 여성 산악인들이 걸어온 길을 기록한 책. 여성과 산악 문화의 교차점을 조명한다." data-year="등산사 시리즈" data-lang="일본어 번역" data-img="images/books/13-일본여성등산사.jpg" data-quote="시대가 막아도 산은 막지 않았다. 그들은 묵묵히, 그리고 끝내 정상에 올랐다." data-tags="일본, 여성 등반, 알프스, 히말라야, 근대 등반사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/13-일본여성등산사.jpg" alt="일본 여성 등산사"><div class="book-hover-info"><div class="book-hover-title">일본 여성 등산사</div><div class="book-hover-sub">여성 산악인의 기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="산책여행 (山册旅行)" data-author="하루재 클럽" data-desc="사람·역사·이야기를 따라 걷고 사유하고 성찰하는 알피니즘 여행. 산을 오르는 것을 넘어 산과 함께한 인간의 역사를 탐구한다." data-year="하루재클럽 시리즈" data-lang="한국어" data-img="images/books/14-산책여행.jpg">
+        <div class="book-card animate animate-delay-2" data-title="산책여행 (山册旅行)" data-author="하루재 클럽" data-desc="사람·역사·이야기를 따라 걷고 사유하고 성찰하는 알피니즘 여행. 산을 오르는 것을 넘어 산과 함께한 인간의 역사를 탐구한다." data-year="하루재클럽 시리즈" data-lang="한국어" data-img="images/books/14-산책여행.jpg" data-quote="산을 오르는 것이 아니라 산을 읽는 여행이다. 발이 아닌 눈으로, 몸이 아닌 마음으로." data-tags="알피니즘, 산악 문화, 역사 에세이, 하루재 클럽, 한국">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/14-산책여행.jpg" alt="산책여행"><div class="book-hover-info"><div class="book-hover-title">산책여행</div><div class="book-hover-sub">알피니즘 인문 여행</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="하늘에서 추락하다" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 메스너가 재조명한다. (Absturz des Himmels)" data-year="등반기④ 시리즈 4" data-lang="독일어 번역" data-img="images/books/15-하늘에서추락하다.jpg">
+        <div class="book-card animate animate-delay-3" data-title="하늘에서 추락하다" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 메스너가 재조명한다. (Absturz des Himmels)" data-year="등반기④ 시리즈 4" data-lang="독일어 번역" data-img="images/books/15-하늘에서추락하다.jpg" data-quote="1865년 7월 14일, 정상의 환희는 불과 몇 분 후 비극으로 바뀌었다." data-tags="마터호른, 알프스, 1865년 초등, 에드워드 윔퍼, 비극">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/15-하늘에서추락하다.jpg" alt="하늘에서 추락하다"><div class="book-hover-info"><div class="book-hover-title">하늘에서 추락하다</div><div class="book-hover-sub">마터호른 초등의 비극</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="마터호른의 그림자" data-author="이언 스미스 (Ian Smith)" data-desc="에드워드 윔퍼의 일생. 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다. (Shadow of the Matterhorn)" data-year="등반가⑦ 시리즈 9" data-lang="영어 번역" data-img="images/books/16-마터호른.jpg">
+        <div class="book-card animate animate-delay-1" data-title="마터호른의 그림자" data-author="이언 스미스 (Ian Smith)" data-desc="에드워드 윔퍼의 일생. 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다. (Shadow of the Matterhorn)" data-year="등반가⑦ 시리즈 9" data-lang="영어 번역" data-img="images/books/16-마터호른.jpg" data-quote="윔퍼는 마터호른을 정복했다. 그러나 마터호른의 그림자는 그를 평생 따라다녔다." data-tags="마터호른, 에드워드 윔퍼, 알프스, 19세기, 전기, 황금시대">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/16-마터호른.jpg" alt="마터호른의 그림자"><div class="book-hover-info"><div class="book-hover-title">마터호른의 그림자</div><div class="book-hover-sub">에드워드 윔퍼의 일생</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="ASCENT — 크리스 보닝턴 자서전" data-author="크리스 보닝턴 (Chris Bonington)" data-desc="알피니즘의 살아 있는 전설. 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반 역사를 이끈 크리스 보닝턴의 자서전." data-year="등반가② 시리즈 7" data-lang="영어 번역" data-img="images/books/17-ascent.jpg">
+        <div class="book-card animate animate-delay-2" data-title="ASCENT — 크리스 보닝턴 자서전" data-author="크리스 보닝턴 (Chris Bonington)" data-desc="알피니즘의 살아 있는 전설. 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반 역사를 이끈 크리스 보닝턴의 자서전." data-year="등반가② 시리즈 7" data-lang="영어 번역" data-img="images/books/17-ascent.jpg" data-quote="불가능한 루트를 가능으로 만드는 것, 그것이 내 평생의 사명이었다." data-tags="에베레스트, 안나푸르나, K2, 영국 등반사, 남벽, 자서전">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/17-ascent.jpg" alt="ASCENT"><div class="book-hover-info"><div class="book-hover-title">ASCENT</div><div class="book-hover-sub">크리스 보닝턴 자서전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="THE TOWER — 더 타워" data-author="켈리 코르데스 (Kelly Cordes)" data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. BANFF 산악영화제 및 NOBA 2015 수상. 파타고니아 최난봉에 얽힌 반세기의 논쟁을 파헤친다." data-year="등반가② 시리즈 6" data-lang="영어 번역" data-img="images/books/18-the-tower.jpg">
+        <div class="book-card animate animate-delay-3" data-title="THE TOWER — 더 타워" data-author="켈리 코르데스 (Kelly Cordes)" data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. BANFF 산악영화제 및 NOBA 2015 수상. 파타고니아 최난봉에 얽힌 반세기의 논쟁을 파헤친다." data-year="등반가② 시리즈 6" data-lang="영어 번역" data-img="images/books/18-the-tower.jpg" data-quote="세로 토레는 등반의 문제가 아니었다. 그것은 진실과 자존심의 문제였다." data-tags="세로 토레, 파타고니아, 체사레 마에스트리, 논쟁, BANFF 수상, NOBA 2015">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/18-the-tower.jpg" alt="THE TOWER"><div class="book-hover-info"><div class="book-hover-title">THE TOWER</div><div class="book-hover-sub">세로 토레의 논란과 동반기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="프리솔로 (FREE SOLO)" data-author="알렉스 호놀드 & 데이비드 로버츠" data-desc="요세미티 엘 캐피탄 900미터를 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작." data-year="등반가⑤ 시리즈 8" data-lang="영어 번역" data-img="images/books/19-free-solo.jpg">
+        <div class="book-card animate animate-delay-1" data-title="프리솔로 (FREE SOLO)" data-author="알렉스 호놀드 & 데이비드 로버츠" data-desc="요세미티 엘 캐피탄 900미터를 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작." data-year="등반가⑤ 시리즈 8" data-lang="영어 번역" data-img="images/books/19-free-solo.jpg" data-quote="900미터 화강암 벽, 로프 없이. 그 순간 두려움과 집중은 하나가 된다." data-tags="엘 캐피탄, 요세미티, 프리솔로, 아카데미상, 알렉스 호놀드, 암벽등반">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/19-free-solo.jpg" alt="프리솔로"><div class="book-hover-info"><div class="book-hover-title">프리솔로</div><div class="book-hover-sub">알렉스 호놀드의 엘 캐피탄</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="산의 비밀" data-author="쿠르트 딤베르거 (Kurt Diemberger)" data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기." data-year="등반가② 시리즈 5" data-lang="독일어 번역" data-img="images/books/20-산의비밀.jpg">
+        <div class="book-card animate animate-delay-2" data-title="산의 비밀" data-author="쿠르트 딤베르거 (Kurt Diemberger)" data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기." data-year="등반가② 시리즈 5" data-lang="독일어 번역" data-img="images/books/20-산의비밀.jpg" data-quote="카메라 뷰파인더 너머, 나는 산의 영혼을 보았다. 그것은 말로 담을 수 없는 것이었다." data-tags="브로드피크, 다울라기리, K2, 고산 촬영, 8000m 초등, 2020년 세종도서">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/20-산의비밀.jpg" alt="산의 비밀"><div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div></div>
@@ -1254,13 +1350,22 @@
   <!-- Book Modal -->
   <div class="modal-overlay" id="bookModal" onclick="closeModal(event)">
     <div class="modal-box">
-      <div class="modal-cover" id="modalCover"><img id="modalImg" src="" alt="" style="display:none;"></div>
+      <div class="modal-cover" id="modalCover">
+        <img id="modalImg" src="" alt="" style="display:none;">
+        <div class="modal-cover-noimg" id="modalCoverNoImg" style="display:none;">
+          <div class="modal-cover-title" id="modalCoverTitle"></div>
+        </div>
+      </div>
       <div class="modal-body">
         <button class="modal-close" onclick="closeModalBtn()">×</button>
-        <div class="modal-tag" id="modalLang"></div>
+        <div class="modal-lang" id="modalLang"></div>
         <div class="modal-title" id="modalTitle"></div>
         <div class="modal-author" id="modalAuthor"></div>
+        <div class="modal-quote" id="modalQuoteWrap" style="display:none;">
+          <p id="modalQuote"></p>
+        </div>
         <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-tags" id="modalTags"></div>
         <div class="modal-meta" id="modalYear"></div>
       </div>
     </div>
@@ -1583,14 +1688,43 @@
         document.getElementById('modalDesc').textContent   = card.dataset.desc;
         document.getElementById('modalYear').textContent   = card.dataset.year;
         document.getElementById('modalLang').textContent   = card.dataset.lang;
+
+        // 표지 이미지
         const imgEl = document.getElementById('modalImg');
+        const noImgEl = document.getElementById('modalCoverNoImg');
         if (card.dataset.img) {
           imgEl.src = card.dataset.img;
           imgEl.alt = card.dataset.title;
           imgEl.style.display = 'block';
+          noImgEl.style.display = 'none';
         } else {
           imgEl.style.display = 'none';
+          noImgEl.style.display = 'flex';
+          document.getElementById('modalCoverTitle').textContent = card.dataset.title;
         }
+
+        // 인상적인 한 줄
+        const quoteWrap = document.getElementById('modalQuoteWrap');
+        const quoteEl = document.getElementById('modalQuote');
+        if (card.dataset.quote) {
+          quoteEl.textContent = card.dataset.quote;
+          quoteWrap.style.display = 'block';
+        } else {
+          quoteWrap.style.display = 'none';
+        }
+
+        // 태그
+        const tagsEl = document.getElementById('modalTags');
+        tagsEl.innerHTML = '';
+        if (card.dataset.tags) {
+          card.dataset.tags.split(',').forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'modal-tag-item';
+            span.textContent = tag.trim();
+            tagsEl.appendChild(span);
+          });
+        }
+
         document.getElementById('bookModal').classList.add('open');
         document.body.style.overflow = 'hidden';
       });
