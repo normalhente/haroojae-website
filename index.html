@@ -754,27 +754,39 @@
       margin-top: -24px;
     }
 
-    .membership-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .membership-grid { display: flex; justify-content: center; }
 
     .mem-card {
-      padding: 40px;
+      position: relative;
+      max-width: 440px;
+      width: 100%;
+      padding: 44px 40px 40px;
       border: 1px solid var(--border);
       background: #fff;
       transition: transform 0.3s;
     }
 
     .mem-card:hover { transform: translateY(-4px); }
-    .mem-card.featured { background: var(--dark); color: var(--bg); border-color: var(--dark); }
+
+    .mem-badge {
+      position: absolute;
+      top: -14px; left: 40px;
+      background: var(--gold);
+      color: var(--dark);
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 8px 16px;
+      box-shadow: 0 4px 12px rgba(26,40,32,0.18);
+    }
 
     .mem-type { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-    .mem-card.featured .mem-type { color: rgba(255,255,255,0.5); }
 
     .mem-price { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
     .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
-    .mem-card.featured .mem-period { color: rgba(255,255,255,0.5); }
 
     .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
-    .mem-card.featured .mem-list { border-top-color: rgba(255,255,255,0.15); }
 
     .mem-list li {
       font-size: 14px;
@@ -785,10 +797,7 @@
       gap: 12px;
     }
 
-    .mem-card.featured .mem-list li { color: rgba(255,255,255,0.8); border-bottom-color: rgba(255,255,255,0.15); }
-
     .mem-list li::before { content: "—"; color: var(--accent); flex-shrink: 0; }
-    .mem-card.featured .mem-list li::before { color: var(--gold); }
 
     .mem-btn {
       font-family: 'Apple SD Gothic Neo', sans-serif;
@@ -807,8 +816,6 @@
     }
 
     .mem-btn:hover { background: var(--accent); color: #fff; }
-    .mem-card.featured .mem-btn { background: var(--bg); border-color: var(--bg); color: var(--dark); }
-    .mem-card.featured .mem-btn:hover { opacity: 0.85; }
 
     .book-icon { position: relative; width: 17px; height: 13px; perspective: 50px; }
     .book-page { position: absolute; top: 0; width: 8.5px; height: 13px; background: currentColor; opacity: 0.85; }
@@ -922,7 +929,8 @@
       .reviews-grid { grid-template-columns: 1fr; }
       .forms-grid { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
-      .membership-grid { grid-template-columns: 1fr; }
+      .mem-card { padding: 36px 24px; }
+      .mem-badge { left: 24px; }
       .newsletter-form { flex-direction: column; }
       .newsletter-input { border-right: 1px solid var(--border); border-bottom: none; }
       .footer-inner { flex-direction: column; gap: 24px; align-items: flex-start; }
@@ -1348,7 +1356,8 @@
       <p class="membership-intro animate">월 10,000원으로 연간 3~4권의 산서를 받아보세요.<br>하루재가 엄선한 세계의 산서가 집으로 찾아옵니다.</p>
       <div class="membership-grid">
         <div class="mem-card animate animate-delay-1">
-          <div class="mem-type">일반 회원</div>
+          <div class="mem-badge">지금 가입하면 축하선물 4권 증정</div>
+          <div class="mem-type">정기 멤버십</div>
           <div class="mem-price">월 10,000원</div>
           <div class="mem-period">연간 120,000원</div>
           <ul class="mem-list">
@@ -1358,18 +1367,6 @@
             <li>컬러 사진 수록 고품질 도서</li>
           </ul>
           <a href="https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA" target="_blank" rel="noopener noreferrer" class="mem-btn">가입하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
-        </div>
-        <div class="mem-card featured animate animate-delay-2">
-          <div class="mem-type">신규 가입 특전</div>
-          <div class="mem-price">축하선물 4권</div>
-          <div class="mem-period">신규 회원 한정 증정</div>
-          <ul class="mem-list">
-            <li>연간 3~4권의 산서 배송</li>
-            <li>권당 정가 50,000원 상당</li>
-            <li>하루재 큐레이션 도서 선정</li>
-            <li>가입 축하선물로 도서 4권 증정</li>
-          </ul>
-          <a href="https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA" target="_blank" rel="noopener noreferrer" class="mem-btn">지금 가입하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
         </div>
       </div>
     </div>
