@@ -478,14 +478,17 @@
 
     .modal-cover {
       background: var(--dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
       position: relative;
+      min-height: 400px;
     }
 
-    .modal-cover img { width: auto; height: auto; max-width: 100%; max-height: 100%; display: block; }
+    .modal-cover img {
+      position: absolute;
+      top: 20px; right: 20px; bottom: 20px; left: 20px;
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      object-fit: contain;
+    }
 
     .modal-cover-noimg {
       display: flex;
@@ -632,6 +635,32 @@
       padding-top: 20px;
       border-top: 1px solid var(--border);
       margin-top: auto;
+    }
+
+    .modal-buy {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .modal-buy-btn {
+      flex: 1;
+      padding: 11px 16px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .modal-buy-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
 
     /* ── Philosophy ── */
@@ -1470,7 +1499,7 @@
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/06-나의인생.jpg" alt="나의 인생 나의 철학"><div class="book-hover-info"><div class="book-hover-title">나의 인생 나의 철학</div><div class="book-hover-sub">메스너 인생론</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg" data-quote="그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다." data-tags="히말라야, 카트만두, 등반 기록, 역사 아카이브, 여성">
+        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg" data-yes24="https://www.yes24.com/product/goods/32494985" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602834" data-quote="그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다." data-tags="히말라야, 카트만두, 등반 기록, 역사 아카이브, 여성">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"><div class="book-hover-info"><div class="book-hover-title">엘리자베스 홀리</div><div class="book-hover-sub">히말라야의 영원한 등반 기록가</div></div></div>
@@ -1674,6 +1703,10 @@
         <p class="modal-desc" id="modalDesc"></p>
         <div class="modal-tags" id="modalTags"></div>
         <div class="modal-meta" id="modalYear"></div>
+        <div class="modal-buy" id="modalBuy" style="display:none;">
+          <a id="modalBtnYes24" href="" target="_blank" rel="noopener noreferrer" class="modal-buy-btn">예스24</a>
+          <a id="modalBtnKyobo" href="" target="_blank" rel="noopener noreferrer" class="modal-buy-btn">교보문고</a>
+        </div>
       </div>
     </div>
   </div>
@@ -2188,6 +2221,20 @@
             span.textContent = tag.trim();
             tagsEl.appendChild(span);
           });
+        }
+
+        // 구입 링크
+        const buyEl = document.getElementById('modalBuy');
+        const yes24El = document.getElementById('modalBtnYes24');
+        const kyoboEl = document.getElementById('modalBtnKyobo');
+        if (card.dataset.yes24 || card.dataset.kyobo) {
+          buyEl.style.display = 'flex';
+          yes24El.style.display = card.dataset.yes24 ? '' : 'none';
+          if (card.dataset.yes24) yes24El.href = card.dataset.yes24;
+          kyoboEl.style.display = card.dataset.kyobo ? '' : 'none';
+          if (card.dataset.kyobo) kyoboEl.href = card.dataset.kyobo;
+        } else {
+          buyEl.style.display = 'none';
         }
 
         document.getElementById('bookModal').classList.add('open');
