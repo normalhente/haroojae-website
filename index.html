@@ -45,21 +45,6 @@
       width: 52px; z-index: 90;
       display: flex; flex-direction: column; align-items: center;
     }
-    .climb-label {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 8px; letter-spacing: 0.14em; color: var(--border);
-      margin-bottom: 10px;
-    }
-    .mountain-stack { position: relative; width: 52px; height: 56px; }
-    .mountain-outline, .mountain-fill-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .mountain-outline path { fill: none; stroke: var(--border); stroke-width: 1.4; stroke-linejoin: round; }
-    .mountain-fill-svg path { fill: var(--accent); }
-    .mountain-fill-svg { clip-path: inset(100% 0 0 0); transition: clip-path 0.1s linear; }
-    .climb-pct {
-      margin-top: 10px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
-    }
 
     /* ── 안개 전환 ── */
     .mist-divider {
@@ -348,7 +333,7 @@
     .book-cover {
       width: 100%;
       aspect-ratio: 2/3;
-      background: var(--border);
+      background: #f5f3ef;
       position: relative;
       display: flex;
       align-items: center;
@@ -368,7 +353,7 @@
     }
 
     .book-cover img {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%; height: 100%; object-fit: contain;
       transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
@@ -668,12 +653,6 @@
     #philosophy .section-tag { color: rgba(255,255,255,0.55); }
     #philosophy .section-title { color: #fff; }
 
-    .headlamp-glow {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle 280px at var(--mx, 50%) var(--my, 40%), rgba(255,255,255,0.14), transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
     #philosophy .inner { position: relative; z-index: 1; }
 
     .philosophy-lead {
@@ -740,25 +719,8 @@
     .about-quote p { font-size: 14px; color: #5A5A52; line-height: 1.9; }
 
     /* ── Reviews ── */
-    #reviews { background: var(--bg); }
 
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-bottom: 64px;
-    }
 
-    .review-card {
-      background: #fff;
-      padding: 28px;
-      border: 1px solid var(--border);
-    }
-
-    .review-stars { font-size: 14px; color: var(--gold); margin-bottom: 14px; letter-spacing: 2px; }
-    .review-book { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
-    .review-text { font-size: 14px; color: var(--text); line-height: 1.9; margin-bottom: 20px; }
-    .review-author { font-size: 12px; color: var(--muted); }
 
     /* ── Forms ── */
     .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
@@ -1044,7 +1006,6 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      .climb-mountain { display: none; }
       section { padding: 80px 24px; }
       nav { padding: 0 24px; }
       #banner { padding: 10px 40px 10px 16px; font-size: 12px; text-align: left; }
@@ -1061,8 +1022,7 @@
       .modal-body { padding: 28px 24px; max-height: none; }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
-      .reviews-grid { grid-template-columns: 1fr; }
-      .forms-grid { grid-template-columns: 1fr; }
+        .forms-grid { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
       .mem-card { padding: 36px 24px; }
       .mem-badge { left: 24px; }
@@ -1383,20 +1343,6 @@
 </head>
 <body>
 
-  <!-- 등반 진행률 인디케이터 -->
-  <div class="climb-mountain" aria-hidden="true">
-    <span class="climb-label">SUMMIT</span>
-    <div class="mountain-stack">
-      <svg class="mountain-outline" viewBox="0 0 64 80" preserveAspectRatio="none">
-        <path d="M2 76 L18 40 L28 56 L34 30 L46 56 L54 42 L62 76 Z"/>
-      </svg>
-      <svg class="mountain-fill-svg" id="mountainFill" viewBox="0 0 64 80" preserveAspectRatio="none">
-        <path d="M2 76 L18 40 L28 56 L34 30 L46 56 L54 42 L62 76 Z"/>
-      </svg>
-    </div>
-    <span class="climb-pct" id="climbPct">0%</span>
-  </div>
-
   <!-- Announcement Banner -->
   <div id="banner">
     <span>📖 2026 상반기 신간 출간 예정 — <a href="#books">도서 목록 보기</a></span>
@@ -1416,9 +1362,6 @@
       <li><a href="#about" class="nav-link">대표 소개
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
       </a></li>
-      <li><a href="#reviews" class="nav-link">독자 후기
-        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
-      </a></li>
       <li><a href="#faq" class="nav-link">FAQ
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
       </a></li>
@@ -1433,7 +1376,6 @@
     <a href="#books" onclick="closeMobile()">책 소개</a>
     <a href="#philosophy" onclick="closeMobile()">출판사 철학</a>
     <a href="#about" onclick="closeMobile()">대표 소개</a>
-    <a href="#reviews" onclick="closeMobile()">독자 후기</a>
     <a href="#forms" onclick="closeMobile()">참여하기</a>
     <a href="#faq" onclick="closeMobile()">FAQ</a>
     <a href="#membership" onclick="closeMobile()">멤버십 가입</a>
@@ -1569,17 +1511,17 @@
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/20-산의비밀.jpg" alt="산의 비밀"><div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="산의 전사들" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="슬로베니아 알피니즘의 강력한 전통과 등반문화. 유고슬라비아·슬로베니아 산악인들이 히말라야에서 이룩한 놀라운 성취를 기록한 등반사. (Alpine Warriors)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/21-산의전사들.jpg" data-quote="가장 극적이며 미래지향적인 등반 중 일부가 서구에 잘 알려지지 않은 이 무지막지한 알피니스트들에 의해 이룩됐다." data-tags="슬로베니아, 알피니즘, 히말라야, 유고슬라비아, 등반사">
+        <div class="book-card animate animate-delay-3" data-title="산의 전사들" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="슬로베니아 알피니즘의 강력한 전통과 등반문화. 유고슬라비아·슬로베니아 산악인들이 히말라야에서 이룩한 놀라운 성취를 기록한 등반사. (Alpine Warriors)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/21-산의전사들.jpg" data-yes24="https://www.yes24.com/product/goods/89327725" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942421" data-quote="가장 극적이며 미래지향적인 등반 중 일부가 서구에 잘 알려지지 않은 이 무지막지한 알피니스트들에 의해 이룩됐다." data-tags="슬로베니아, 알피니즘, 히말라야, 유고슬라비아, 등반사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/21-산의전사들.jpg" alt="산의 전사들"><div class="book-hover-info"><div class="book-hover-title">산의 전사들</div><div class="book-hover-sub">Alpine Warriors</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="태양의 한 조각" data-author="오이시 아키히로 (大石明弘)" data-desc="일본인 최초·여성 최초 황금피켈상을 받은 다니구치 케이의 평전. 43세에 생을 마감한 전설적인 클라이머의 삶과 등반을 후배 산악인 오이시 아키히로가 기록했다. (太陽のかけら)" data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/22-태양의한조각.jpg" data-quote="평생 그녀가 도전의 대상으로 삼은 것은 사회나 산이 아니고 '자기 자신'이었다. 동료들의 마음속에서 언제나 태양의 한 조각으로 빛나고 있다." data-tags="다니구치 케이, 황금피켈상, 일본 여성 등반가, 알파인 스타일">
+        <div class="book-card animate animate-delay-1" data-title="태양의 한 조각" data-author="오이시 아키히로 (大石明弘)" data-desc="일본인 최초·여성 최초 황금피켈상을 받은 다니구치 케이의 평전. 43세에 생을 마감한 전설적인 클라이머의 삶과 등반을 후배 산악인 오이시 아키히로가 기록했다. (太陽のかけら)" data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/22-태양의한조각.jpg" data-yes24="https://www.yes24.com/product/goods/90250698" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942422" data-quote="평생 그녀가 도전의 대상으로 삼은 것은 사회나 산이 아니고 '자기 자신'이었다. 동료들의 마음속에서 언제나 태양의 한 조각으로 빛나고 있다." data-tags="다니구치 케이, 황금피켈상, 일본 여성 등반가, 알파인 스타일">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/22-태양의한조각.jpg" alt="태양의 한 조각"><div class="book-hover-info"><div class="book-hover-title">태양의 한 조각</div><div class="book-hover-sub">다니구치 케이의 평전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="카트린 데스티벨" data-author="카트린 데스티벨 (Catherine Destivelle)" data-desc="세계 최고의 전천후 클라이머 카트린 데스티벨의 자서전. 트랑고 타워 초등, 드류 서벽 단독, 아이거 북벽 단독 등 전설적인 등반들과 그 안의 공포와 의지를 담았다." data-year="등반가 시리즈" data-lang="프랑스어 번역" data-img="images/books/23-카트린데스티벨.jpg" data-quote="내 유일한 목표는 다 내려갈 때까지 매달리며 버티는 것이었다. 그것은 대단하고도 꾸준한 의지력을 요구했다." data-tags="카트린 데스티벨, 드류, 아이거, 암벽등반, 여성 등반가, 단독등반">
+        <div class="book-card animate animate-delay-2" data-title="카트린 데스티벨" data-author="카트린 데스티벨 (Catherine Destivelle)" data-desc="세계 최고의 전천후 클라이머 카트린 데스티벨의 자서전. 트랑고 타워 초등, 드류 서벽 단독, 아이거 북벽 단독 등 전설적인 등반들과 그 안의 공포와 의지를 담았다." data-year="등반가 시리즈" data-lang="프랑스어 번역" data-img="images/books/23-카트린데스티벨.jpg" data-yes24="https://www.yes24.com/product/goods/90250728" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942423" data-quote="내 유일한 목표는 다 내려갈 때까지 매달리며 버티는 것이었다. 그것은 대단하고도 꾸준한 의지력을 요구했다." data-tags="카트린 데스티벨, 드류, 아이거, 암벽등반, 여성 등반가, 단독등반">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/23-카트린데스티벨.jpg" alt="카트린 데스티벨"><div class="book-hover-info"><div class="book-hover-title">카트린 데스티벨</div><div class="book-hover-sub">Rock Queen</div></div></div>
@@ -1589,7 +1531,7 @@
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <div class="book-hover-info"><div class="book-hover-title">에베레스트 솔로</div><div class="book-hover-sub">메스너 단독 등정 기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="Art of Freedom" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="폴란드 알피니즘의 전설 보이테크 쿠르티카의 생애와 등반 철학. 힌두쿠시·히말라야·카라코람에서 거벽등반 기록 11회를 세운 천재 알피니스트의 전기. BANFF 수상작." data-year="등반가 시리즈" data-lang="영어 번역" data-img="images/books/24-art-of-freedom.jpg" data-quote="스타일이야말로 등반의 모든 것이며 정상이란 그저 그에 따르는 결과라는 것을 알려준다." data-tags="보이테크 쿠르티카, 폴란드 알피니즘, 카라코람, BANFF 수상작">
+        <div class="book-card animate animate-delay-1" data-title="Art of Freedom" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="폴란드 알피니즘의 전설 보이테크 쿠르티카의 생애와 등반 철학. 힌두쿠시·히말라야·카라코람에서 거벽등반 기록 11회를 세운 천재 알피니스트의 전기. BANFF 수상작." data-year="등반가 시리즈" data-lang="영어 번역" data-img="images/books/24-art-of-freedom.jpg" data-yes24="https://www.yes24.com/product/goods/95076330" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942424" data-quote="스타일이야말로 등반의 모든 것이며 정상이란 그저 그에 따르는 결과라는 것을 알려준다." data-tags="보이테크 쿠르티카, 폴란드 알피니즘, 카라코람, BANFF 수상작">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/24-art-of-freedom.jpg" alt="Art of Freedom"><div class="book-hover-info"><div class="book-hover-title">Art of Freedom</div><div class="book-hover-sub">보이테크 쿠르티카의 전기</div></div></div>
@@ -1599,52 +1541,52 @@
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/25-아득한산들.jpg" alt="아득한 산들"><div class="book-hover-info"><div class="book-hover-title">아득한 산들</div><div class="book-hover-sub">한국 근대 등반사의 기원</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="WINTER 8000" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야 8000m 14좌 동계 초등의 역사. 혹한과 폭풍 속에서 불굴의 의지로 정상에 선 얼음의 전사들. 2021년 세종도서 선정작." data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/26-winter8000.jpg" data-quote="히말라야 동계등반은 '극한의 예술'이다. 살을 에는 추위를 무릅쓰고 극도로 지루한 고립의 세계로 당당하고 용감하게 뛰어드는 사람들." data-tags="히말라야, 동계등반, 8000m 14좌, 폴란드 알피니즘, 세종도서">
+        <div class="book-card animate animate-delay-3" data-title="WINTER 8000" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야 8000m 14좌 동계 초등의 역사. 혹한과 폭풍 속에서 불굴의 의지로 정상에 선 얼음의 전사들. 2021년 세종도서 선정작." data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/26-winter8000.jpg" data-yes24="https://www.yes24.com/product/goods/100008206" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942425" data-quote="히말라야 동계등반은 '극한의 예술'이다. 살을 에는 추위를 무릅쓰고 극도로 지루한 고립의 세계로 당당하고 용감하게 뛰어드는 사람들." data-tags="히말라야, 동계등반, 8000m 14좌, 폴란드 알피니즘, 세종도서">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/26-winter8000.jpg" alt="WINTER 8000"><div class="book-hover-info"><div class="book-hover-title">WINTER 8000</div><div class="book-hover-sub">8000m 동계 초등의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="클라이머를 위한 1001가지 팁" data-author="앤디 커크패트릭 (Andy Kirkpatrick)" data-desc="세계적인 빅월 클라이머 앤디 커크패트릭이 전하는 암벽등반의 모든 것. 엘캡 19회 등반과 30년 경험을 바탕으로 쓴 초보부터 전문가까지의 실전 팁 1001가지. (1001 Climbing Tips)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/27-1001팁.jpg" data-quote="등반은 위험하며 결코 열정이 경험을 대체할 수 없다. 철저하게 자신의 경험에 근거하여 만든 1001가지 실전 클라이밍 팁." data-tags="암벽등반, 빅월, 엘캡, 실전 팁, 등반 기술서">
+        <div class="book-card animate animate-delay-1" data-title="클라이머를 위한 1001가지 팁" data-author="앤디 커크패트릭 (Andy Kirkpatrick)" data-desc="세계적인 빅월 클라이머 앤디 커크패트릭이 전하는 암벽등반의 모든 것. 엘캡 19회 등반과 30년 경험을 바탕으로 쓴 초보부터 전문가까지의 실전 팁 1001가지. (1001 Climbing Tips)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/27-1001팁.jpg" data-yes24="https://www.yes24.com/product/goods/103651573" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942426" data-quote="등반은 위험하며 결코 열정이 경험을 대체할 수 없다. 철저하게 자신의 경험에 근거하여 만든 1001가지 실전 클라이밍 팁." data-tags="암벽등반, 빅월, 엘캡, 실전 팁, 등반 기술서">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/27-1001팁.jpg" alt="클라이머를 위한 1001가지 팁"><div class="book-hover-info"><div class="book-hover-title">클라이머를 위한 1001가지 팁</div><div class="book-hover-sub">1001 Climbing Tips</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="정당화할 수 없는 위험" data-author="사이먼 톰슨 (Simon Thompson)" data-desc="근대등산의 태동부터 현재까지 영국 등산 200년사. 알피니즘을 창시하고 이끈 영국인들의 성취와 동기, 그 빛과 그림자를 집대성했다. (Unjustifiable Risk?)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/28-정당화할수없는위험.jpg" data-quote="1854년 이후 11년 동안 알프스의 주요 봉우리를 거의 다 정복한 영국인들. 그들이 등반이라는 스포츠의 창시자라는 주장에는 정당성이 있다." data-tags="영국 등산사, 알피니즘, 황금기, 마터호른, 200년사">
+        <div class="book-card animate animate-delay-2" data-title="정당화할 수 없는 위험" data-author="사이먼 톰슨 (Simon Thompson)" data-desc="근대등산의 태동부터 현재까지 영국 등산 200년사. 알피니즘을 창시하고 이끈 영국인들의 성취와 동기, 그 빛과 그림자를 집대성했다. (Unjustifiable Risk?)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/28-정당화할수없는위험.jpg" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942427" data-quote="1854년 이후 11년 동안 알프스의 주요 봉우리를 거의 다 정복한 영국인들. 그들이 등반이라는 스포츠의 창시자라는 주장에는 정당성이 있다." data-tags="영국 등산사, 알피니즘, 황금기, 마터호른, 200년사">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/28-정당화할수없는위험.jpg" alt="정당화할 수 없는 위험"><div class="book-hover-info"><div class="book-hover-title">정당화할 수 없는 위험</div><div class="book-hover-sub">영국 등산 200년사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="지옥은 나를 원하지않았다" data-author="코르트코 · 피에트라셰프스키 / 서진석" data-desc="폴란드 얼음의 전사 크지슈토프 비엘리츠키의 전기. 8000m 14좌 완등과 수많은 동계 초등, 죽음과 동료의 상실, 불굴의 의지로 써낸 히말라야 역사의 산증인. 2022년 세종도서 선정." data-year="등반가 시리즈" data-lang="폴란드어 번역" data-img="images/books/29-지옥은나를.jpg" data-quote="지금이 아니면 다음 기회가 없었다. 최후까지 버티던 동료들이 하나둘씩 포기했다. 하지만 비엘리츠키는 나아갔다." data-tags="크지슈토프 비엘리츠키, 8000m 14좌, 동계등반, 폴란드 알피니즘, 세종도서">
+        <div class="book-card animate animate-delay-3" data-title="지옥은 나를 원하지않았다" data-author="코르트코 · 피에트라셰프스키 / 서진석" data-desc="폴란드 얼음의 전사 크지슈토프 비엘리츠키의 전기. 8000m 14좌 완등과 수많은 동계 초등, 죽음과 동료의 상실, 불굴의 의지로 써낸 히말라야 역사의 산증인. 2022년 세종도서 선정." data-year="등반가 시리즈" data-lang="폴란드어 번역" data-img="images/books/29-지옥은나를.jpg" data-yes24="https://www.yes24.com/product/goods/108591087" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942428" data-quote="지금이 아니면 다음 기회가 없었다. 최후까지 버티던 동료들이 하나둘씩 포기했다. 하지만 비엘리츠키는 나아갔다." data-tags="크지슈토프 비엘리츠키, 8000m 14좌, 동계등반, 폴란드 알피니즘, 세종도서">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/29-지옥은나를.jpg" alt="지옥은 나를 원하지않았다"><div class="book-hover-info"><div class="book-hover-title">지옥은 나를 원하지않았다</div><div class="book-hover-sub">폴란드 얼음의 전사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="히말라야 다울라기리 탐사기" data-author="박철암" data-desc="한국 최초의 히말라야 탐사 보고서. 1962년 경희대산악회가 다울라기리 산군을 정찰한 80여 일의 여정을 박철암 대장이 생생하게 기록. 한국 히말라야 원정 60주년 기념판." data-year="등반기 시리즈" data-lang="한국어" data-img="images/books/30-다울라기리.jpg" data-quote="역사적인 대한민국 광복의 날, 8월 15일. 히말라야 원정을 시도하는 일은 한국 역사상 초유의 장거였다." data-tags="다울라기리, 한국 히말라야, 경희대, 한국 등반사, 1962년">
+        <div class="book-card animate animate-delay-1" data-title="히말라야 다울라기리 탐사기" data-author="박철암" data-desc="한국 최초의 히말라야 탐사 보고서. 1962년 경희대산악회가 다울라기리 산군을 정찰한 80여 일의 여정을 박철암 대장이 생생하게 기록. 한국 히말라야 원정 60주년 기념판." data-year="등반기 시리즈" data-lang="한국어" data-img="images/books/30-다울라기리.jpg" data-yes24="https://www.yes24.com/product/goods/112191798" data-kyobo="https://product.kyobobook.co.kr/detail/S000061695898" data-quote="역사적인 대한민국 광복의 날, 8월 15일. 히말라야 원정을 시도하는 일은 한국 역사상 초유의 장거였다." data-tags="다울라기리, 한국 히말라야, 경희대, 한국 등반사, 1962년">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/30-다울라기리.jpg" alt="히말라야 다울라기리 탐사기"><div class="book-hover-info"><div class="book-hover-title">히말라야 다울라기리 탐사기</div><div class="book-hover-sub">한국 최초 히말라야 탐사기</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="버티컬 마인드" data-author="제프 앨리슨 · 돈 맥그래스 / 권아영" data-desc="암벽등반을 위한 심리학적 접근. 뇌과학·심리학 연구를 바탕으로 두려움 극복·집중력 향상·정신-신체 통합 훈련법을 제시한 등반 심리학의 필독서. (Vertical Mind)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/31-버티컬마인드.jpg" data-quote="암벽등반이라는 외부 세계에 신경세포, 근육기억 그리고 스크립트라는 내부 세계를 융합해 인지신경과학적인 등반의 세계로 나아갈 수 있다." data-tags="등반 심리학, 암벽등반, 두려움 극복, 정신 훈련, 스포츠 심리학">
+        <div class="book-card animate animate-delay-2" data-title="버티컬 마인드" data-author="제프 앨리슨 · 돈 맥그래스 / 권아영" data-desc="암벽등반을 위한 심리학적 접근. 뇌과학·심리학 연구를 바탕으로 두려움 극복·집중력 향상·정신-신체 통합 훈련법을 제시한 등반 심리학의 필독서. (Vertical Mind)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/31-버티컬마인드.jpg" data-yes24="https://www.yes24.com/product/goods/113482640" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721233" data-quote="암벽등반이라는 외부 세계에 신경세포, 근육기억 그리고 스크립트라는 내부 세계를 융합해 인지신경과학적인 등반의 세계로 나아갈 수 있다." data-tags="등반 심리학, 암벽등반, 두려움 극복, 정신 훈련, 스포츠 심리학">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/31-버티컬마인드.jpg" alt="버티컬 마인드"><div class="book-hover-info"><div class="book-hover-title">버티컬 마인드</div><div class="book-hover-sub">등반 심리학의 필독서</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="산 그 4차원의 세계" data-author="슈테판 데흐 · 메스너 · 슈파르바서 / 김동수" data-desc="위성사진과 데이터로 재현한 세계 최고의 산 13개. 에베레스트·K2·마터호른·카일라스 등 산의 역사적 등반과 지리·인포그래픽을 방대한 사진과 함께 담은 프리미엄 대형 책. (265×315mm, 240쪽)" data-year="기타 시리즈" data-lang="독일어 번역" data-img="images/books/32-4차원세계.jpg" data-quote="하얀 눈에 덮여 밝게 빛나는 카일라스는 많은 사람들에게 가장 신성한 곳으로 여겨진다. 산은 4차원의 세계다." data-tags="메스너, 에베레스트, K2, 마터호른, 카일라스, 사진집, 대형판">
+        <div class="book-card animate animate-delay-3" data-title="산 그 4차원의 세계" data-author="슈테판 데흐 · 메스너 · 슈파르바서 / 김동수" data-desc="위성사진과 데이터로 재현한 세계 최고의 산 13개. 에베레스트·K2·마터호른·카일라스 등 산의 역사적 등반과 지리·인포그래픽을 방대한 사진과 함께 담은 프리미엄 대형 책. (265×315mm, 240쪽)" data-year="기타 시리즈" data-lang="독일어 번역" data-img="images/books/32-4차원세계.jpg" data-yes24="https://www.yes24.com/product/goods/125459438" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721947" data-quote="하얀 눈에 덮여 밝게 빛나는 카일라스는 많은 사람들에게 가장 신성한 곳으로 여겨진다. 산은 4차원의 세계다." data-tags="메스너, 에베레스트, K2, 마터호른, 카일라스, 사진집, 대형판">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/32-4차원세계.jpg" alt="산 그 4차원의 세계"><div class="book-hover-info"><div class="book-hover-title">산 그 4차원의 세계</div><div class="book-hover-sub">세계 최고의 산 13개</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="산악만화 소설 영화계보" data-author="가모 (GAMO) / 최진희" data-desc="다양한 예술 창작 작품들 속에서 산은 어떻게 그려져 왔을까? 만화·소설·영화라는 장르를 아우른 산악 픽션의 변천사와 계보를 40여 개의 표와 그림으로 체계화한 독보적인 문화사." data-year="기타 시리즈" data-lang="일본어 번역" data-img="images/books/33-산악계보.jpg" data-quote="만화·소설·영화라는 장르를 불문하고 산악 픽션 전체를 조감한 독보적인 문화사. '누가 자일을 끊었나'부터 '산악영화를 둘러싼 인맥 관계도'까지." data-tags="산악만화, 산악소설, 산악영화, 일본 대중문화, 산악 픽션">
+        <div class="book-card animate animate-delay-1" data-title="산악만화 소설 영화계보" data-author="가모 (GAMO) / 최진희" data-desc="다양한 예술 창작 작품들 속에서 산은 어떻게 그려져 왔을까? 만화·소설·영화라는 장르를 아우른 산악 픽션의 변천사와 계보를 40여 개의 표와 그림으로 체계화한 독보적인 문화사." data-year="기타 시리즈" data-lang="일본어 번역" data-img="images/books/33-산악계보.jpg" data-yes24="https://www.yes24.com/product/goods/118323051" data-quote="만화·소설·영화라는 장르를 불문하고 산악 픽션 전체를 조감한 독보적인 문화사. '누가 자일을 끊었나'부터 '산악영화를 둘러싼 인맥 관계도'까지." data-tags="산악만화, 산악소설, 산악영화, 일본 대중문화, 산악 픽션">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/33-산악계보.jpg" alt="산악만화 소설 영화계보"><div class="book-hover-info"><div class="book-hover-title">산악만화 소설 영화계보</div><div class="book-hover-sub">산악 픽션 변천사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="캠프4" data-author="스티브 로퍼 (Steve Roper) / 송은희" data-desc="1960년대 요세미티 캠프4 거주자들의 생생한 회고록. 로열 로빈스·워런 하딩·이본 취나드 등 전설적인 클라이머들이 엘 캐피탄 거벽에서 요세미티 스타일을 만들어간 황금기. (Camp 4)" data-year="등반기 시리즈" data-lang="영어 번역" data-img="images/books/34-캠프4.jpg" data-quote="1875년 하프돔 초등 이후, 1960년대 캠프4의 클라이머들은 볼트 없이, 맨몸으로 세계 최고의 벽에 도전했다. 요세미티가 세계 암벽등반의 중심이 된 이유." data-tags="요세미티, 엘 캐피탄, 하프돔, 캠프4, 빅월, 황금기, 이본 취나드">
+        <div class="book-card animate animate-delay-2" data-title="캠프4" data-author="스티브 로퍼 (Steve Roper) / 송은희" data-desc="1960년대 요세미티 캠프4 거주자들의 생생한 회고록. 로열 로빈스·워런 하딩·이본 취나드 등 전설적인 클라이머들이 엘 캐피탄 거벽에서 요세미티 스타일을 만들어간 황금기. (Camp 4)" data-year="등반기 시리즈" data-lang="영어 번역" data-img="images/books/34-캠프4.jpg" data-yes24="https://www.yes24.com/product/goods/125458378" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721949" data-quote="1875년 하프돔 초등 이후, 1960년대 캠프4의 클라이머들은 볼트 없이, 맨몸으로 세계 최고의 벽에 도전했다. 요세미티가 세계 암벽등반의 중심이 된 이유." data-tags="요세미티, 엘 캐피탄, 하프돔, 캠프4, 빅월, 황금기, 이본 취나드">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/34-캠프4.jpg" alt="캠프4"><div class="book-hover-info"><div class="book-hover-title">캠프4</div><div class="book-hover-sub">요세미티 황금기의 회고록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="재미있는 성공률 30%" data-author="야마노이 야스시 (山野井泰史) / 강승혁" data-desc="세계적인 솔로 클라이머 야마노이 야스시의 반평생 등반 연대기. 피츠로이·가셔브룸 IV봉·마칼루 서벽 단독등반, 수많은 실패와 재기의 기록. 성공률 30%에 도전하는 이유." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/35-성공률30.jpg" data-quote="야마노이를 단련시켰던 것은 많은 승리의 달콤함보다 실패의 쓴맛이었다. 그는 그때마다 구렁텅이에서 몸을 가누고 새로운 목표를 향해 의욕을 북돋아왔다." data-tags="야마노이 야스시, 단독등반, 피츠로이, 가셔브룸, 솔로 클라이밍">
+        <div class="book-card animate animate-delay-3" data-title="재미있는 성공률 30%" data-author="야마노이 야스시 (山野井泰史) / 강승혁" data-desc="세계적인 솔로 클라이머 야마노이 야스시의 반평생 등반 연대기. 피츠로이·가셔브룸 IV봉·마칼루 서벽 단독등반, 수많은 실패와 재기의 기록. 성공률 30%에 도전하는 이유." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/35-성공률30.jpg" data-yes24="https://www.yes24.com/product/goods/125459460" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721951" data-quote="야마노이를 단련시켰던 것은 많은 승리의 달콤함보다 실패의 쓴맛이었다. 그는 그때마다 구렁텅이에서 몸을 가누고 새로운 목표를 향해 의욕을 북돋아왔다." data-tags="야마노이 야스시, 단독등반, 피츠로이, 가셔브룸, 솔로 클라이밍">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/35-성공률30.jpg" alt="재미있는 성공률 30%"><div class="book-hover-info"><div class="book-hover-title">재미있는 성공률 30%</div><div class="book-hover-sub">야마노이 야스시의 등반 연대기</div></div></div>
@@ -1664,12 +1606,12 @@
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/37-게리헤밍.jpg" alt="게리 헤밍"><div class="book-hover-info"><div class="book-hover-title">게리 헤밍</div><div class="book-hover-sub">자유로운 영혼의 클라이머</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="What's Next?" data-author="히라이데 카즈야 (平出和也) / 이승현" data-desc="황금피켈상 3회 수상자 히라이데 카즈야가 직접 들려주는 등반과 삶의 이야기. 미답봉·미답 루트를 향한 끝없는 도전, 다니구치 케이와의 우정, 가족 사랑, 그리고 QR코드로 만나는 등반 영상." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/39-whats-next.jpg" data-quote="육상부를 그만두고 산악부에 들어가기로 했다. 규칙이란 것에서 해방됐다는 안도감. 그것이 나에게 등산이었다." data-tags="히라이데 카즈야, 황금피켈상, 알파인 스타일, 미답봉, 다니구치 케이">
+        <div class="book-card animate animate-delay-1" data-title="What's Next?" data-author="히라이데 카즈야 (平出和也) / 이승현" data-desc="황금피켈상 3회 수상자 히라이데 카즈야가 직접 들려주는 등반과 삶의 이야기. 미답봉·미답 루트를 향한 끝없는 도전, 다니구치 케이와의 우정, 가족 사랑, 그리고 QR코드로 만나는 등반 영상." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/39-whats-next.jpg" data-yes24="https://www.yes24.com/product/goods/139581771" data-quote="육상부를 그만두고 산악부에 들어가기로 했다. 규칙이란 것에서 해방됐다는 안도감. 그것이 나에게 등산이었다." data-tags="히라이데 카즈야, 황금피켈상, 알파인 스타일, 미답봉, 다니구치 케이">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/39-whats-next.jpg" alt="What's Next?"><div class="book-hover-info"><div class="book-hover-title">What's Next?</div><div class="book-hover-sub">황금피켈상 3회 수상자</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="떠오르는 히말라야의 영웅들" data-author="버나데트 맥도널드 (Bernadette McDonald) / 김동수" data-desc="셰르파와 발티 등 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르는 이야기. 서구 등반가의 조력자를 넘어 자신의 이름으로 정상에 선 새로운 세대. (Alpine Rising, 2024)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/40-떠오르는히말라야.jpg" data-quote="셰르파를 넘어 자신의 이름으로. 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르다." data-tags="셰르파, 발티, 히말라야, 버나데트 맥도널드, Alpine Rising">
+        <div class="book-card animate animate-delay-2" data-title="떠오르는 히말라야의 영웅들" data-author="버나데트 맥도널드 (Bernadette McDonald) / 김동수" data-desc="셰르파와 발티 등 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르는 이야기. 서구 등반가의 조력자를 넘어 자신의 이름으로 정상에 선 새로운 세대. (Alpine Rising, 2024)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/40-떠오르는히말라야.jpg" data-yes24="https://www.yes24.com/product/goods/144963348" data-kyobo="https://product.kyobobook.co.kr/detail/S000216257533" data-quote="셰르파를 넘어 자신의 이름으로. 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르다." data-tags="셰르파, 발티, 히말라야, 버나데트 맥도널드, Alpine Rising">
           <div class="book-cover">
             <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
             <img src="images/books/40-떠오르는히말라야.jpg" alt="떠오르는 히말라야의 영웅들"><div class="book-hover-info"><div class="book-hover-title">떠오르는 히말라야의 영웅들</div><div class="book-hover-sub">Alpine Rising</div></div></div>
@@ -1720,7 +1662,6 @@
 
   <!-- 출판사 철학 -->
   <section id="philosophy">
-    <div class="headlamp-glow" id="headlampGlow"></div>
     <div class="inner">
       <div class="section-tag animate">Philosophy</div>
       <h2 class="section-title animate">출판사 철학</h2>
@@ -1760,34 +1701,6 @@
           <div class="about-quote">
             <p>"다른 분야에서는 좋은 책이 많이 나오는데 유독 산서는 찾아보기 힘든 현실이 안타까웠습니다. 산서 읽기 붐을 일으켜 출판사들이 산서 출간에 의욕을 갖게 만드는 환경을 만들고 싶습니다."</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 독자 후기 -->
-  <section id="reviews">
-    <div class="inner">
-      <div class="section-tag animate">Reviews</div>
-      <h2 class="section-title animate">독자 후기</h2>
-      <div class="reviews-grid">
-        <div class="review-card animate animate-delay-1">
-          <div class="review-stars">★★★★★</div>
-          <div class="review-book">폴른 자이언츠</div>
-          <p class="review-text">"히말라야 등반의 역사를 이렇게 깊이 있게 다룬 책이 한국어로 나온 적이 없었다. 읽고 나서 산을 보는 눈이 달라졌다."</p>
-          <div class="review-author">— 김 ○○, 회원 3년차</div>
-        </div>
-        <div class="review-card animate animate-delay-2">
-          <div class="review-stars">★★★★★</div>
-          <div class="review-book">리카르도 캐신</div>
-          <p class="review-text">"단순한 등반 기록이 아니라 한 인간의 이야기다. 산을 왜 오르는지에 대한 답을 이 책에서 찾았다."</p>
-          <div class="review-author">— 이 ○○, 회원 2년차</div>
-        </div>
-        <div class="review-card animate animate-delay-3">
-          <div class="review-stars">★★★★★</div>
-          <div class="review-book">에베레스트 정복</div>
-          <p class="review-text">"오리지널 사진과 기록이 살아있다. 북클럽 가입이 이렇게 잘한 결정이었는지 매달 책이 올 때마다 느낀다."</p>
-          <div class="review-author">— 박 ○○, 회원 1년차</div>
         </div>
       </div>
     </div>
@@ -2289,19 +2202,6 @@
       this.reset();
     });
 
-    // ── 등반 진행률 인디케이터 ──
-    const mountainFill = document.getElementById('mountainFill');
-    const pctLabel = document.getElementById('climbPct');
-    function updateClimb() {
-      const scrollable = document.body.scrollHeight - window.innerHeight;
-      const pct = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
-      mountainFill.style.clipPath = `inset(${(1 - pct) * 100}% 0 0 0)`;
-      pctLabel.textContent = Math.round(pct * 100) + '%';
-    }
-    window.addEventListener('scroll', updateClimb);
-    window.addEventListener('resize', updateClimb);
-    updateClimb();
-
     // ── 카라비너 — 찜하기 ──
     document.querySelectorAll('.carabiner-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -2310,18 +2210,6 @@
       });
     });
 
-    // ── 헤드램프 스포트라이트 ──
-    const philosophySection = document.getElementById('philosophy');
-    const headlampGlow = document.getElementById('headlampGlow');
-    if (philosophySection && headlampGlow) {
-      philosophySection.addEventListener('mousemove', (e) => {
-        const rect = philosophySection.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        headlampGlow.style.setProperty('--mx', x + '%');
-        headlampGlow.style.setProperty('--my', y + '%');
-      });
-    }
 
     // ── 나침반 ──
     const compass = document.querySelector('.compass');
