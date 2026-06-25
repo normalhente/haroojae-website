@@ -119,11 +119,15 @@
     nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
 
     .nav-logo {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--text);
       text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 26px;
+      width: auto;
+      display: block;
     }
 
     .nav-links {
@@ -310,6 +314,7 @@
     }
 
     .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+    .stat-num--text { font-size: 18px; letter-spacing: -0.01em; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -318,6 +323,46 @@
 
     /* ── Books ── */
     #books { background: var(--bg); }
+
+    .books-filter {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .filter-btn .filter-count {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-left: 4px;
+    }
+
+    .book-card.hidden {
+      display: none;
+    }
 
     .books-grid {
       display: grid;
@@ -369,29 +414,6 @@
       opacity: 0.35;
     }
 
-    /* 카라비너 — 찜하기 */
-    .carabiner-btn {
-      position: absolute; top: 10px; left: 10px;
-      width: 20px; height: 26px;
-      background: none; border: none; padding: 0; cursor: pointer;
-      color: rgba(255,255,255,0.9);
-      opacity: 0; transform: translateY(-6px);
-      transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s, color 0.3s;
-      z-index: 2;
-    }
-    .carabiner-btn::before {
-      content: ''; position: absolute; inset: -5px;
-      background: rgba(0,0,0,0.32); border-radius: 50%; z-index: -1;
-    }
-    .book-card:hover .carabiner-btn { opacity: 1; transform: translateY(0); }
-    .carabiner-svg { width: 100%; height: 100%; overflow: visible; }
-    .carabiner-gate {
-      transform-origin: bottom left;
-      transform: rotate(-20deg) translateX(-3px);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .carabiner-btn.saved { color: #fff; }
-    .carabiner-btn.saved .carabiner-gate { transform: rotate(0deg) translateX(0); }
 
     .book-hover-info {
       position: absolute;
@@ -500,11 +522,11 @@
     }
 
     .modal-body {
-      padding: 40px 40px 36px;
+      padding: 44px 44px 40px;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      max-height: 80vh;
+      max-height: 85vh;
     }
 
     .modal-close {
@@ -529,7 +551,7 @@
       letter-spacing: 0.18em;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -543,9 +565,9 @@
     }
 
     .modal-title {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       line-height: 1.3;
       margin-bottom: 8px;
     }
@@ -553,25 +575,72 @@
     .modal-author {
       font-size: 13px;
       color: var(--muted);
+      margin-bottom: 10px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      line-height: 1.65;
+    }
+
+    .modal-awards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .award-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 2px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .award-badge--banff       { background: #1a3a5c; color: #fff; }
+    .award-badge--sejong      { background: #2d5a27; color: #fff; }
+    .award-badge--goldenpick  { background: #7a5a10; color: #fff; }
+    .award-badge--academy     { background: #1a1a2e; color: #FFD700; }
+    .award-badge--noba        { background: #4a1942; color: #fff; }
+
+    .modal-meta {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11.5px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 0;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 22px 0 26px;
+    }
+
+    .modal-desc {
+      font-size: 14.5px;
+      color: #333;
+      line-height: 2.05;
       margin-bottom: 28px;
       font-family: 'Apple SD Gothic Neo', sans-serif;
     }
 
     .modal-quote {
       position: relative;
-      padding: 16px 20px 16px 24px;
-      margin-bottom: 24px;
+      padding: 18px 22px 18px 26px;
+      margin-bottom: 28px;
       border-left: 2px solid var(--gold);
-      background: rgba(200,169,110,0.06);
+      background: rgba(200,169,110,0.05);
     }
 
     .modal-quote::before {
       content: '\201C';
       position: absolute;
-      left: 8px; top: -6px;
+      left: 6px; top: -6px;
       font-size: 56px;
       color: var(--gold);
-      opacity: 0.3;
+      opacity: 0.25;
       line-height: 1;
       font-family: Georgia, serif;
     }
@@ -580,22 +649,34 @@
       font-style: italic;
       font-size: 14px;
       line-height: 1.9;
-      color: var(--text);
+      color: #444;
       margin: 0;
     }
 
-    .modal-desc {
-      font-size: 13.5px;
-      color: #555;
-      line-height: 2;
+    .modal-author-bio {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.85;
+      color: #666;
+      padding: 16px 18px;
+      background: #f9f7f4;
+      border-top: 1px solid var(--border);
       margin-bottom: 24px;
+    }
+
+    .modal-author-bio-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
       font-family: 'Apple SD Gothic Neo', sans-serif;
     }
 
     .modal-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
       margin-bottom: 24px;
     }
 
@@ -612,18 +693,10 @@
 
     .modal-tag-item:hover { border-color: var(--accent); color: var(--accent); }
 
-    .modal-meta {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.05em;
+    .modal-buy-wrap {
+      margin-top: auto;
       padding-top: 20px;
       border-top: 1px solid var(--border);
-      margin-top: auto;
-    }
-
-    .modal-buy-wrap {
-      margin-top: 20px;
     }
 
     .modal-buy-label {
@@ -632,7 +705,7 @@
       letter-spacing: 0.12em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .modal-buy {
@@ -642,7 +715,7 @@
 
     .modal-buy-btn {
       flex: 1;
-      padding: 11px 16px;
+      padding: 13px 16px;
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       letter-spacing: 0.08em;
@@ -658,6 +731,166 @@
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
+    }
+
+    /* ── Editor's Picks ── */
+    #picks { background: var(--bg); padding-bottom: 0; }
+    #picks .inner { padding-bottom: 0; }
+
+    .picks-slider {
+      position: relative;
+      overflow: hidden;
+      height: 460px;
+      margin-top: 40px;
+      background: #0c1410;
+    }
+
+    .picks-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .pick-slide {
+      width: 100%;
+      flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px 0 72px;
+      gap: 64px;
+    }
+
+    .pick-slide-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pick-slide-cover {
+      flex-shrink: 0;
+      width: 186px;
+      height: 280px;
+      position: relative;
+    }
+
+    .pick-slide-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .pick-badge {
+      display: inline-block;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      background: var(--gold);
+      color: #1a1a1a;
+      width: fit-content;
+    }
+
+    .pick-badge--dark  { background: #1a1a2e; color: #FFD700; }
+    .pick-badge--rose  { background: #6b2737; color: #fff; }
+    .pick-badge--earth { background: #4a3728; color: #e8d5b0; }
+    .pick-badge--blue  { background: #2d5a27; color: #fff; }
+
+    .pick-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .pick-author {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.03em;
+    }
+
+    .pick-divider {
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .pick-quote {
+      font-style: italic;
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.82);
+      margin: 0;
+      max-width: 480px;
+    }
+
+    .pick-note {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.8;
+      max-width: 440px;
+    }
+
+    .picks-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.7);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .picks-arrow:hover { background: rgba(255,255,255,0.14); color: #fff; }
+    .picks-prev { left: 20px; }
+    .picks-next { right: 20px; }
+
+    .picks-dots {
+      position: absolute;
+      bottom: 28px;
+      left: 72px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+
+    .picks-dot {
+      width: 20px;
+      height: 2px;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: background 0.3s, width 0.3s;
+    }
+
+    .picks-dot.active { background: var(--gold); width: 36px; }
+
+    @media (max-width: 768px) {
+      .picks-slider { height: auto; min-height: 400px; }
+      .pick-slide { flex-direction: column-reverse; padding: 32px 24px; gap: 28px; justify-content: flex-end; }
+      .pick-slide-cover { width: 120px; height: 180px; align-self: flex-start; }
+      .pick-title { font-size: 22px; }
+      .picks-dots { left: 24px; bottom: 16px; }
+      .picks-prev { left: 8px; }
+      .picks-next { right: 8px; }
     }
 
     /* ── Philosophy ── */
@@ -853,6 +1086,50 @@
     /* ── Membership ── */
     #membership { background: var(--bg); }
 
+    .mem-recent-section {
+      margin-bottom: 44px;
+    }
+
+    .mem-recent-label {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .mem-recent-covers {
+      display: flex;
+      gap: 10px;
+    }
+
+    .mem-recent-covers img {
+      width: 80px;
+      height: 112px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      box-shadow: 2px 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .mem-recent-covers img:hover { transform: translateY(-3px); }
+
+    .mem-guarantee {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .mem-guarantee span {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
     .membership-intro {
       font-size: 15px;
       color: var(--text);
@@ -863,6 +1140,57 @@
     }
 
     .membership-grid { display: flex; justify-content: center; }
+
+    .mem-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .mem-reasons {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding-top: 10px;
+    }
+
+    .mem-reason {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .mem-reason-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      padding-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .mem-reason-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .mem-reason-desc {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .mem-card-wrap { position: relative; }
+
+    @media (max-width: 900px) {
+      .mem-layout { grid-template-columns: 1fr; gap: 48px; }
+    }
 
     .mem-card {
       position: relative;
@@ -1009,8 +1337,18 @@
       align-items: center;
     }
 
-    .footer-logo { font-size: 16px; font-weight: 600; color: var(--bg); margin-bottom: 10px; }
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-logo { margin-bottom: 10px; }
+    .footer-logo img { height: 24px; width: auto; display: block; filter: invert(1); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .footer-contact { display: flex; flex-direction: column; gap: 3px; }
+    .footer-contact a, .footer-contact span {
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact a:hover { color: var(--gold); }
     .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.9; text-align: right; }
     .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
     .compass:hover { opacity: 1; }
@@ -1357,13 +1695,13 @@
 
   <!-- Announcement Banner -->
   <div id="banner">
-    <span>📖 2026 상반기 신간 출간 예정 — <a href="#books">도서 목록 보기</a></span>
+    <span>최신 출간 · 수직의 순례자들 (2026년 5월) — <a href="#books">도서 목록 보기</a></span>
     <button class="banner-close" onclick="closeBanner()">×</button>
   </div>
 
   <!-- Navigation -->
   <nav id="mainNav">
-    <a href="#hero" class="nav-logo">하루재클럽</a>
+    <a href="#hero" class="nav-logo"><img src="images/logo-sm.png" alt="하루재클럽"></a>
     <ul class="nav-links">
       <li><a href="#books" class="nav-link">책 소개
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
@@ -1400,20 +1738,6 @@
       <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
       <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
       <a href="#membership" class="hero-cta">멤버십 알아보기</a>
-      <div class="hero-stat">
-        <div>
-          <div class="stat-num" data-count="42">0</div>
-          <div class="stat-label">출간 도서 (권)</div>
-        </div>
-        <div>
-          <div class="stat-num" data-count="2000">0</div>
-          <div class="stat-label">현재 회원 수 (명)</div>
-        </div>
-        <div>
-          <div class="stat-num" data-count="10">0</div>
-          <div class="stat-label">산서 전문 출판 (년)</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1422,221 +1746,224 @@
     <div class="inner">
       <div class="section-tag animate">Books</div>
       <h2 class="section-title animate">출간 도서</h2>
-      <div class="books-grid">
+      <div class="books-filter animate" id="booksFilter">
+        <button class="filter-btn active" data-filter="all">전체</button>
+        <button class="filter-btn" data-filter="히말라야">히말라야</button>
+        <button class="filter-btn" data-filter="알프스·암벽">알프스·암벽</button>
+        <button class="filter-btn" data-filter="등반사">등반사</button>
+        <button class="filter-btn" data-filter="기술·심리">기술·심리</button>
+        <button class="filter-btn" data-filter="사진·문화">사진·문화</button>
+        <button class="filter-btn" data-filter="한국·일본">한국·일본</button>
+      </div>
+      <div class="books-grid" id="booksGrid">
         <div class="book-card animate animate-delay-1" data-title="세로 토레" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1959년 세로 토레 초등을 둘러싼 반세기의 논쟁. 메스너가 직접 진실을 추적하며 마에스트리의 초등이 거짓임을 증명하는 과정을 담은 책." data-year="등반사① 시리즈 1" data-lang="독일어 번역" data-img="images/books/01-세로토레.jpg" data-yes24="https://www.yes24.com/product/goods/14123181" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602829" data-quote="마에스트리는 진실을 정상에 묻어두었다. 메스너는 반세기 후 그것을 파냈다." data-tags="세로 토레, 파타고니아, 초등 논쟁, 마에스트리">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/01-세로토레.jpg" alt="세로 토레"><div class="book-hover-info"><div class="book-hover-title">세로 토레</div><div class="book-hover-sub">메스너, 수수께끼를 풀다</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="Fallen Giants" data-author="모리스 이서먼·스튜어트 위버" data-desc="히말라야 8000m 14좌를 둘러싼 등반의 역사를 집대성. 19세기부터 21세기까지 전 세계 산악인들의 도전과 좌절, 승리의 기록. 뉴욕 타임스 극찬." data-year="등산사② 시리즈 2" data-lang="영어 번역" data-img="images/books/02-fallen-giants.jpg" data-yes24="https://www.yes24.com/product/goods/23028496" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602830" data-quote="8000미터의 역사는 인간의 야망과 어리석음, 그리고 위대함이 뒤섞인 연대기다." data-tags="히말라야, 8000m 14좌, 에베레스트, K2, 낭가파르밧, 등반사">
+        <div class="book-card animate animate-delay-2" data-title="Fallen Giants" data-author="모리스 이서먼·스튜어트 위버" data-desc="히말라야 8000m 14좌를 둘러싼 등반의 역사를 집대성. 19세기부터 21세기까지 전 세계 산악인들의 도전과 좌절, 승리의 기록. 뉴욕 타임스 극찬." data-year="등산사② 시리즈 2" data-lang="영어 번역" data-img="images/books/02-fallen-giants.jpg" data-yes24="https://www.yes24.com/product/goods/23028496" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602830" data-quote="8000미터의 역사는 인간의 야망과 어리석음, 그리고 위대함이 뒤섞인 연대기다." data-tags="히말라야, 8000m 14좌, 에베레스트, K2, 낭가파르밧, 등반사" data-author-bio="모리스 이서먼은 해밀턴대학의 역사학 교수이며, 스튜워트 위버는 로체스터 대학의 역사학 교수다. 두 사람 모두 열성적인 등산가이기도 하다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/02-fallen-giants.jpg" alt="Fallen Giants"><div class="book-hover-info"><div class="book-hover-title">Fallen Giants</div><div class="book-hover-sub">히말라야 도전의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="에베레스트 정복" data-author="조지 로우·휴 루이스 존스" data-desc="1953년 에베레스트 초등 60주년 기념판. 원정대가 직접 촬영한 사진 163점 수록. 전설적인 초등 당시의 오리지널 사진집." data-year="등반기① 시리즈 1" data-lang="영어 번역" data-img="images/books/03-에베레스트.jpg" data-yes24="https://www.yes24.com/product/goods/23028585" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602831" data-quote="1953년 5월 29일, 두 사람이 지구의 정상에 처음으로 섰다. 163장의 사진이 그 순간을 증언한다." data-tags="에베레스트, 1953년 초등, 에드먼드 힐러리, 텐징 노르가이, 사진집">
+        <div class="book-card animate animate-delay-3" data-title="에베레스트 정복" data-author="조지 로우·휴 루이스 존스" data-desc="1953년 에베레스트 초등 60주년 기념판. 원정대가 직접 촬영한 사진 163점 수록. 전설적인 초등 당시의 오리지널 사진집." data-year="등반기① 시리즈 1" data-lang="영어 번역" data-img="images/books/03-에베레스트.jpg" data-yes24="https://www.yes24.com/product/goods/23028585" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602831" data-quote="1953년 5월 29일, 두 사람이 지구의 정상에 처음으로 섰다. 163장의 사진이 그 순간을 증언한다." data-tags="에베레스트, 1953년 초등, 에드먼드 힐러리, 텐징 노르가이, 사진집, 세종도서" data-author-bio="조지 로우는 뉴질랜드 출신의 등산가이자 사진사이며 영화 제작자다. 1953년 에베레스트 원정대에서 힐러리와 텐징의 정상 등정에 결정적으로 기여했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/03-에베레스트.jpg" alt="에베레스트 정복"><div class="book-hover-info"><div class="book-hover-title">에베레스트 정복</div><div class="book-hover-sub">초등 당시의 오리지널 사진집</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="무상의 정복자" data-author="리오넬 테레이 (Lionel Terray)" data-desc="위대한 등반가 리오넬 테레이의 자서전. 알프스에서 히말라야까지, 20세기 최고의 등반가 중 한 명이 살아온 등반 인생의 기록. (Les Conquérants de l'Inutile)" data-year="등반가① 시리즈 1" data-lang="프랑스어 번역" data-img="images/books/04-무상의정복자.jpg" data-yes24="https://www.yes24.com/product/goods/24930847" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602832" data-quote="우리는 아무짝에도 쓸모없는 것들의 정복자다 — 그리고 그것이 삶의 의미다." data-tags="알프스, 안나푸르나, 마칼루, 히말라야, 자서전, 테레이">
+        <div class="book-card animate animate-delay-1" data-title="무상의 정복자" data-author="리오넬 테레이 (Lionel Terray)" data-desc="위대한 등반가 리오넬 테레이의 자서전. 알프스에서 히말라야까지, 20세기 최고의 등반가 중 한 명이 살아온 등반 인생의 기록. (Les Conquérants de l'Inutile)" data-year="등반가① 시리즈 1" data-lang="프랑스어 번역" data-img="images/books/04-무상의정복자.jpg" data-yes24="https://www.yes24.com/product/goods/24930847" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602832" data-quote="우리는 아무짝에도 쓸모없는 것들의 정복자다 — 그리고 그것이 삶의 의미다." data-tags="알프스, 안나푸르나, 마칼루, 히말라야, 자서전, 테레이" data-author-bio="리오넬 테레이(1921~1965)는 프랑스 등산 역사의 한 페이지를 장식한 위대한 등반가다. 알프스·안나푸르나·알래스카·안데스·파타고니아·마칼루 등 전 세계의 산을 올랐다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/04-무상의정복자.jpg" alt="무상의 정복자"><div class="book-hover-info"><div class="book-hover-title">무상의 정복자</div><div class="book-hover-sub">리오넬 테레이 자서전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="꽃의 계곡" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)" data-year="탐구기⑤ 시리즈 2" data-lang="영어 번역" data-img="images/books/05-꽃의계곡.jpg" data-yes24="https://www.yes24.com/product/goods/29189187" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602833" data-quote="히말라야에서 나는 꽃을 발견했다. 죽음보다 아름다운 것들이 그 절벽에 피어 있었다." data-tags="난다데비, 히말라야, 식물 탐사, 자연, 영국 등반사">
+        <div class="book-card animate animate-delay-2" data-title="꽃의 계곡" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)" data-year="탐구기⑤ 시리즈 2" data-lang="영어 번역" data-img="images/books/05-꽃의계곡.jpg" data-yes24="https://www.yes24.com/product/goods/29189187" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602833" data-quote="히말라야에서 나는 꽃을 발견했다. 죽음보다 아름다운 것들이 그 절벽에 피어 있었다." data-tags="난다데비, 히말라야, 식물 탐사, 자연, 영국 등반사" data-author-bio="프랭크 스마이드(1900~1949)는 초창기 히말라야 고산등반 발전에 중심적 역할을 했다. 등산 관련 책과 사진집을 27편 남긴 영국의 작가·탐험가·강사다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/05-꽃의계곡.jpg" alt="꽃의 계곡"><div class="book-hover-info"><div class="book-hover-title">꽃의 계곡</div><div class="book-hover-sub">난다데비 산군의 식물 탐사 기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="나의 인생 나의 철학" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="세기의 철인 메스너 인생론. 8000m 14좌 전봉 무산소 완등이라는 전인미답의 기록을 세운 메스너가 자신의 삶과 철학을 이야기한다. (ÜBER LEBEN)" data-year="등반가⑤ 시리즈 2" data-lang="독일어 번역" data-img="images/books/06-나의인생.jpg" data-yes24="https://www.yes24.com/product/goods/32492065" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602835" data-quote="나는 살기 위해 산에 오른 것이 아니다. 산을 통해 살아가는 법을 배웠다." data-tags="8000m 14좌, 무산소 등반, 에베레스트, K2, 메스너, 철학, 자서전">
+        <div class="book-card animate animate-delay-3" data-title="나의 인생 나의 철학" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="세기의 철인 메스너 인생론. 8000m 14좌 전봉 무산소 완등이라는 전인미답의 기록을 세운 메스너가 자신의 삶과 철학을 이야기한다. (ÜBER LEBEN)" data-year="등반가⑤ 시리즈 2" data-lang="독일어 번역" data-img="images/books/06-나의인생.jpg" data-yes24="https://www.yes24.com/product/goods/32492065" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602835" data-quote="나는 살기 위해 산에 오른 것이 아니다. 산을 통해 살아가는 법을 배웠다." data-tags="8000m 14좌, 무산소 등반, 에베레스트, K2, 메스너, 철학, 자서전" data-author-bio="라인홀드 메스너는 1944년생으로, 히말라야 8천 미터급 14좌를 역사상 최초로 무산소 완등했다. 그린란드·남극대륙을 횡단하고, 메스너 산악박물관(MMM)과 저술을 통해 등산 문화를 이어가고 있다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/06-나의인생.jpg" alt="나의 인생 나의 철학"><div class="book-hover-info"><div class="book-hover-title">나의 인생 나의 철학</div><div class="book-hover-sub">메스너 인생론</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg" data-yes24="https://www.yes24.com/product/goods/32494985" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602834" data-quote="그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다." data-tags="히말라야, 카트만두, 등반 기록, 역사 아카이브, 여성">
+        <div class="book-card animate animate-delay-1" data-title="엘리자베스 홀리" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야의 영원한 등반 기록가. 반세기 넘게 히말라야 원정대의 기록을 남긴 엘리자베스 홀리의 삶. (Keeper of the Mountains)" data-year="등반가③ 시리즈 3" data-lang="영어 번역" data-img="images/books/07-엘리자베스홀리.jpg" data-yes24="https://www.yes24.com/product/goods/32494985" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602834" data-quote="그녀는 단 한 번도 정상에 서지 않았다. 하지만 누구보다 히말라야를 알고 있었다." data-tags="히말라야, 카트만두, 등반 기록, 역사 아카이브, 여성" data-author-bio="버나데트 맥도널드는 20년간 캐나다 밴프 센터에서 밴프 국제 산악영화제를 이끈 세계 산악계의 유명 인사다. 10권의 산악도서를 저술하며 국제적인 산악문학상 다수를 수상했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"><div class="book-hover-info"><div class="book-hover-title">엘리자베스 홀리</div><div class="book-hover-sub">히말라야의 영원한 등반 기록가</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="Freedom Climbers" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="자유를 찾아 등반에 나서는 폴란드 산악인들의 놀라운 여정. 공산주의 체제 하에서 히말라야 8000m를 정복한 폴란드 산악인들의 이야기." data-year="등반사③ 시리즈 3" data-lang="영어 번역" data-img="images/books/08-freedom-climbers.jpg" data-yes24="https://www.yes24.com/product/goods/36448383" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602836" data-quote="철의 장막 뒤에서, 그들은 자유를 8000미터 위에서 찾았다." data-tags="폴란드, 8000m, K2, 낭가파르밧, 동계 등반, 공산주의">
+        <div class="book-card animate animate-delay-2" data-title="Freedom Climbers" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="자유를 찾아 등반에 나서는 폴란드 산악인들의 놀라운 여정. 공산주의 체제 하에서 히말라야 8000m를 정복한 폴란드 산악인들의 이야기." data-year="등반사③ 시리즈 3" data-lang="영어 번역" data-img="images/books/08-freedom-climbers.jpg" data-yes24="https://www.yes24.com/product/goods/36448383" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602836" data-quote="철의 장막 뒤에서, 그들은 자유를 8000미터 위에서 찾았다." data-tags="폴란드, 8000m, K2, 낭가파르밧, 동계 등반, 공산주의" data-author-bio="버나데트 맥도널드는 밴프 국제 산악영화제를 이끌어온 산악계의 유명 인사이며 산악도서 작가다. 보드맨-태스커 상(영국), 밴프 그랑프리(캐나다), 미국 알파인 클럽 산악문학상 등을 수상했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/08-freedom-climbers.jpg" alt="Freedom Climbers"><div class="book-hover-info"><div class="book-hover-title">Freedom Climbers</div><div class="book-hover-sub">폴란드 산악인들의 자유를 향한 등반</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="리카르도 캐신" data-author="리카르도 캐신 (Riccardo Cassin)" data-desc="등반의 역사를 새로 쓴 리카르도 캐신의 등반 50년. 워커 스퍼, 드류 필라 등 전설적인 루트를 개척한 20세기 최고 알피니스트의 자서전." data-year="등반가① 시리즈 2" data-lang="이탈리아어 번역" data-img="images/books/09-리카르도캐신.jpg" data-yes24="https://www.yes24.com/product/goods/44135828" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602837" data-quote="루트를 개척한다는 것은 산과 대화하는 것이다. 나는 50년 동안 그 대화를 멈추지 않았다." data-tags="알프스, 워커 스퍼, 드류 필라, 돌로미테, 개척 등반, 자서전">
+        <div class="book-card animate animate-delay-3" data-title="리카르도 캐신" data-author="리카르도 캐신 (Riccardo Cassin)" data-desc="등반의 역사를 새로 쓴 리카르도 캐신의 등반 50년. 워커 스퍼, 드류 필라 등 전설적인 루트를 개척한 20세기 최고 알피니스트의 자서전." data-year="등반가① 시리즈 2" data-lang="이탈리아어 번역" data-img="images/books/09-리카르도캐신.jpg" data-yes24="https://www.yes24.com/product/goods/44135828" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602837" data-quote="루트를 개척한다는 것은 산과 대화하는 것이다. 나는 50년 동안 그 대화를 멈추지 않았다." data-tags="알프스, 워커 스퍼, 드류 필라, 돌로미테, 개척 등반, 자서전" data-author-bio="리카르도 캐신(1909~2009)은 세계에서 가장 위대한 산악인 중 한 명이다. 워커 스퍼, 드류 필라 등 알프스 최난 루트를 초등하며 전설적인 등반 경력을 100세까지 이어갔다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/09-리카르도캐신.jpg" alt="리카르도 캐신"><div class="book-hover-info"><div class="book-hover-title">리카르도 캐신</div><div class="book-hover-sub">등반 50년</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="CAMP SiX" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="에베레스트 원정기의 고전. 1933년 에베레스트 원정의 생생한 기록. 프랭크 스마이드가 기록한 당시의 설산과 도전의 이야기." data-year="등반기③ 시리즈 3" data-lang="영어 번역" data-img="images/books/10-캠프식스.jpg" data-yes24="https://www.yes24.com/product/goods/53587607" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602838" data-quote="캠프 6에서 바라본 세계는 더 이상 인간의 것이 아니었다. 오직 산만이 존재했다." data-tags="에베레스트, 1933년 원정, 노스콜, 영국 등반사, 고소 등반">
+        <div class="book-card animate animate-delay-1" data-title="CAMP SiX" data-author="프랭크 스마이드 (Frank S. Smythe)" data-desc="에베레스트 원정기의 고전. 1933년 에베레스트 원정의 생생한 기록. 프랭크 스마이드가 기록한 당시의 설산과 도전의 이야기." data-year="등반기③ 시리즈 3" data-lang="영어 번역" data-img="images/books/10-캠프식스.jpg" data-yes24="https://www.yes24.com/product/goods/53587607" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602838" data-quote="캠프 6에서 바라본 세계는 더 이상 인간의 것이 아니었다. 오직 산만이 존재했다." data-tags="에베레스트, 1933년 원정, 노스콜, 영국 등반사, 고소 등반" data-author-bio="프랭크 스마이드(1900~1949)는 초창기 히말라야 고산등반 발전에 중심적 역할을 했다. 1931년 에릭 십턴과 함께 카메트(7,756m)를 초등하고, 1933년·1936년·1938년 에베레스트 원정에 연속 참가했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/10-캠프식스.jpg" alt="CAMP SiX"><div class="book-hover-info"><div class="book-hover-title">CAMP SiX</div><div class="book-hover-sub">에베레스트 원정기의 고전</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="하루를 살아도 호랑이처럼" data-author="존 포터 (John Porter)" data-desc="알렉스 매킨타이어와 경량·속공등반의 탄생. BANFF 산악영화제 그랑프리 수상. 전설적인 알피니스트 알렉스 매킨타이어의 짧고 강렬한 삶. (One Day as a Tiger)" data-year="등반가⑤ 시리즈 5" data-lang="영어 번역" data-img="images/books/11-호랑이처럼.jpg" data-yes24="https://www.yes24.com/product/goods/57736099" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973898" data-quote="하루를 살아도 호랑이처럼. 알렉스는 그렇게 살았고, 27세에 그렇게 떠났다." data-tags="알프스, 히말라야, 낭가파르밧, 경량 등반, 알렉스 매킨타이어, BANFF 수상">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/11-호랑이처럼.jpg" alt="하루를 살아도 호랑이처럼"><div class="book-hover-info"><div class="book-hover-title">하루를 살아도 호랑이처럼</div><div class="book-hover-sub">알렉스 매킨타이어의 삶</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="중국 등산 운동사" data-author="장채진 (张彩珍)" data-desc="중국 근현대 산악 운동의 역사를 체계적으로 정리한 책. 중국 산악인들의 히말라야 도전과 자국 산악 문화의 발전 과정을 담았다." data-year="등반사 시리즈" data-lang="중국어 번역" data-img="images/books/12-중국등산사.jpg" data-yes24="https://www.yes24.com/product/goods/59478465" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973900" data-quote="중국의 산은 중국인의 발로 올랐다. 그 기록은 세계 등반사의 한 장이다." data-tags="중국, 티베트, 에베레스트 북벽, 무스타그 아타, 등반사">
+        <div class="book-card animate animate-delay-3" data-title="중국 등산 운동사" data-author="장채진 (张彩珍)" data-desc="중국 근현대 산악 운동의 역사를 체계적으로 정리한 책. 중국 산악인들의 히말라야 도전과 자국 산악 문화의 발전 과정을 담았다." data-year="등반사 시리즈" data-lang="중국어 번역" data-img="images/books/12-중국등산사.jpg" data-yes24="https://www.yes24.com/product/goods/59478465" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973900" data-quote="중국의 산은 중국인의 발로 올랐다. 그 기록은 세계 등반사의 한 장이다." data-tags="중국, 티베트, 에베레스트 북벽, 무스타그 아타, 등반사" data-author-bio="장채진이 편집장을 맡은 공편 저작으로, 스잔춘·린슈잉 등 중국 산악계 전문가들이 참여해 중국 등산 운동의 역사를 집대성했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/12-중국등산사.jpg" alt="중국 등산 운동사"><div class="book-hover-info"><div class="book-hover-title">중국 등산 운동사</div><div class="book-hover-sub">중국 산악 운동의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="일본 여성 등산사" data-author="사카쿠라 토키코·우메노 요시코" data-desc="메이지 시대부터 현대까지, 일본 여성 산악인들이 걸어온 길을 기록한 책. 여성과 산악 문화의 교차점을 조명한다." data-year="등산사 시리즈" data-lang="일본어 번역" data-img="images/books/13-일본여성등산사.jpg" data-yes24="https://www.yes24.com/product/goods/59474214" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973899" data-quote="시대가 막아도 산은 막지 않았다. 그들은 묵묵히, 그리고 끝내 정상에 올랐다." data-tags="일본, 여성 등반, 알프스, 히말라야, 근대 등반사">
+        <div class="book-card animate animate-delay-1" data-title="일본 여성 등산사" data-author="사카쿠라 토키코·우메노 요시코" data-desc="메이지 시대부터 현대까지, 일본 여성 산악인들이 걸어온 길을 기록한 책. 여성과 산악 문화의 교차점을 조명한다." data-year="등산사 시리즈" data-lang="일본어 번역" data-img="images/books/13-일본여성등산사.jpg" data-yes24="https://www.yes24.com/product/goods/59474214" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973899" data-quote="시대가 막아도 산은 막지 않았다. 그들은 묵묵히, 그리고 끝내 정상에 올랐다." data-tags="일본, 여성 등반, 알프스, 히말라야, 근대 등반사" data-author-bio="사카쿠라 도키코(1910~)는 에델바이스 클럽 회장으로 일본 여성 산악문화를 이끌었다. 우메노 도시코 등 여러 저자가 공동으로 일본 여성 등산의 역사를 집필했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/13-일본여성등산사.jpg" alt="일본 여성 등산사"><div class="book-hover-info"><div class="book-hover-title">일본 여성 등산사</div><div class="book-hover-sub">여성 산악인의 기록</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="산책여행 (山册旅行)" data-author="하루재 클럽" data-desc="사람·역사·이야기를 따라 걷고 사유하고 성찰하는 알피니즘 여행. 산을 오르는 것을 넘어 산과 함께한 인간의 역사를 탐구한다." data-year="하루재클럽 시리즈" data-lang="한국어" data-img="images/books/14-산책여행.jpg" data-yes24="https://www.yes24.com/product/goods/61297281" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973901" data-quote="산을 오르는 것이 아니라 산을 읽는 여행이다. 발이 아닌 눈으로, 몸이 아닌 마음으로." data-tags="알피니즘, 산악 문화, 역사 에세이, 하루재 클럽, 한국">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/14-산책여행.jpg" alt="산책여행"><div class="book-hover-info"><div class="book-hover-title">산책여행</div><div class="book-hover-sub">알피니즘 인문 여행</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="하늘에서 추락하다" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 메스너가 재조명한다. (Absturz des Himmels)" data-year="등반기④ 시리즈 4" data-lang="독일어 번역" data-img="images/books/15-하늘에서추락하다.jpg" data-yes24="https://www.yes24.com/product/goods/62495562" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973903" data-quote="1865년 7월 14일, 정상의 환희는 불과 몇 분 후 비극으로 바뀌었다." data-tags="마터호른, 알프스, 1865년 초등, 에드워드 윔퍼, 비극">
+        <div class="book-card animate animate-delay-3" data-title="하늘에서 추락하다" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="마터호른 초등의 비극. 1865년 에드워드 윔퍼의 마터호른 초등 후 하강 중 일어난 비극적 사고를 메스너가 재조명한다. (Absturz des Himmels)" data-year="등반기④ 시리즈 4" data-lang="독일어 번역" data-img="images/books/15-하늘에서추락하다.jpg" data-yes24="https://www.yes24.com/product/goods/62495562" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973903" data-quote="1865년 7월 14일, 정상의 환희는 불과 몇 분 후 비극으로 바뀌었다." data-tags="마터호른, 알프스, 1865년 초등, 에드워드 윔퍼, 비극" data-author-bio="라인홀드 메스너(1944~)는 세계적인 산악인이자 모험가다. 8천 미터급 14좌를 역사상 최초로 무산소 완등하며 현대 등반의 기준을 새로 세웠다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/15-하늘에서추락하다.jpg" alt="하늘에서 추락하다"><div class="book-hover-info"><div class="book-hover-title">하늘에서 추락하다</div><div class="book-hover-sub">마터호른 초등의 비극</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="마터호른의 그림자" data-author="이언 스미스 (Ian Smith)" data-desc="에드워드 윔퍼의 일생. 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다. (Shadow of the Matterhorn)" data-year="등반가⑦ 시리즈 9" data-lang="영어 번역" data-img="images/books/16-마터호른.jpg" data-yes24="https://www.yes24.com/product/goods/62495549" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973902" data-quote="윔퍼는 마터호른을 정복했다. 그러나 마터호른의 그림자는 그를 평생 따라다녔다." data-tags="마터호른, 에드워드 윔퍼, 알프스, 19세기, 전기, 황금시대">
+        <div class="book-card animate animate-delay-1" data-title="마터호른의 그림자" data-author="이언 스미스 (Ian Smith)" data-desc="에드워드 윔퍼의 일생. 마터호른 초등으로 영원히 기억될 에드워드 윔퍼의 파란만장한 삶을 추적한다. (Shadow of the Matterhorn)" data-year="등반가⑦ 시리즈 9" data-lang="영어 번역" data-img="images/books/16-마터호른.jpg" data-yes24="https://www.yes24.com/product/goods/62495549" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973902" data-quote="윔퍼는 마터호른을 정복했다. 그러나 마터호른의 그림자는 그를 평생 따라다녔다." data-tags="마터호른, 에드워드 윔퍼, 알프스, 19세기, 전기, 황금시대" data-author-bio="이언 스미스는 케임브리지대학교에서 미술사를 전공한 사서이자 영국산악회 회원이다. 에드워드 윔퍼가 초등한 봉우리들을 직접 올랐으며, 윔퍼의 초기 일기를 편집 출간했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/16-마터호른.jpg" alt="마터호른의 그림자"><div class="book-hover-info"><div class="book-hover-title">마터호른의 그림자</div><div class="book-hover-sub">에드워드 윔퍼의 일생</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="ASCENT — 크리스 보닝턴 자서전" data-author="크리스 보닝턴 (Chris Bonington)" data-desc="알피니즘의 살아 있는 전설. 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반 역사를 이끈 크리스 보닝턴의 자서전." data-year="등반가② 시리즈 7" data-lang="영어 번역" data-img="images/books/17-ascent.jpg" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973904" data-quote="불가능한 루트를 가능으로 만드는 것, 그것이 내 평생의 사명이었다." data-tags="에베레스트, 안나푸르나, K2, 영국 등반사, 남벽, 자서전">
+        <div class="book-card animate animate-delay-2" data-title="ASCENT — 크리스 보닝턴 자서전" data-author="크리스 보닝턴 (Chris Bonington)" data-desc="알피니즘의 살아 있는 전설. 안나푸르나 남벽(1970), 에베레스트 남서벽(1975) 등 수많은 등반 역사를 이끈 크리스 보닝턴의 자서전." data-year="등반가② 시리즈 7" data-lang="영어 번역" data-img="images/books/17-ascent.jpg" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973904" data-quote="불가능한 루트를 가능으로 만드는 것, 그것이 내 평생의 사명이었다." data-tags="에베레스트, 안나푸르나, K2, 영국 등반사, 남벽, 자서전" data-author-bio="크리스 보닝턴은 1962년 영국인 최초로 아이거 북벽을 오른 후 히말라야로 눈을 돌려 안나푸르나 남벽(1970)과 에베레스트 남서벽(1975) 원정을 성공적으로 이끌었다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/17-ascent.jpg" alt="ASCENT"><div class="book-hover-info"><div class="book-hover-title">ASCENT</div><div class="book-hover-sub">크리스 보닝턴 자서전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="THE TOWER — 더 타워" data-author="켈리 코르데스 (Kelly Cordes)" data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. BANFF 산악영화제 및 NOBA 2015 수상. 파타고니아 최난봉에 얽힌 반세기의 논쟁을 파헤친다." data-year="등반가② 시리즈 6" data-lang="영어 번역" data-img="images/books/18-the-tower.jpg" data-yes24="https://www.yes24.com/product/goods/69763219" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973905" data-quote="세로 토레는 등반의 문제가 아니었다. 그것은 진실과 자존심의 문제였다." data-tags="세로 토레, 파타고니아, 체사레 마에스트리, 논쟁, BANFF 수상, NOBA 2015">
+        <div class="book-card animate animate-delay-3" data-title="THE TOWER — 더 타워" data-author="켈리 코르데스 (Kelly Cordes)" data-desc="세로 토레 초등을 둘러싼 논란과 동반기록. BANFF 산악영화제 및 NOBA 2015 수상. 파타고니아 최난봉에 얽힌 반세기의 논쟁을 파헤친다." data-year="등반가② 시리즈 6" data-lang="영어 번역" data-img="images/books/18-the-tower.jpg" data-yes24="https://www.yes24.com/product/goods/69763219" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973905" data-quote="세로 토레는 등반의 문제가 아니었다. 그것은 진실과 자존심의 문제였다." data-tags="세로 토레, 파타고니아, 체사레 마에스트리, 논쟁, BANFF 수상, NOBA 2015" data-author-bio="켈리 코르데스는 미국 콜로라도주 에스테스 파크에 사는 클라이머이자 작가다. 2000~2012년 아메리칸 알파인 저널 편집자를 맡았으며, 파타고니아 첨봉들을 오른 경험을 바탕으로 집필했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/18-the-tower.jpg" alt="THE TOWER"><div class="book-hover-info"><div class="book-hover-title">THE TOWER</div><div class="book-hover-sub">세로 토레의 논란과 동반기록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="프리솔로 (FREE SOLO)" data-author="알렉스 호놀드 & 데이비드 로버츠" data-desc="요세미티 엘 캐피탄 900미터를 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작." data-year="등반가⑤ 시리즈 8" data-lang="영어 번역" data-img="images/books/19-free-solo.jpg" data-yes24="https://www.yes24.com/product/goods/75457706" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973906" data-quote="900미터 화강암 벽, 로프 없이. 그 순간 두려움과 집중은 하나가 된다." data-tags="엘 캐피탄, 요세미티, 프리솔로, 아카데미상, 알렉스 호놀드, 암벽등반">
+        <div class="book-card animate animate-delay-1" data-title="프리솔로 (FREE SOLO)" data-author="알렉스 호놀드 & 데이비드 로버츠" data-desc="요세미티 엘 캐피탄 900미터를 로프 없이 단독 등반한 알렉스 호놀드의 이야기. 2019년 아카데미 다큐멘터리상 수상작의 원작." data-year="등반가⑤ 시리즈 8" data-lang="영어 번역" data-img="images/books/19-free-solo.jpg" data-yes24="https://www.yes24.com/product/goods/75457706" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973906" data-quote="900미터 화강암 벽, 로프 없이. 그 순간 두려움과 집중은 하나가 된다." data-tags="엘 캐피탄, 요세미티, 프리솔로, 아카데미상, 알렉스 호놀드, 암벽등반" data-author-bio="알렉스 호놀드는 거벽 프리솔로 등반으로 세계적으로 알려진 미국 암벽등반가다. 요세미티 엘 캐피탄 900m를 로프 없이 단독 등반해 세계적인 화제를 모았다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/19-free-solo.jpg" alt="프리솔로"><div class="book-hover-info"><div class="book-hover-title">프리솔로</div><div class="book-hover-sub">알렉스 호놀드의 엘 캐피탄</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="산의 비밀" data-author="쿠르트 딤베르거 (Kurt Diemberger)" data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기." data-year="등반가② 시리즈 5" data-lang="독일어 번역" data-img="images/books/20-산의비밀.jpg" data-yes24="https://www.yes24.com/product/goods/78567815" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973907" data-quote="카메라 뷰파인더 너머, 나는 산의 영혼을 보았다. 그것은 말로 담을 수 없는 것이었다." data-tags="브로드피크, 다울라기리, K2, 고산 촬영, 8000m 초등, 2020년 세종도서">
+        <div class="book-card animate animate-delay-2" data-title="산의 비밀" data-author="쿠르트 딤베르거 (Kurt Diemberger)" data-desc="8000미터의 카메라맨 쿠르트 딤베르거와 알피니즘. 브로드피크와 다울라기리 초등에 참여한 전설적 산악인이자 고산 촬영의 대가가 들려주는 산의 이야기." data-year="등반가② 시리즈 5" data-lang="독일어 번역" data-img="images/books/20-산의비밀.jpg" data-yes24="https://www.yes24.com/product/goods/78567815" data-kyobo="https://product.kyobobook.co.kr/detail/S000001973907" data-quote="카메라 뷰파인더 너머, 나는 산의 영혼을 보았다. 그것은 말로 담을 수 없는 것이었다." data-tags="브로드피크, 다울라기리, K2, 고산 촬영, 8000m 초등, 2020년 세종도서" data-author-bio="쿠르트 딤베르거(1932~)는 현존하는 산악인 중 8,000m 봉 2개를 초등한 유일한 인물이다. 1957년 브로드피크, 1960년 다울라기리를 초등했으며 고산 촬영의 대가로도 알려져 있다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/20-산의비밀.jpg" alt="산의 비밀"><div class="book-hover-info"><div class="book-hover-title">산의 비밀</div><div class="book-hover-sub">8000미터 카메라맨의 알피니즘</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="산의 전사들" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="슬로베니아 알피니즘의 강력한 전통과 등반문화. 유고슬라비아·슬로베니아 산악인들이 히말라야에서 이룩한 놀라운 성취를 기록한 등반사. (Alpine Warriors)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/21-산의전사들.jpg" data-yes24="https://www.yes24.com/product/goods/89327725" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942421" data-quote="가장 극적이며 미래지향적인 등반 중 일부가 서구에 잘 알려지지 않은 이 무지막지한 알피니스트들에 의해 이룩됐다." data-tags="슬로베니아, 알피니즘, 히말라야, 유고슬라비아, 등반사">
+        <div class="book-card animate animate-delay-3" data-title="산의 전사들" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="슬로베니아 알피니즘의 강력한 전통과 등반문화. 유고슬라비아·슬로베니아 산악인들이 히말라야에서 이룩한 놀라운 성취를 기록한 등반사. (Alpine Warriors)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/21-산의전사들.jpg" data-yes24="https://www.yes24.com/product/goods/89327725" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942421" data-quote="가장 극적이며 미래지향적인 등반 중 일부가 서구에 잘 알려지지 않은 이 무지막지한 알피니스트들에 의해 이룩됐다." data-tags="슬로베니아, 알피니즘, 히말라야, 유고슬라비아, 등반사" data-author-bio="버나데트 맥도널드는 Freedom Climbers 등 10권의 산악서적을 저술한 작가다. 밴프 그랑프리·보드맨-태스커 상·미국산악회 산악문화상 등 6개의 국제 산악문학상을 받았다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/21-산의전사들.jpg" alt="산의 전사들"><div class="book-hover-info"><div class="book-hover-title">산의 전사들</div><div class="book-hover-sub">Alpine Warriors</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="태양의 한 조각" data-author="오이시 아키히로 (大石明弘)" data-desc="일본인 최초·여성 최초 황금피켈상을 받은 다니구치 케이의 평전. 43세에 생을 마감한 전설적인 클라이머의 삶과 등반을 후배 산악인 오이시 아키히로가 기록했다. (太陽のかけら)" data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/22-태양의한조각.jpg" data-yes24="https://www.yes24.com/product/goods/90250698" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942422" data-quote="평생 그녀가 도전의 대상으로 삼은 것은 사회나 산이 아니고 '자기 자신'이었다. 동료들의 마음속에서 언제나 태양의 한 조각으로 빛나고 있다." data-tags="다니구치 케이, 황금피켈상, 일본 여성 등반가, 알파인 스타일">
+        <div class="book-card animate animate-delay-1" data-title="태양의 한 조각" data-author="오이시 아키히로 (大石明弘)" data-desc="일본인 최초·여성 최초 황금피켈상을 받은 다니구치 케이의 평전. 43세에 생을 마감한 전설적인 클라이머의 삶과 등반을 후배 산악인 오이시 아키히로가 기록했다. (太陽のかけら)" data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/22-태양의한조각.jpg" data-yes24="https://www.yes24.com/product/goods/90250698" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942422" data-quote="평생 그녀가 도전의 대상으로 삼은 것은 사회나 산이 아니고 '자기 자신'이었다. 동료들의 마음속에서 언제나 태양의 한 조각으로 빛나고 있다." data-tags="다니구치 케이, 황금피켈상, 일본 여성 등반가, 알파인 스타일" data-author-bio="오이시 아키히로(1979~)는 21세에 초오유(8,188m)를 등정한 후 산과계곡 편집부를 거쳐 등산 잡지에 다수의 글을 써온 산악 작가다. 다니구치 케이의 가장 가까운 동료 클라이머였다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/22-태양의한조각.jpg" alt="태양의 한 조각"><div class="book-hover-info"><div class="book-hover-title">태양의 한 조각</div><div class="book-hover-sub">다니구치 케이의 평전</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="카트린 데스티벨" data-author="카트린 데스티벨 (Catherine Destivelle)" data-desc="세계 최고의 전천후 클라이머 카트린 데스티벨의 자서전. 트랑고 타워 초등, 드류 서벽 단독, 아이거 북벽 단독 등 전설적인 등반들과 그 안의 공포와 의지를 담았다." data-year="등반가 시리즈" data-lang="프랑스어 번역" data-img="images/books/23-카트린데스티벨.jpg" data-yes24="https://www.yes24.com/product/goods/90250728" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942423" data-quote="내 유일한 목표는 다 내려갈 때까지 매달리며 버티는 것이었다. 그것은 대단하고도 꾸준한 의지력을 요구했다." data-tags="카트린 데스티벨, 드류, 아이거, 암벽등반, 여성 등반가, 단독등반">
+        <div class="book-card animate animate-delay-2" data-title="카트린 데스티벨" data-author="카트린 데스티벨 (Catherine Destivelle)" data-desc="세계 최고의 전천후 클라이머 카트린 데스티벨의 자서전. 트랑고 타워 초등, 드류 서벽 단독, 아이거 북벽 단독 등 전설적인 등반들과 그 안의 공포와 의지를 담았다." data-year="등반가 시리즈" data-lang="프랑스어 번역" data-img="images/books/23-카트린데스티벨.jpg" data-yes24="https://www.yes24.com/product/goods/90250728" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942423" data-quote="내 유일한 목표는 다 내려갈 때까지 매달리며 버티는 것이었다. 그것은 대단하고도 꾸준한 의지력을 요구했다." data-tags="카트린 데스티벨, 드류, 아이거, 암벽등반, 여성 등반가, 단독등반" data-author-bio="카트린 데스티벨(1960~)은 알제리 오랑 출신의 프랑스인으로, 스포츠클라이밍과 알파인등반에서 발군의 실력을 발휘한 세계 최고의 전천후 여성 클라이머다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/23-카트린데스티벨.jpg" alt="카트린 데스티벨"><div class="book-hover-info"><div class="book-hover-title">카트린 데스티벨</div><div class="book-hover-sub">Rock Queen</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="에베레스트 솔로" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1980년 몬순 시즌, 무산소·무팀으로 에베레스트 단독 등정에 성공한 메스너의 기록. 인류 등반 역사상 가장 대담한 도전 중 하나. (하루재 회원 배포)" data-year="등반기 시리즈" data-lang="독일어 번역" data-img="">
-          <div class="book-cover book-cover-noimg">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-            <div class="book-hover-info"><div class="book-hover-title">에베레스트 솔로</div><div class="book-hover-sub">메스너 단독 등정 기록</div></div></div>
-        </div>
-        <div class="book-card animate animate-delay-1" data-title="Art of Freedom" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="폴란드 알피니즘의 전설 보이테크 쿠르티카의 생애와 등반 철학. 힌두쿠시·히말라야·카라코람에서 거벽등반 기록 11회를 세운 천재 알피니스트의 전기. BANFF 수상작." data-year="등반가 시리즈" data-lang="영어 번역" data-img="images/books/24-art-of-freedom.jpg" data-yes24="https://www.yes24.com/product/goods/95076330" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942424" data-quote="스타일이야말로 등반의 모든 것이며 정상이란 그저 그에 따르는 결과라는 것을 알려준다." data-tags="보이테크 쿠르티카, 폴란드 알피니즘, 카라코람, BANFF 수상작">
+        <div class="book-card animate animate-delay-1" data-title="Art of Freedom" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="폴란드 알피니즘의 전설 보이테크 쿠르티카의 생애와 등반 철학. 힌두쿠시·히말라야·카라코람에서 거벽등반 기록 11회를 세운 천재 알피니스트의 전기. BANFF 수상작." data-year="등반가 시리즈" data-lang="영어 번역" data-img="images/books/24-art-of-freedom.jpg" data-yes24="https://www.yes24.com/product/goods/95076330" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942424" data-quote="스타일이야말로 등반의 모든 것이며 정상이란 그저 그에 따르는 결과라는 것을 알려준다." data-tags="보이테크 쿠르티카, 폴란드 알피니즘, 카라코람, BANFF 수상작" data-author-bio="버나데트 맥도널드는 산의 전사들·Freedom Climbers 등 10권의 산서를 쓴 작가다. 밴프국제산악영화제 그랑프리, 보드맨-태스커 상 등 산악문학계 최고 권위의 상들을 받았다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/24-art-of-freedom.jpg" alt="Art of Freedom"><div class="book-hover-info"><div class="book-hover-title">Art of Freedom</div><div class="book-hover-sub">보이테크 쿠르티카의 전기</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="아득한 산들" data-author="이즈미 세이치 (泉靖一)" data-desc="1927년 12세에 조선으로 이주해 경성제국대를 졸업한 일본 산악인이자 문화인류학자 이즈미 세이치의 회고록. 인수봉·백두산·금강산을 오르며 쌓은 한국 근대 등반사의 원점." data-year="등반기 시리즈" data-lang="일본어 번역" data-img="images/books/25-아득한산들.jpg" data-quote="암벽 기술이 늘면서 우리는 먼저 인수봉을 올랐다. 그다음은 백운대를 남쪽 정면에서 직등하는 것을 생각했다." data-tags="이즈미 세이치, 인수봉, 백운대, 경성제국대, 한국 근대 등반사, 도서출판한국산악회">
+        <div class="book-card animate animate-delay-2" data-title="아득한 산들" data-author="이즈미 세이치 (泉靖一) / 최진희·김영찬" data-desc="1927년 12세에 조선으로 이주해 경성제국대를 졸업한 일본 산악인이자 문화인류학자 이즈미 세이치의 회고록. 인수봉·백두산·금강산을 오르며 쌓은 한국 근대 등반사의 원점." data-year="등반기 시리즈" data-lang="일본어 번역" data-img="images/books/25-아득한산들.jpg" data-quote="암벽 기술이 늘면서 우리는 먼저 인수봉을 올랐다. 그다음은 백운대를 남쪽 정면에서 직등하는 것을 생각했다." data-tags="이즈미 세이치, 인수봉, 백운대, 경성제국대, 한국 근대 등반사, 도서출판한국산악회" data-author-bio="이즈미 세이치(1915~1970)는 문화인류학자로 경성제국대학을 졸업하고 메이지대학·동경대학 교수를 역임했다. 금강산·백두산·관모연산·북한산 등 조선의 산들을 섭렵했으며, 안데스 고대 문명 발굴로 페루 정부로부터 문화 훈장을 받았다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/25-아득한산들.jpg" alt="아득한 산들"><div class="book-hover-info"><div class="book-hover-title">아득한 산들</div><div class="book-hover-sub">한국 근대 등반사의 기원</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="WINTER 8000" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야 8000m 14좌 동계 초등의 역사. 혹한과 폭풍 속에서 불굴의 의지로 정상에 선 얼음의 전사들. 2021년 세종도서 선정작." data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/26-winter8000.jpg" data-yes24="https://www.yes24.com/product/goods/100008206" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942425" data-quote="히말라야 동계등반은 '극한의 예술'이다. 살을 에는 추위를 무릅쓰고 극도로 지루한 고립의 세계로 당당하고 용감하게 뛰어드는 사람들." data-tags="히말라야, 동계등반, 8000m 14좌, 폴란드 알피니즘, 세종도서">
+        <div class="book-card animate animate-delay-3" data-title="WINTER 8000" data-author="버나데트 맥도널드 (Bernadette McDonald)" data-desc="히말라야 8000m 14좌 동계 초등의 역사. 혹한과 폭풍 속에서 불굴의 의지로 정상에 선 얼음의 전사들. 2021년 세종도서 선정작." data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/26-winter8000.jpg" data-yes24="https://www.yes24.com/product/goods/100008206" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942425" data-quote="히말라야 동계등반은 '극한의 예술'이다. 살을 에는 추위를 무릅쓰고 극도로 지루한 고립의 세계로 당당하고 용감하게 뛰어드는 사람들." data-tags="히말라야, 동계등반, 8000m 14좌, 폴란드 알피니즘, 세종도서" data-author-bio="버나데트 맥도널드는 산악문화를 위한 밴프 센터의 창립자로, 산악문화와 등산에 대해 11권의 책을 저술했다. 미국산악회 H. 애덤스 카터 문학상, 밴프 그랑프리 등 국제 산악문학상을 수상했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/26-winter8000.jpg" alt="WINTER 8000"><div class="book-hover-info"><div class="book-hover-title">WINTER 8000</div><div class="book-hover-sub">8000m 동계 초등의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="클라이머를 위한 1001가지 팁" data-author="앤디 커크패트릭 (Andy Kirkpatrick)" data-desc="세계적인 빅월 클라이머 앤디 커크패트릭이 전하는 암벽등반의 모든 것. 엘캡 19회 등반과 30년 경험을 바탕으로 쓴 초보부터 전문가까지의 실전 팁 1001가지. (1001 Climbing Tips)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/27-1001팁.jpg" data-yes24="https://www.yes24.com/product/goods/103651573" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942426" data-quote="등반은 위험하며 결코 열정이 경험을 대체할 수 없다. 철저하게 자신의 경험에 근거하여 만든 1001가지 실전 클라이밍 팁." data-tags="암벽등반, 빅월, 엘캡, 실전 팁, 등반 기술서">
+        <div class="book-card animate animate-delay-1" data-title="클라이머를 위한 1001가지 팁" data-author="앤디 커크패트릭 (Andy Kirkpatrick)" data-desc="세계적인 빅월 클라이머 앤디 커크패트릭이 전하는 암벽등반의 모든 것. 엘캡 19회 등반과 30년 경험을 바탕으로 쓴 초보부터 전문가까지의 실전 팁 1001가지. (1001 Climbing Tips)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/27-1001팁.jpg" data-yes24="https://www.yes24.com/product/goods/103651573" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942426" data-quote="등반은 위험하며 결코 열정이 경험을 대체할 수 없다. 철저하게 자신의 경험에 근거하여 만든 1001가지 실전 클라이밍 팁." data-tags="암벽등반, 빅월, 엘캡, 실전 팁, 등반 기술서" data-author-bio="앤디 커크패트릭은 엘 캐피탄을 19회 등반하는 등 알프스와 그 너머의 어려운 루트들을 종횡무진한 빅월 클라이머이자 작가다. 30년 이상의 등반 경험을 바탕으로 실전 등반 팁을 집필했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/27-1001팁.jpg" alt="클라이머를 위한 1001가지 팁"><div class="book-hover-info"><div class="book-hover-title">클라이머를 위한 1001가지 팁</div><div class="book-hover-sub">1001 Climbing Tips</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="정당화할 수 없는 위험" data-author="사이먼 톰슨 (Simon Thompson)" data-desc="근대등산의 태동부터 현재까지 영국 등산 200년사. 알피니즘을 창시하고 이끈 영국인들의 성취와 동기, 그 빛과 그림자를 집대성했다. (Unjustifiable Risk?)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/28-정당화할수없는위험.jpg" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942427" data-quote="1854년 이후 11년 동안 알프스의 주요 봉우리를 거의 다 정복한 영국인들. 그들이 등반이라는 스포츠의 창시자라는 주장에는 정당성이 있다." data-tags="영국 등산사, 알피니즘, 황금기, 마터호른, 200년사">
+        <div class="book-card animate animate-delay-2" data-title="정당화할 수 없는 위험" data-author="사이먼 톰슨 (Simon Thompson)" data-desc="근대등산의 태동부터 현재까지 영국 등산 200년사. 알피니즘을 창시하고 이끈 영국인들의 성취와 동기, 그 빛과 그림자를 집대성했다. (Unjustifiable Risk?)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/28-정당화할수없는위험.jpg" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942427" data-quote="1854년 이후 11년 동안 알프스의 주요 봉우리를 거의 다 정복한 영국인들. 그들이 등반이라는 스포츠의 창시자라는 주장에는 정당성이 있다." data-tags="영국 등산사, 알피니즘, 황금기, 마터호른, 200년사" data-author-bio="사이먼 톰슨(1959~)은 16세에 등반을 시작한 등반 애호가이자 사업가다. 앵글로 아메리칸 주식회사 이사, 타맥 그룹 회장을 역임하며 영국 등산의 역사를 연구했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/28-정당화할수없는위험.jpg" alt="정당화할 수 없는 위험"><div class="book-hover-info"><div class="book-hover-title">정당화할 수 없는 위험</div><div class="book-hover-sub">영국 등산 200년사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="지옥은 나를 원하지않았다" data-author="코르트코 · 피에트라셰프스키 / 서진석" data-desc="폴란드 얼음의 전사 크지슈토프 비엘리츠키의 전기. 8000m 14좌 완등과 수많은 동계 초등, 죽음과 동료의 상실, 불굴의 의지로 써낸 히말라야 역사의 산증인. 2022년 세종도서 선정." data-year="등반가 시리즈" data-lang="폴란드어 번역" data-img="images/books/29-지옥은나를.jpg" data-yes24="https://www.yes24.com/product/goods/108591087" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942428" data-quote="지금이 아니면 다음 기회가 없었다. 최후까지 버티던 동료들이 하나둘씩 포기했다. 하지만 비엘리츠키는 나아갔다." data-tags="크지슈토프 비엘리츠키, 8000m 14좌, 동계등반, 폴란드 알피니즘, 세종도서">
+        <div class="book-card animate animate-delay-3" data-title="지옥은 나를 원하지않았다" data-author="코르트코 · 피에트라셰프스키 / 서진석" data-desc="폴란드 얼음의 전사 크지슈토프 비엘리츠키의 전기. 8000m 14좌 완등과 수많은 동계 초등, 죽음과 동료의 상실, 불굴의 의지로 써낸 히말라야 역사의 산증인. 2022년 세종도서 선정." data-year="등반가 시리즈" data-lang="폴란드어 번역" data-img="images/books/29-지옥은나를.jpg" data-yes24="https://www.yes24.com/product/goods/108591087" data-kyobo="https://product.kyobobook.co.kr/detail/S000001942428" data-quote="지금이 아니면 다음 기회가 없었다. 최후까지 버티던 동료들이 하나둘씩 포기했다. 하지만 비엘리츠키는 나아갔다." data-tags="크지슈토프 비엘리츠키, 8000m 14좌, 동계등반, 폴란드 알피니즘, 세종도서" data-author-bio="다리우시 코르트코와 마르친 피에트라셰프스키는 폴란드의 저널리스트다. 두 사람이 공동으로 크지슈토프 비엘리츠키의 생애를 심층 취재해 전기를 완성했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/29-지옥은나를.jpg" alt="지옥은 나를 원하지않았다"><div class="book-hover-info"><div class="book-hover-title">지옥은 나를 원하지않았다</div><div class="book-hover-sub">폴란드 얼음의 전사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="히말라야 다울라기리 탐사기" data-author="박철암" data-desc="한국 최초의 히말라야 탐사 보고서. 1962년 경희대산악회가 다울라기리 산군을 정찰한 80여 일의 여정을 박철암 대장이 생생하게 기록. 한국 히말라야 원정 60주년 기념판." data-year="등반기 시리즈" data-lang="한국어" data-img="images/books/30-다울라기리.jpg" data-yes24="https://www.yes24.com/product/goods/112191798" data-kyobo="https://product.kyobobook.co.kr/detail/S000061695898" data-quote="역사적인 대한민국 광복의 날, 8월 15일. 히말라야 원정을 시도하는 일은 한국 역사상 초유의 장거였다." data-tags="다울라기리, 한국 히말라야, 경희대, 한국 등반사, 1962년">
+        <div class="book-card animate animate-delay-1" data-title="히말라야 다울라기리 탐사기" data-author="박철암" data-desc="한국 최초의 히말라야 탐사 보고서. 1962년 경희대산악회가 다울라기리 산군을 정찰한 80여 일의 여정을 박철암 대장이 생생하게 기록. 한국 히말라야 원정 60주년 기념판." data-year="등반기 시리즈" data-lang="한국어" data-img="images/books/30-다울라기리.jpg" data-yes24="https://www.yes24.com/product/goods/112191798" data-kyobo="https://product.kyobobook.co.kr/detail/S000061695898" data-quote="역사적인 대한민국 광복의 날, 8월 15일. 히말라야 원정을 시도하는 일은 한국 역사상 초유의 장거였다." data-tags="다울라기리, 한국 히말라야, 경희대, 한국 등반사, 1962년" data-author-bio="박철암(1918~2016)은 전 경희대학교 명예교수로, 한국 최초의 히말라야 원정과 미답의 티베트 무인구 탐험을 이끈 등반가이자 탐험가다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/30-다울라기리.jpg" alt="히말라야 다울라기리 탐사기"><div class="book-hover-info"><div class="book-hover-title">히말라야 다울라기리 탐사기</div><div class="book-hover-sub">한국 최초 히말라야 탐사기</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="버티컬 마인드" data-author="제프 앨리슨 · 돈 맥그래스 / 권아영" data-desc="암벽등반을 위한 심리학적 접근. 뇌과학·심리학 연구를 바탕으로 두려움 극복·집중력 향상·정신-신체 통합 훈련법을 제시한 등반 심리학의 필독서. (Vertical Mind)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/31-버티컬마인드.jpg" data-yes24="https://www.yes24.com/product/goods/113482640" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721233" data-quote="암벽등반이라는 외부 세계에 신경세포, 근육기억 그리고 스크립트라는 내부 세계를 융합해 인지신경과학적인 등반의 세계로 나아갈 수 있다." data-tags="등반 심리학, 암벽등반, 두려움 극복, 정신 훈련, 스포츠 심리학">
+        <div class="book-card animate animate-delay-2" data-title="버티컬 마인드" data-author="제프 앨리슨 · 돈 맥그래스 / 권아영" data-desc="암벽등반을 위한 심리학적 접근. 뇌과학·심리학 연구를 바탕으로 두려움 극복·집중력 향상·정신-신체 통합 훈련법을 제시한 등반 심리학의 필독서. (Vertical Mind)" data-year="기술서 시리즈" data-lang="영어 번역" data-img="images/books/31-버티컬마인드.jpg" data-yes24="https://www.yes24.com/product/goods/113482640" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721233" data-quote="암벽등반이라는 외부 세계에 신경세포, 근육기억 그리고 스크립트라는 내부 세계를 융합해 인지신경과학적인 등반의 세계로 나아갈 수 있다." data-tags="등반 심리학, 암벽등반, 두려움 극복, 정신 훈련, 스포츠 심리학" data-author-bio="돈 맥그래스는 작가이자 연설가, 트레이너 그리고 열렬한 암벽 등반가다. 스포츠와 비즈니스 부문의 역량 강화를 지원하는 비즈니스 리더로 활동하며 등반 심리학을 연구해왔다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/31-버티컬마인드.jpg" alt="버티컬 마인드"><div class="book-hover-info"><div class="book-hover-title">버티컬 마인드</div><div class="book-hover-sub">등반 심리학의 필독서</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="산 그 4차원의 세계" data-author="슈테판 데흐 · 메스너 · 슈파르바서 / 김동수" data-desc="위성사진과 데이터로 재현한 세계 최고의 산 13개. 에베레스트·K2·마터호른·카일라스 등 산의 역사적 등반과 지리·인포그래픽을 방대한 사진과 함께 담은 프리미엄 대형 책. (265×315mm, 240쪽)" data-year="기타 시리즈" data-lang="독일어 번역" data-img="images/books/32-4차원세계.jpg" data-yes24="https://www.yes24.com/product/goods/125459438" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721947" data-quote="하얀 눈에 덮여 밝게 빛나는 카일라스는 많은 사람들에게 가장 신성한 곳으로 여겨진다. 산은 4차원의 세계다." data-tags="메스너, 에베레스트, K2, 마터호른, 카일라스, 사진집, 대형판">
+        <div class="book-card animate animate-delay-3" data-title="산 그 4차원의 세계" data-author="슈테판 데흐 · 메스너 · 슈파르바서 / 김동수" data-desc="위성사진과 데이터로 재현한 세계 최고의 산 13개. 에베레스트·K2·마터호른·카일라스 등 산의 역사적 등반과 지리·인포그래픽을 방대한 사진과 함께 담은 프리미엄 대형 책. (265×315mm, 240쪽)" data-year="기타 시리즈" data-lang="독일어 번역" data-img="images/books/32-4차원세계.jpg" data-yes24="https://www.yes24.com/product/goods/125459438" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721947" data-quote="하얀 눈에 덮여 밝게 빛나는 카일라스는 많은 사람들에게 가장 신성한 곳으로 여겨진다. 산은 4차원의 세계다." data-tags="메스너, 에베레스트, K2, 마터호른, 카일라스, 사진집, 대형판" data-author-bio="슈테판 데흐는 뷔르츠부르크대학 지리 및 지질학 연구소 교수이자 지리학자다. 라인홀드 메스너와 함께 위성사진과 데이터로 세계 13대 명산을 재조명하는 작업을 수행했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/32-4차원세계.jpg" alt="산 그 4차원의 세계"><div class="book-hover-info"><div class="book-hover-title">산 그 4차원의 세계</div><div class="book-hover-sub">세계 최고의 산 13개</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="산악만화 소설 영화계보" data-author="가모 (GAMO) / 최진희" data-desc="다양한 예술 창작 작품들 속에서 산은 어떻게 그려져 왔을까? 만화·소설·영화라는 장르를 아우른 산악 픽션의 변천사와 계보를 40여 개의 표와 그림으로 체계화한 독보적인 문화사." data-year="기타 시리즈" data-lang="일본어 번역" data-img="images/books/33-산악계보.jpg" data-yes24="https://www.yes24.com/product/goods/118323051" data-quote="만화·소설·영화라는 장르를 불문하고 산악 픽션 전체를 조감한 독보적인 문화사. '누가 자일을 끊었나'부터 '산악영화를 둘러싼 인맥 관계도'까지." data-tags="산악만화, 산악소설, 산악영화, 일본 대중문화, 산악 픽션">
+        <div class="book-card animate animate-delay-1" data-title="산악만화 소설 영화계보" data-author="가모 (GAMO) / 최진희" data-desc="다양한 예술 창작 작품들 속에서 산은 어떻게 그려져 왔을까? 만화·소설·영화라는 장르를 아우른 산악 픽션의 변천사와 계보를 40여 개의 표와 그림으로 체계화한 독보적인 문화사." data-year="기타 시리즈" data-lang="일본어 번역" data-img="images/books/33-산악계보.jpg" data-yes24="https://www.yes24.com/product/goods/118323051" data-quote="만화·소설·영화라는 장르를 불문하고 산악 픽션 전체를 조감한 독보적인 문화사. '누가 자일을 끊었나'부터 '산악영화를 둘러싼 인맥 관계도'까지." data-tags="산악만화, 산악소설, 산악영화, 일본 대중문화, 산악 픽션" data-author-bio="가모(GAMO)는 산악만화·소설·영화 전문 사이트 가상 클라이머(Virtual Climber)의 웹마스터다. 산에 대한 책에 파묻히는 날들을 보내며 산악 픽션의 계보를 정리했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/33-산악계보.jpg" alt="산악만화 소설 영화계보"><div class="book-hover-info"><div class="book-hover-title">산악만화 소설 영화계보</div><div class="book-hover-sub">산악 픽션 변천사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="캠프4" data-author="스티브 로퍼 (Steve Roper) / 송은희" data-desc="1960년대 요세미티 캠프4 거주자들의 생생한 회고록. 로열 로빈스·워런 하딩·이본 취나드 등 전설적인 클라이머들이 엘 캐피탄 거벽에서 요세미티 스타일을 만들어간 황금기. (Camp 4)" data-year="등반기 시리즈" data-lang="영어 번역" data-img="images/books/34-캠프4.jpg" data-yes24="https://www.yes24.com/product/goods/125458378" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721949" data-quote="1875년 하프돔 초등 이후, 1960년대 캠프4의 클라이머들은 볼트 없이, 맨몸으로 세계 최고의 벽에 도전했다. 요세미티가 세계 암벽등반의 중심이 된 이유." data-tags="요세미티, 엘 캐피탄, 하프돔, 캠프4, 빅월, 황금기, 이본 취나드">
+        <div class="book-card animate animate-delay-2" data-title="캠프4" data-author="스티브 로퍼 (Steve Roper) / 송은희" data-desc="1960년대 요세미티 캠프4 거주자들의 생생한 회고록. 로열 로빈스·워런 하딩·이본 취나드 등 전설적인 클라이머들이 엘 캐피탄 거벽에서 요세미티 스타일을 만들어간 황금기. (Camp 4)" data-year="등반기 시리즈" data-lang="영어 번역" data-img="images/books/34-캠프4.jpg" data-yes24="https://www.yes24.com/product/goods/125458378" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721949" data-quote="1875년 하프돔 초등 이후, 1960년대 캠프4의 클라이머들은 볼트 없이, 맨몸으로 세계 최고의 벽에 도전했다. 요세미티가 세계 암벽등반의 중심이 된 이유." data-tags="요세미티, 엘 캐피탄, 하프돔, 캠프4, 빅월, 황금기, 이본 취나드" data-author-bio="스티브 로퍼(1941~)는 요세미티에서 400번 이상 등반한 베테랑 등반가이자 작가다. 앨런 스텍과 북미 클래식 등반 50선을 공동 집필하고, 1967년부터 산악매체 Ascent 편집자로 활동했다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/34-캠프4.jpg" alt="캠프4"><div class="book-hover-info"><div class="book-hover-title">캠프4</div><div class="book-hover-sub">요세미티 황금기의 회고록</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="재미있는 성공률 30%" data-author="야마노이 야스시 (山野井泰史) / 강승혁" data-desc="세계적인 솔로 클라이머 야마노이 야스시의 반평생 등반 연대기. 피츠로이·가셔브룸 IV봉·마칼루 서벽 단독등반, 수많은 실패와 재기의 기록. 성공률 30%에 도전하는 이유." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/35-성공률30.jpg" data-yes24="https://www.yes24.com/product/goods/125459460" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721951" data-quote="야마노이를 단련시켰던 것은 많은 승리의 달콤함보다 실패의 쓴맛이었다. 그는 그때마다 구렁텅이에서 몸을 가누고 새로운 목표를 향해 의욕을 북돋아왔다." data-tags="야마노이 야스시, 단독등반, 피츠로이, 가셔브룸, 솔로 클라이밍">
+        <div class="book-card animate animate-delay-3" data-title="재미있는 성공률 30%" data-author="야마노이 야스시 (山野井泰史) / 강승혁" data-desc="세계적인 솔로 클라이머 야마노이 야스시의 반평생 등반 연대기. 피츠로이·가셔브룸 IV봉·마칼루 서벽 단독등반, 수많은 실패와 재기의 기록. 성공률 30%에 도전하는 이유." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/35-성공률30.jpg" data-yes24="https://www.yes24.com/product/goods/125459460" data-kyobo="https://product.kyobobook.co.kr/detail/S000212721951" data-quote="야마노이를 단련시켰던 것은 많은 승리의 달콤함보다 실패의 쓴맛이었다. 그는 그때마다 구렁텅이에서 몸을 가누고 새로운 목표를 향해 의욕을 북돋아왔다." data-tags="야마노이 야스시, 단독등반, 피츠로이, 가셔브룸, 솔로 클라이밍" data-author-bio="야마노이 야스시(1965~)는 고교 시절부터 멀티 피치 암벽루트를 단독으로 오른 일본의 전설적인 솔로 클라이머다. 1994년 초오유 남서벽 단독 신루트를 개척하고 피츠로이·마칼루 서벽 등 극한 루트에 도전해왔다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/35-성공률30.jpg" alt="재미있는 성공률 30%"><div class="book-hover-info"><div class="book-hover-title">재미있는 성공률 30%</div><div class="book-hover-sub">야마노이 야스시의 등반 연대기</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="북조선의 산" data-author="이야마 다쓰오 (飯山達雄) / 김장욱" data-desc="1927~1942년 현재 북한 영토의 산들을 탐사한 일본 산악인 이야마 다쓰오의 사진집. 일제강점기 한반도 등산 기록과 희귀한 역사 사진. 도서출판한국산악회 출간." data-year="탐구기 시리즈" data-lang="일본어 번역" data-img="images/books/36-북조선의산.jpg" data-quote="조선반도의 등줄기, 1927년부터 1942년까지. 이야마는 지금의 북한 땅 산들을 누비며 한반도 등반의 역사를 사진으로 남겼다." data-tags="북한의 산, 일제강점기, 사진집, 관모봉, 한반도 산악, 도서출판한국산악회">
+        <div class="book-card animate animate-delay-1" data-title="북조선의 산" data-author="이야마 다쓰오 (飯山達雄) / 김장욱" data-desc="1927~1942년 현재 북한 영토의 산들을 탐사한 일본 산악인 이야마 다쓰오의 사진집. 일제강점기 한반도 등산 기록과 희귀한 역사 사진. 도서출판한국산악회 출간." data-year="탐구기 시리즈" data-lang="일본어 번역" data-img="images/books/36-북조선의산.jpg" data-quote="조선반도의 등줄기, 1927년부터 1942년까지. 이야마는 지금의 북한 땅 산들을 누비며 한반도 등반의 역사를 사진으로 남겼다." data-tags="북한의 산, 일제강점기, 사진집, 관모봉, 한반도 산악, 도서출판한국산악회" data-author-bio="이야마 다쓰오(1904~1993)는 일본 요코하마 출신으로 1926년 클라이밍에 입문했다. 1928년 조선총독부 촉탁이 된 후 1927~1942년 한반도 산악 탐사에 힘써 귀중한 사진 기록을 남겼다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/36-북조선의산.jpg" alt="북조선의 산"><div class="book-hover-info"><div class="book-hover-title">북조선의 산</div><div class="book-hover-sub">일제강점기 한반도 등산 사진집</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-2" data-title="터칭더보이드" data-author="조 심프슨 (Joe Simpson)" data-desc="1985년 페루 안데스에서 벌어진 생사의 갈림길. 파트너에게 로프를 끊긴 채 빙하 크레바스에 추락한 조 심프슨의 기적적인 생환기. (Touching the Void, 하루재 회원 배포)" data-year="등반기 시리즈" data-lang="영어 번역" data-img="">
-          <div class="book-cover book-cover-noimg">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-            <div class="book-hover-info"><div class="book-hover-title">터칭더보이드</div><div class="book-hover-sub">Touching the Void</div></div></div>
-        </div>
-        <div class="book-card animate animate-delay-3" data-title="게리 헤밍" data-author="미렐라 텐데리니 (Mirella Tenderini) / 박명원" data-desc="1960년대 그 누구보다 열정적으로 등반혼을 불살랐던 수수께끼 같은 인물 게리 헤밍의 파란만장한 삶. 잡힐 듯 잡히지 않는 자유와 등반을 뒤쫓은 한 남자의 비극적인 초상." data-year="등반가 시리즈" data-lang="이탈리아어 번역" data-img="images/books/37-게리헤밍.jpg" data-quote="소설 같은 인생을 산 소설 같은 캐릭터. 1960년대 그 누구보다 열정적으로 등반혼을 불살랐던 수수께끼 같은 인물." data-tags="게리 헤밍, 1960년대, 요세미티, 알프스, 자유로운 영혼">
+        <div class="book-card animate animate-delay-3" data-title="게리 헤밍" data-author="미렐라 텐데리니 (Mirella Tenderini) / 박명원" data-desc="1960년대 그 누구보다 열정적으로 등반혼을 불살랐던 수수께끼 같은 인물 게리 헤밍의 파란만장한 삶. 잡힐 듯 잡히지 않는 자유와 등반을 뒤쫓은 한 남자의 비극적인 초상." data-year="등반가 시리즈" data-lang="이탈리아어 번역" data-img="images/books/37-게리헤밍.jpg" data-quote="소설 같은 인생을 산 소설 같은 캐릭터. 1960년대 그 누구보다 열정적으로 등반혼을 불살랐던 수수께끼 같은 인물." data-tags="게리 헤밍, 1960년대, 요세미티, 알프스, 자유로운 영혼" data-author-bio="미렐라 텐데리니는 15년간 알프스에서 가이드인 남편과 산장을 운영한 이탈리아의 기자이자 작가다. 이후 밀라노에서 문학 에이전시를 설립하고 수많은 국제 산악 저널에 기사를 썼다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/37-게리헤밍.jpg" alt="게리 헤밍"><div class="book-hover-info"><div class="book-hover-title">게리 헤밍</div><div class="book-hover-sub">자유로운 영혼의 클라이머</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="What's Next?" data-author="히라이데 카즈야 (平出和也) / 이승현" data-desc="황금피켈상 3회 수상자 히라이데 카즈야가 직접 들려주는 등반과 삶의 이야기. 미답봉·미답 루트를 향한 끝없는 도전, 다니구치 케이와의 우정, 가족 사랑, 그리고 QR코드로 만나는 등반 영상." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/39-whats-next.jpg" data-yes24="https://www.yes24.com/product/goods/139581771" data-quote="육상부를 그만두고 산악부에 들어가기로 했다. 규칙이란 것에서 해방됐다는 안도감. 그것이 나에게 등산이었다." data-tags="히라이데 카즈야, 황금피켈상, 알파인 스타일, 미답봉, 다니구치 케이">
+        <div class="book-card animate animate-delay-2" data-title="What's Next?" data-author="히라이데 카즈야 (平出和也) / 이승현" data-desc="황금피켈상 3회 수상자 히라이데 카즈야가 직접 들려주는 등반과 삶의 이야기. 미답봉·미답 루트를 향한 끝없는 도전, 다니구치 케이와의 우정, 가족 사랑, 그리고 QR코드로 만나는 등반 영상." data-year="등반가 시리즈" data-lang="일본어 번역" data-img="images/books/39-whats-next.jpg" data-yes24="https://www.yes24.com/product/goods/139581771" data-quote="육상부를 그만두고 산악부에 들어가기로 했다. 규칙이란 것에서 해방됐다는 안도감. 그것이 나에게 등산이었다." data-tags="히라이데 카즈야, 황금피켈상, 알파인 스타일, 미답봉, 다니구치 케이, 일본" data-author-bio="히라이데 카즈야는 알파인스타일의 고봉 등산이 특기인 일본인 등반가다. 2008년 카메트 봉 남동벽을 초등해 일본인 최초로 황금피켈상을 수상했으며, 이후 영상 카메라맨으로도 활약하고 있다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/39-whats-next.jpg" alt="What's Next?"><div class="book-hover-info"><div class="book-hover-title">What's Next?</div><div class="book-hover-sub">황금피켈상 3회 수상자</div></div></div>
         </div>
         <div class="book-card animate animate-delay-2" data-title="떠오르는 히말라야의 영웅들" data-author="버나데트 맥도널드 (Bernadette McDonald) / 김동수" data-desc="셰르파와 발티 등 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르는 이야기. 서구 등반가의 조력자를 넘어 자신의 이름으로 정상에 선 새로운 세대. (Alpine Rising, 2024)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/40-떠오르는히말라야.jpg" data-yes24="https://www.yes24.com/product/goods/144963348" data-kyobo="https://product.kyobobook.co.kr/detail/S000216257533" data-quote="셰르파를 넘어 자신의 이름으로. 히말라야 현지 출신 산악인들이 세계 등반 무대의 주인공으로 떠오르다." data-tags="셰르파, 발티, 히말라야, 버나데트 맥도널드, Alpine Rising">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/40-떠오르는히말라야.jpg" alt="떠오르는 히말라야의 영웅들"><div class="book-hover-info"><div class="book-hover-title">떠오르는 히말라야의 영웅들</div><div class="book-hover-sub">Alpine Rising</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-3" data-title="일러스트 클라이밍" data-author="아베 료우주 (阿部亮樹) / 강진구" data-desc="등반가가 반드시 알아야 할 등반기술을 정밀한 일러스트로! 필수 장비 사용법, 매듭 묶기, 싱글·멀티피치 로프 시스템, 크랙 등반 기술까지. 2025년 7월 출간. (イラスト・クライミング)" data-year="기술서 시리즈" data-lang="일본어 번역" data-img="images/books/41-일러스트클라이밍.jpg" data-quote="클라이밍의 모든 동작과 시스템을 정밀한 일러스트로. 장비 사용법부터 로프 시스템, 크랙 기술까지 눈으로 배우는 등반 교과서." data-tags="클라이밍 기술서, 일러스트, 매듭, 로프 시스템, 등반 교과서">
+        <div class="book-card animate animate-delay-3" data-title="일러스트 클라이밍" data-author="아베 료우주 (阿部亮樹) / 강진구" data-desc="등반가가 반드시 알아야 할 등반기술을 정밀한 일러스트로! 필수 장비 사용법, 매듭 묶기, 싱글·멀티피치 로프 시스템, 크랙 등반 기술까지. 2025년 7월 출간. (イラスト・クライミング)" data-year="기술서 시리즈" data-lang="일본어 번역" data-img="images/books/41-일러스트클라이밍.jpg" data-quote="클라이밍의 모든 동작과 시스템을 정밀한 일러스트로. 장비 사용법부터 로프 시스템, 크랙 기술까지 눈으로 배우는 등반 교과서." data-tags="클라이밍 기술서, 일러스트, 매듭, 로프 시스템, 등반 교과서" data-author-bio="아베 료우주(1963~)는 1983년 산행을 시작해 1984년 JECC(Japan Expert Climbers Club)에 입회한 일본의 클라이머이자 일러스트레이터다.">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/41-일러스트클라이밍.jpg" alt="일러스트 클라이밍"><div class="book-hover-info"><div class="book-hover-title">일러스트 클라이밍</div><div class="book-hover-sub">イラスト・クライミング</div></div></div>
         </div>
         <div class="book-card animate animate-delay-1" data-title="클라이머즈" data-author="짐 헤링턴 (사진) · 그렉 차일드 (글) / 김동수" data-desc="세계 최고의 클라이머들을 담은 사진집. 사진작가 짐 헤링턴이 촬영한 세계 정상급 클라이머들의 초상과 그렉 차일드의 글로 완성한 클라이밍 세계의 인간적 기록. 2026년 1월 출간." data-year="기타 시리즈" data-lang="영어 번역" data-img="images/books/42-클라이머즈.jpg" data-quote="세계 최고의 클라이머들을 렌즈에 담다. 짐 헤링턴의 사진과 그렉 차일드의 글로 완성한 클라이밍 세계의 인간적 기록." data-tags="세계 클라이머, 사진집, 암벽등반, 초상 사진, 그렉 차일드">
           <div class="book-cover">
-            <button class="carabiner-btn" type="button" aria-label="찜하기"><svg class="carabiner-svg" viewBox="0 0 20 26"><rect x="4" y="2" width="11" height="22" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><line class="carabiner-gate" x1="4" y1="6" x2="4" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+            
             <img src="images/books/42-클라이머즈.jpg" alt="클라이머즈"><div class="book-hover-info"><div class="book-hover-title">클라이머즈</div><div class="book-hover-sub">Climbers</div></div></div>
+        </div>
+        <div class="book-card animate animate-delay-3" data-title="수직의 순례자들" data-author="조셉 E. 테일러 Ⅲ (Joseph E. Taylor III) / 오세인" data-desc="요세미티 등반가들을 중심으로 빅토리아시대부터 오늘날까지 미국 등반의 역사를 추적. 자연·기술·젠더·소비자 문화가 등반가와 자연의 관계에 미친 영향을 살피며, 존 뮤어·이본 취나드 같은 환경운동가가 탄생한 배경을 조명한다. (Pilgrims of the Vertical, 768쪽)" data-year="등반사 시리즈" data-lang="영어 번역" data-img="images/books/38-수직의순례자.jpg" data-quote="나는 등반가를 그가 속한 시대의 산물로 여긴다. 등반가가 등반하는 방식, 그리고 등반에 대해 느끼는 감정은 문화적·정치적·사회적으로 전체 지형을 그리는 데 도움이 된다." data-tags="요세미티, 미국 등반사, 시에라클럽, 이본 취나드, 환경운동, 등반사" data-author-bio="조셉 E. 테일러 III는 캐나다 사이먼프레이저대학교 교수다. 미국사·개척 시대 역사학을 전공했으며, 현재 환경 역사·어업 역사·북미 서부 역사를 연구한다. 어린 시절 캘리포니아·오리건에서 성장한 배경이 이 책에 그대로 녹아들었다.">
+          <div class="book-cover">
+            <img src="images/books/38-수직의순례자.jpg" alt="수직의 순례자들"><div class="book-hover-info"><div class="book-hover-title">수직의 순례자들</div><div class="book-hover-sub">미국 등반 150년의 역사</div></div></div>
         </div>
       </div>
     </div>
@@ -1656,12 +1983,18 @@
         <div class="modal-lang" id="modalLang"></div>
         <div class="modal-title" id="modalTitle"></div>
         <div class="modal-author" id="modalAuthor"></div>
+        <div class="modal-awards" id="modalAwards" style="display:none;"></div>
+        <div class="modal-meta" id="modalYear"></div>
+        <hr class="modal-divider">
+        <p class="modal-desc" id="modalDesc"></p>
         <div class="modal-quote" id="modalQuoteWrap" style="display:none;">
           <p id="modalQuote"></p>
         </div>
-        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-author-bio" id="modalAuthorBio" style="display:none;">
+          <div class="modal-author-bio-label">저자 소개</div>
+          <div id="modalAuthorBioText"></div>
+        </div>
         <div class="modal-tags" id="modalTags"></div>
-        <div class="modal-meta" id="modalYear"></div>
         <div class="modal-buy-wrap" id="modalBuy" style="display:none;">
           <div class="modal-buy-label">구매처</div>
           <div class="modal-buy">
@@ -1694,6 +2027,105 @@
           <div class="phil-label">독자 경험</div>
           <p class="phil-text">하루재의 책을 읽고 나면 다음번 산행이 조금 달라집니다. 그 변화가 조용히 쌓이면서, 산을 대하는 태도가 깊어집니다.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mist-divider"></div>
+
+  <!-- 편집장 추천 -->
+  <section id="picks">
+    <div class="inner">
+      <div class="section-tag animate">Editor's Pick</div>
+      <h2 class="section-title animate">이 책부터 시작하세요</h2>
+    </div>
+    <div class="picks-slider">
+      <div class="picks-track" id="picksTrack">
+
+        <div class="pick-slide active">
+          <div class="pick-slide-content">
+            <span class="pick-badge">BANFF 수상</span>
+            <div class="pick-title">하루를 살아도<br>호랑이처럼</div>
+            <div class="pick-author">존 포터 저 · 알렉스 매킨타이어 전기</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"하루를 살아도 호랑이처럼. 알렉스는 그렇게 살았고, 27세에 그렇게 떠났다."</blockquote>
+            <p class="pick-note">등반을 모르는 사람도 한 인간의 삶 앞에 멈추게 되는 책. 하루재가 가장 자주 추천하는 첫 번째 산서.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/11-호랑이처럼.jpg" alt="하루를 살아도 호랑이처럼"></div>
+        </div>
+
+        <div class="pick-slide">
+          <div class="pick-slide-content">
+            <span class="pick-badge pick-badge--dark">아카데미상 수상</span>
+            <div class="pick-title">프리솔로</div>
+            <div class="pick-author">알렉스 호놀드 저 · 엘 캐피탄 900m, 로프 없이</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"900미터 화강암 벽, 로프 없이. 그 순간 두려움과 집중은 하나가 된다."</blockquote>
+            <p class="pick-note">2019 아카데미상 수상 다큐멘터리의 원작. 인간의 한계에 도전한다는 것이 무엇인지 가장 직접적으로 보여주는 책.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/19-free-solo.jpg" alt="프리솔로"></div>
+        </div>
+
+        <div class="pick-slide">
+          <div class="pick-slide-content">
+            <span class="pick-badge">BANFF 수상</span>
+            <div class="pick-title">Art of Freedom</div>
+            <div class="pick-author">버나데트 맥도널드 저 · 쿠르티카의 등반 철학</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"스타일이야말로 등반의 모든 것이며 정상이란 그저 그에 따르는 결과다."</blockquote>
+            <p class="pick-note">폴란드 알피니스트 쿠르티카는 왜 세계에서 가장 어려운 루트를 혼자 올랐나. 등반 철학의 정수.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/24-art-of-freedom.jpg" alt="Art of Freedom"></div>
+        </div>
+
+        <div class="pick-slide">
+          <div class="pick-slide-content">
+            <span class="pick-badge pick-badge--rose">자서전</span>
+            <div class="pick-title">카트린 데스티벨</div>
+            <div class="pick-author">카트린 데스티벨 저 · 세계 최고 전천후 여성 클라이머</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"내 유일한 목표는 다 내려갈 때까지 매달리며 버티는 것이었다."</blockquote>
+            <p class="pick-note">드류 서벽 단독, 아이거 북벽 단독. 공포와 의지 사이에서 살아남은 여성 클라이머의 솔직한 고백.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/23-카트린데스티벨.jpg" alt="카트린 데스티벨"></div>
+        </div>
+
+        <div class="pick-slide">
+          <div class="pick-slide-content">
+            <span class="pick-badge pick-badge--earth">솔로 클라이밍</span>
+            <div class="pick-title">재미있는 성공률 30%</div>
+            <div class="pick-author">야마노이 야스시 저 · 세계적 솔로 클라이머의 연대기</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"야마노이를 단련시킨 것은 승리의 달콤함보다 실패의 쓴맛이었다."</blockquote>
+            <p class="pick-note">30%만 성공해도 계속 오른다. 실패를 동력으로 삼는 한 클라이머의 반평생.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/35-성공률30.jpg" alt="재미있는 성공률 30%"></div>
+        </div>
+
+        <div class="pick-slide">
+          <div class="pick-slide-content">
+            <span class="pick-badge pick-badge--blue">2022 세종도서</span>
+            <div class="pick-title">지옥은 나를<br>원하지않았다</div>
+            <div class="pick-author">코르트코·피에트라셰프스키 저 · 비엘리츠키 전기</div>
+            <div class="pick-divider"></div>
+            <blockquote class="pick-quote">"지금이 아니면 다음 기회가 없었다. 비엘리츠키는 포기한 동료들 사이에서 나아갔다."</blockquote>
+            <p class="pick-note">8000m 14좌 완등과 동계 초등, 그리고 동료의 죽음. 극한 속에서 살아남은 폴란드 알피니스트의 실화.</p>
+          </div>
+          <div class="pick-slide-cover"><img src="images/books/29-지옥은나를.jpg" alt="지옥은 나를 원하지않았다"></div>
+        </div>
+
+      </div>
+
+      <button class="picks-arrow picks-prev" id="picksPrev">&#8249;</button>
+      <button class="picks-arrow picks-next" id="picksNext">&#8250;</button>
+
+      <div class="picks-dots" id="picksDots">
+        <span class="picks-dot active" data-index="0"></span>
+        <span class="picks-dot" data-index="1"></span>
+        <span class="picks-dot" data-index="2"></span>
+        <span class="picks-dot" data-index="3"></span>
+        <span class="picks-dot" data-index="4"></span>
+        <span class="picks-dot" data-index="5"></span>
       </div>
     </div>
   </section>
@@ -1980,7 +2412,7 @@
       <div class="faq-list animate">
         <div class="faq-item">
           <button class="faq-question">멤버십은 어떻게 가입하나요? <span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>멤버십 안내 섹션에서 가입 신청을 할 수 있습니다. 월 10,000원이 청구되며 연간 3~4권의 도서가 배송됩니다.</p></div>
+          <div class="faq-answer"><p>페이지 하단 멤버십 안내 섹션에서 네이버 폼으로 가입 신청하실 수 있습니다. 월 10,000원(연간 120,000원)이며, 연간 3~4권의 산서가 배송됩니다.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-question">책은 언제 받을 수 있나요? <span class="faq-icon">+</span></button>
@@ -1996,7 +2428,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-question">기존에 출간된 책을 따로 구매할 수 있나요? <span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>네, 기존 출간 도서는 별도 구매가 가능합니다. 재고 현황 및 구매 문의는 하루재클럽으로 연락해주세요.</p></div>
+          <div class="faq-answer"><p>네, 기존 출간 도서는 별도 구매가 가능합니다. 각 책 상세 페이지에서 YES24·교보문고 구매 링크를 확인하실 수 있습니다. 일부 도서는 멤버십 전용으로만 제공됩니다.</p></div>
         </div>
       </div>
     </div>
@@ -2009,21 +2441,55 @@
     <div class="inner">
       <div class="section-tag animate">Membership</div>
       <h2 class="section-title animate">멤버십 안내</h2>
-      <p class="membership-intro animate">월 10,000원으로 연간 3~4권의 산서를 받아보세요.<br>하루재가 엄선한 세계의 산서가 집으로 찾아옵니다.</p>
-      <div class="membership-grid">
-        <div class="mem-card animate animate-delay-1">
-          <div class="mem-badge">지금 가입하면 축하선물 4권 증정</div>
-          <div class="mem-type">정기 멤버십</div>
-          <div class="mem-price">월 10,000원</div>
-          <div class="mem-period">연간 120,000원</div>
-          <ul class="mem-list">
-            <li>연간 3~4권의 산서 배송</li>
-            <li>권당 정가 50,000원 상당</li>
-            <li>하루재 큐레이션 도서 선정</li>
-            <li>컬러 사진 수록 고품질 도서</li>
-          </ul>
-          <a href="https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA" target="_blank" rel="noopener noreferrer" class="mem-btn">가입하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
+      <p class="membership-intro animate">국내 어디서도 구할 수 없는 산서를,<br>하루재가 직접 번역해서 집으로 보내드립니다.</p>
+
+      <div class="mem-layout">
+
+        <div class="mem-reasons animate animate-delay-1">
+          <div class="mem-reason">
+            <div class="mem-reason-num">01</div>
+            <div class="mem-reason-body">
+              <div class="mem-reason-title">하루재가 없었다면 없었을 책들입니다</div>
+              <div class="mem-reason-desc">하루재의 42권은 모두 국내 최초 번역서입니다. 세계 산악 문화의 정수를 담은 책들이 한국어로 존재할 수 있었던 건, 하루재가 먼저 읽고 가치를 판단했기 때문입니다.</div>
+            </div>
+          </div>
+          <div class="mem-reason">
+            <div class="mem-reason-num">02</div>
+            <div class="mem-reason-body">
+              <div class="mem-reason-title">한국산악회 회장이 고른 책들입니다</div>
+              <div class="mem-reason-desc">40여 년의 등반 이력을 가진 하루재클럽 대표가 직접 세계의 산서를 읽고 선별합니다. 유행이 아닌 등반 문화의 본질을 기준으로 합니다.</div>
+            </div>
+          </div>
+          <div class="mem-reason">
+            <div class="mem-reason-num">03</div>
+            <div class="mem-reason-body">
+              <div class="mem-reason-title">읽고 나면 산이 달라집니다</div>
+              <div class="mem-reason-desc">하루재의 책 한 권은 다음 산행을 조금씩 바꿉니다. 산을 오른 것과 산을 읽은 것의 차이를 알게 되는 순간이 있습니다.</div>
+            </div>
+          </div>
         </div>
+
+        <div class="mem-card-wrap">
+          <div class="mem-card animate animate-delay-2">
+            <div class="mem-badge">지금 가입하면 축하선물 4권 증정</div>
+            <div class="mem-type">정기 멤버십</div>
+            <div class="mem-price">월 10,000원</div>
+            <div class="mem-period">연간 120,000원</div>
+            <ul class="mem-list">
+              <li>연간 3~4권의 산서 배송</li>
+              <li>한국산악회 회장이 직접 선별한 도서</li>
+              <li>컬러 사진 수록 양장 고품질 도서</li>
+              <li>국내 최초 번역 산서 우선 제공</li>
+            </ul>
+            <a href="https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA" target="_blank" rel="noopener noreferrer" class="mem-btn">축하선물 4권 받고 시작하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
+            <div class="mem-guarantee">
+              <span>✓ 언제든 해지 가능</span>
+              <span>✓ 약정 없음</span>
+              <span>✓ 배송비 포함</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -2047,8 +2513,13 @@
   <footer>
     <div class="footer-inner">
       <div>
-        <div class="footer-logo">하루재클럽</div>
+        <div class="footer-logo"><img src="images/logo-sm.png" alt="하루재클럽"></div>
         <div class="footer-copy">© 2026 하루재클럽. All rights reserved.</div>
+        <div class="footer-contact">
+          <span>서울특별시 서초구 나루터로 15길 6 신사 제2빌딩 801호</span>
+          <a href="tel:02-521-0067">02-521-0067</a>
+          <a href="mailto:haroojaeclub@naver.com">haroojaeclub@naver.com</a>
+        </div>
       </div>
       <svg class="compass" viewBox="0 0 32 32" aria-hidden="true">
         <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
@@ -2134,6 +2605,29 @@
           document.getElementById('modalCoverTitle').textContent = card.dataset.title;
         }
 
+        // 수상 배지 (data-tags에서 자동 추출)
+        const awardsEl = document.getElementById('modalAwards');
+        const awardDefs = [
+          { key: 'BANFF',    cls: 'banff',      label: '🏔 BANFF 수상' },
+          { key: '세종도서', cls: 'sejong',     label: '📚 세종도서' },
+          { key: '황금피켈', cls: 'goldenpick', label: '⛏ 황금피켈상' },
+          { key: '아카데미상',cls: 'academy',   label: '🎬 아카데미상' },
+          { key: 'NOBA',     cls: 'noba',       label: '🏅 NOBA 수상' },
+        ];
+        const cardTags = card.dataset.tags || '';
+        const badgeHtml = awardDefs
+          .filter(a => cardTags.includes(a.key))
+          .map(a => `<span class="award-badge award-badge--${a.cls}">${a.label}</span>`)
+          .join('');
+        awardsEl.innerHTML = badgeHtml;
+        awardsEl.style.display = badgeHtml ? 'flex' : 'none';
+
+        // 저자 소개
+        const bioEl = document.getElementById('modalAuthorBio');
+        const bioText = card.dataset.authorBio || '';
+        document.getElementById('modalAuthorBioText').textContent = bioText;
+        bioEl.style.display = bioText ? 'block' : 'none';
+
         // 인상적인 한 줄
         const quoteWrap = document.getElementById('modalQuoteWrap');
         const quoteEl = document.getElementById('modalQuote');
@@ -2215,14 +2709,6 @@
       e.preventDefault();
       document.getElementById('newsletterSuccess').style.display = 'block';
       this.reset();
-    });
-
-    // ── 카라비너 — 찜하기 ──
-    document.querySelectorAll('.carabiner-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        btn.classList.toggle('saved');
-      });
     });
 
 
@@ -2441,6 +2927,110 @@
       document.getElementById('quizProgressTrack').style.display = 'none';
       quizShowStep('quiz-intro');
     }
+
+    // ── Books Filter ──
+    (function() {
+      const CAT_KEYWORDS = {
+        '히말라야':    ['히말라야', '에베레스트', 'K2', '낭가파르밧', '8000m', '안나푸르나', '브로드피크', '다울라기리', '가셔브룸', '카라코람'],
+        '알프스·암벽': ['알프스', '암벽등반', '요세미티', '마터호른', '파타고니아', '세로 토레', '빅월', '피츠로이', '드류', '아이거', '돌로미테', '워커 스퍼'],
+        '등반사':      ['등반사', '등산사', '황금기', '황금시대', '근대 등반사', '개척 등반', '한국 등반사', '미국 등반사', '영국 등반사'],
+        '기술·심리':   ['기술서', '심리학', '실전 팁', '일러스트', '매듭', '로프 시스템'],
+        '사진·문화':   ['사진집', '산악만화', '산악소설', '산악영화', '문화', '대형판'],
+        '한국·일본':   ['한국', '일본', '도서출판한국산악회', '인수봉', '한반도'],
+      };
+
+      function matchCat(tags, cat) {
+        return (CAT_KEYWORDS[cat] || []).some(kw => tags.includes(kw));
+      }
+
+      // 발간 순서(출판사 자료 기준)대로 카드 정렬
+      const PUB_ORDER = [
+        '세로 토레', 'Fallen Giants', '에베레스트 정복', '무상의 정복자', '꽃의 계곡',
+        '나의 인생 나의 철학', '엘리자베스 홀리', 'Freedom Climbers', '리카르도 캐신', 'CAMP SiX',
+        '하루를 살아도 호랑이처럼', '중국 등산 운동사', '일본 여성 등산사', '산책여행 (山册旅行)', '하늘에서 추락하다',
+        '마터호른의 그림자', 'ASCENT — 크리스 보닝턴 자서전', 'THE TOWER — 더 타워', '프리솔로 (FREE SOLO)', '산의 비밀',
+        '산의 전사들', '태양의 한 조각', '카트린 데스티벨', 'Art of Freedom', 'WINTER 8000',
+        '아득한 산들', '클라이머를 위한 1001가지 팁', '정당화할 수 없는 위험', '지옥은 나를 원하지않았다', '히말라야 다울라기리 탐사기',
+        '버티컬 마인드', '산 그 4차원의 세계', '산악만화 소설 영화계보', '캠프4', '재미있는 성공률 30%',
+        '북조선의 산', '게리 헤밍', "What's Next?",
+        '떠오르는 히말라야의 영웅들', '일러스트 클라이밍', '클라이머즈', '수직의 순례자들',
+      ];
+
+      const grid = document.getElementById('booksGrid');
+      if (grid) {
+        const orderIndex = t => {
+          const i = PUB_ORDER.indexOf(t);
+          return i === -1 ? PUB_ORDER.length : i;
+        };
+        Array.from(grid.querySelectorAll('.book-card'))
+          .sort((a, b) => orderIndex(a.dataset.title) - orderIndex(b.dataset.title))
+          .forEach(card => grid.appendChild(card));
+      }
+
+      const cards = document.querySelectorAll('#booksGrid .book-card');
+      const counts = { all: cards.length };
+      Object.keys(CAT_KEYWORDS).forEach(c => { counts[c] = 0; });
+
+      cards.forEach(card => {
+        const tags = card.dataset.tags || '';
+        Object.keys(CAT_KEYWORDS).forEach(c => { if (matchCat(tags, c)) counts[c]++; });
+      });
+
+      document.querySelectorAll('#booksFilter .filter-btn').forEach(btn => {
+        const f = btn.dataset.filter;
+        const n = counts[f] ?? 0;
+        btn.innerHTML = btn.textContent.trim() + `<span class="filter-count">${n}</span>`;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#booksFilter .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          cards.forEach(card => {
+            const tags = card.dataset.tags || '';
+            card.classList.toggle('hidden', f !== 'all' && !matchCat(tags, f));
+          });
+        });
+      });
+    })();
+
+    // ── Picks Slider ──
+    (function() {
+      const track = document.getElementById('picksTrack');
+      const slides = track ? track.querySelectorAll('.pick-slide') : [];
+      const dots = document.querySelectorAll('.picks-dot');
+      if (!slides.length) return;
+
+      let current = 0;
+      let autoTimer;
+
+      function goTo(idx) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = (idx + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        track.style.transform = `translateX(-${current * 100}%)`;
+      }
+
+      function startAuto() {
+        autoTimer = setInterval(() => goTo(current + 1), 5500);
+      }
+
+      function stopAuto() { clearInterval(autoTimer); }
+
+      document.getElementById('picksNext').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+      document.getElementById('picksPrev').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => { stopAuto(); goTo(+dot.dataset.index); startAuto(); });
+      });
+
+      const slider = document.querySelector('.picks-slider');
+      if (slider) {
+        slider.addEventListener('mouseenter', stopAuto);
+        slider.addEventListener('mouseleave', startAuto);
+      }
+
+      startAuto();
+    })();
   </script>
 </body>
 </html>
