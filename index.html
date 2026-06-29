@@ -1748,12 +1748,11 @@
       <h2 class="section-title animate">출간 도서</h2>
       <div class="books-filter animate" id="booksFilter">
         <button class="filter-btn active" data-filter="all">전체</button>
-        <button class="filter-btn" data-filter="히말라야">히말라야</button>
-        <button class="filter-btn" data-filter="알프스·암벽">알프스·암벽</button>
-        <button class="filter-btn" data-filter="등반사">등반사</button>
-        <button class="filter-btn" data-filter="기술·심리">기술·심리</button>
-        <button class="filter-btn" data-filter="사진·문화">사진·문화</button>
-        <button class="filter-btn" data-filter="한국·일본">한국·일본</button>
+        <button class="filter-btn" data-filter="전기·자서전">전기·자서전</button>
+        <button class="filter-btn" data-filter="등반기·원정">등반기·원정</button>
+        <button class="filter-btn" data-filter="역사·문화">역사·문화</button>
+        <button class="filter-btn" data-filter="기술·훈련">기술·훈련</button>
+        <button class="filter-btn" data-filter="사진집">사진집</button>
       </div>
       <div class="books-grid" id="booksGrid">
         <div class="book-card animate animate-delay-1" data-title="세로 토레" data-author="라인홀드 메스너 (Reinhold Messner)" data-desc="1959년 세로 토레 초등을 둘러싼 반세기의 논쟁. 메스너가 직접 진실을 추적하며 마에스트리의 초등이 거짓임을 증명하는 과정을 담은 책." data-year="등반사① 시리즈 1" data-lang="독일어 번역" data-img="images/books/01-세로토레.jpg" data-yes24="https://www.yes24.com/product/goods/14123181" data-kyobo="https://product.kyobobook.co.kr/detail/S000001602829" data-quote="마에스트리는 진실을 정상에 묻어두었다. 메스너는 반세기 후 그것을 파냈다." data-tags="세로 토레, 파타고니아, 초등 논쟁, 마에스트리">
@@ -2479,7 +2478,6 @@
               <li>연간 3~4권의 산서 배송</li>
               <li>한국산악회 회장이 직접 선별한 도서</li>
               <li>컬러 사진 수록 양장 고품질 도서</li>
-              <li>국내 최초 번역 산서 우선 제공</li>
             </ul>
             <a href="https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA" target="_blank" rel="noopener noreferrer" class="mem-btn">축하선물 4권 받고 시작하기<span class="book-icon"><span class="book-page book-page-left"></span><span class="book-page book-page-right"></span></span></a>
             <div class="mem-guarantee">
@@ -2930,17 +2928,35 @@
 
     // ── Books Filter ──
     (function() {
-      const CAT_KEYWORDS = {
-        '히말라야':    ['히말라야', '에베레스트', 'K2', '낭가파르밧', '8000m', '안나푸르나', '브로드피크', '다울라기리', '가셔브룸', '카라코람'],
-        '알프스·암벽': ['알프스', '암벽등반', '요세미티', '마터호른', '파타고니아', '세로 토레', '빅월', '피츠로이', '드류', '아이거', '돌로미테', '워커 스퍼'],
-        '등반사':      ['등반사', '등산사', '황금기', '황금시대', '근대 등반사', '개척 등반', '한국 등반사', '미국 등반사', '영국 등반사'],
-        '기술·심리':   ['기술서', '심리학', '실전 팁', '일러스트', '매듭', '로프 시스템'],
-        '사진·문화':   ['사진집', '산악만화', '산악소설', '산악영화', '문화', '대형판'],
-        '한국·일본':   ['한국', '일본', '도서출판한국산악회', '인수봉', '한반도'],
+      const CAT_BY_TITLE = {
+        '전기·자서전': [
+          '무상의 정복자', '나의 인생 나의 철학', '리카르도 캐신',
+          'ASCENT — 크리스 보닝턴 자서전', '카트린 데스티벨', 'Art of Freedom',
+          '마터호른의 그림자', '지옥은 나를 원하지않았다', '하루를 살아도 호랑이처럼',
+          '게리 헤밍', '프리솔로 (FREE SOLO)', '재미있는 성공률 30%',
+          "What's Next?", '태양의 한 조각', '엘리자베스 홀리',
+        ],
+        '등반기·원정': [
+          '세로 토레', '에베레스트 정복', '꽃의 계곡', 'CAMP SiX',
+          '하늘에서 추락하다', 'THE TOWER — 더 타워', '산의 비밀',
+          '히말라야 다울라기리 탐사기', '캠프4', '아득한 산들',
+        ],
+        '역사·문화': [
+          'Fallen Giants', 'Freedom Climbers', '중국 등산 운동사', '일본 여성 등산사',
+          '산책여행 (山册旅行)', '산의 전사들', '정당화할 수 없는 위험',
+          'WINTER 8000', '북조선의 산', '수직의 순례자들', '산악만화 소설 영화계보',
+          '떠오르는 히말라야의 영웅들',
+        ],
+        '기술·훈련': [
+          '클라이머를 위한 1001가지 팁', '버티컬 마인드', '일러스트 클라이밍',
+        ],
+        '사진집': [
+          '산 그 4차원의 세계', '클라이머즈',
+        ],
       };
 
-      function matchCat(tags, cat) {
-        return (CAT_KEYWORDS[cat] || []).some(kw => tags.includes(kw));
+      function matchCat(tags, cat, title) {
+        return (CAT_BY_TITLE[cat] || []).includes(title);
       }
 
       // 발간 순서(출판사 자료 기준)대로 카드 정렬
@@ -2969,11 +2985,12 @@
 
       const cards = document.querySelectorAll('#booksGrid .book-card');
       const counts = { all: cards.length };
-      Object.keys(CAT_KEYWORDS).forEach(c => { counts[c] = 0; });
+      Object.keys(CAT_BY_TITLE).forEach(c => { counts[c] = 0; });
 
       cards.forEach(card => {
         const tags = card.dataset.tags || '';
-        Object.keys(CAT_KEYWORDS).forEach(c => { if (matchCat(tags, c)) counts[c]++; });
+        const title = card.dataset.title || '';
+        Object.keys(CAT_BY_TITLE).forEach(c => { if (matchCat(tags, c, title)) counts[c]++; });
       });
 
       document.querySelectorAll('#booksFilter .filter-btn').forEach(btn => {
@@ -2985,7 +3002,8 @@
           btn.classList.add('active');
           cards.forEach(card => {
             const tags = card.dataset.tags || '';
-            card.classList.toggle('hidden', f !== 'all' && !matchCat(tags, f));
+            const title = card.dataset.title || '';
+            card.classList.toggle('hidden', f !== 'all' && !matchCat(tags, f, title));
           });
         });
       });
