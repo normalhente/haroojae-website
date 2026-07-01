@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -18,6 +18,15 @@
       --border: #E6E2DA;
       --dark: #1A2820;
       --gold: #C8A96E;
+
+      /* ── 배경 이미지 위치 (0%=위, 100%=아래) ── */
+      --hero-bg-y: 72%;
+
+      /* ── 山 한자 위치 조절 ── */
+      --kanji-left: 17.1vw;
+      --kanji-bottom: 8.0vh;
+      --kanji-size: clamp(200px, 50vw, 900px);
+      --kanji-opacity: 0.07;
     }
 
     body {
@@ -71,7 +80,7 @@
       text-align: center;
       padding: 11px 48px;
       font-size: 13px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       position: relative;
       display: flex;
       align-items: center;
@@ -141,7 +150,7 @@
       font-size: 13px;
       color: var(--muted);
       text-decoration: none;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       transition: color 0.2s;
     }
 
@@ -209,7 +218,7 @@
 
     .section-tag {
       font-size: 11px;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.16em;
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 12px;
@@ -233,24 +242,55 @@
       background: repeating-linear-gradient(-35deg, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0.2) 3px, transparent 3px, transparent 6px);
     }
 
+    /* ── 비히어로 섹션 글자 크기 ── */
+    section:not(#hero), footer {
+      font-size: 106%;
+    }
+
     /* ── Hero ── */
     #hero {
       min-height: calc(100vh - 64px);
       display: flex;
       align-items: center;
       position: relative;
-      overflow: hidden;
+      overflow: clip;
+      background-image: url('images/hero-himalaya.jpg');
+      background-size: cover;
+      background-position: center var(--hero-bg-y);
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(250, 250, 247, 0.55) 0%,
+        rgba(250, 250, 247, 0.55) 45%,
+        rgba(250, 250, 247, 0.85) 72%,
+        rgba(250, 250, 247, 1.00) 92%,
+        rgba(250, 250, 247, 1.00) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+    #hero .hero-kanji {
+      position: relative;
+      z-index: 2;
+    }
+    #hero .inner {
+      position: relative;
+      z-index: 2;
     }
 
     .hero-kanji {
       position: absolute;
-      right: -2vw;
-      bottom: -8vh;
-      font-size: clamp(280px, 38vw, 560px);
+      left: var(--kanji-left);
+      bottom: var(--kanji-bottom);
+      font-size: var(--kanji-size);
       line-height: 1;
       color: var(--accent);
-      opacity: 0.045;
-      font-family: 'Apple SD Gothic Neo', 'Noto Serif KR', Georgia, serif;
+      opacity: var(--kanji-opacity);
+      font-family: 'Ma Shan Zheng', 'Noto Serif KR', Georgia, serif;
       font-weight: 900;
       pointer-events: none;
       user-select: none;
@@ -258,11 +298,12 @@
     }
 
     .hero-label {
-      font-size: 11px;
-      letter-spacing: 0.2em;
+      font-size: 14.08px;
+      letter-spacing: 0.16em;
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 28px;
+      transform: translate(0px, -1px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
     }
@@ -306,7 +347,7 @@
       font-size: 14px;
       padding: 15px 36px;
       text-decoration: none;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
       transition: background 0.2s, transform 0.2s;
       opacity: 0;
       animation: fadeUp 0.9s ease 1.7s forwards;
@@ -351,7 +392,7 @@
     .filter-btn {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       padding: 8px 18px;
       border: 1px solid var(--border);
       background: transparent;
@@ -565,7 +606,7 @@
     .modal-lang {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 10px;
@@ -612,7 +653,7 @@
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .award-badge--banff       { background: #1a3a5c; color: #fff; }
@@ -625,7 +666,7 @@
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11.5px;
       color: var(--muted);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.01em;
       margin-bottom: 0;
     }
 
@@ -683,7 +724,7 @@
 
     .modal-author-bio-label {
       font-size: 10px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 8px;
@@ -703,7 +744,7 @@
       padding: 4px 10px;
       border: 1px solid var(--border);
       color: var(--muted);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.01em;
       background: transparent;
       transition: border-color 0.2s, color 0.2s;
     }
@@ -719,7 +760,7 @@
     .modal-buy-label {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 10px;
@@ -735,7 +776,7 @@
       padding: 13px 16px;
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       text-align: center;
       text-decoration: none;
       border: 1px solid var(--border);
@@ -808,7 +849,7 @@
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       padding: 4px 10px;
       background: var(--gold);
       color: #1a1a1a;
@@ -832,7 +873,7 @@
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 12.5px;
       color: rgba(255,255,255,0.45);
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
     }
 
     .pick-divider {
@@ -962,13 +1003,13 @@
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       color: var(--muted);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       overflow: hidden;
     }
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
     .about-name { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
-    .about-role { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.02em; }
+    .about-role { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
     .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
     .about-quote {
@@ -1032,7 +1073,7 @@
       border: none;
       padding: 14px 32px;
       font-size: 14px;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
       margin-top: 8px;
@@ -1110,7 +1151,7 @@
     .mem-recent-label {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 14px;
@@ -1181,7 +1222,7 @@
     .mem-reason-num {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       color: var(--gold);
       font-family: 'Apple SD Gothic Neo', sans-serif;
       padding-top: 3px;
@@ -1262,7 +1303,7 @@
       padding: 15px;
       font-size: 14px;
       text-decoration: none;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
       border: 1px solid var(--accent);
       color: var(--accent);
       transition: all 0.2s;
@@ -1328,7 +1369,7 @@
       border: 1px solid var(--accent);
       padding: 14px 24px;
       font-size: 14px;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.01em;
       cursor: pointer;
       transition: background 0.2s;
       white-space: nowrap;
@@ -1437,7 +1478,7 @@
       right: 0; top: 8px;
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
       color: rgba(255,255,255,0.3);
     }
 
@@ -1489,7 +1530,7 @@
       padding: 14px 40px;
       font-size: 14px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
       font-family: 'Noto Serif KR', serif;
@@ -1501,7 +1542,7 @@
     .quiz-q-num {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       color: var(--gold);
       margin-bottom: 16px;
     }
@@ -1570,7 +1611,7 @@
     .quiz-result-header p {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 13px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
       color: var(--gold);
       margin-bottom: 8px;
     }
@@ -1620,7 +1661,7 @@
     .quiz-result-lang {
       font-family: 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       color: var(--gold);
       margin-bottom: 12px;
       display: flex;
@@ -1676,7 +1717,7 @@
       color: rgba(255,255,255,0.7);
       padding: 10px 22px;
       font-size: 12px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       cursor: pointer;
       font-family: 'Noto Serif KR', serif;
       transition: border-color 0.2s, color 0.2s;
@@ -1693,7 +1734,7 @@
       font-size: 12px;
       color: rgba(255,255,255,0.3);
       cursor: pointer;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       margin-top: 16px;
       transition: color 0.2s;
     }
@@ -1718,7 +1759,7 @@
 
   <!-- Navigation -->
   <nav id="mainNav">
-    <a href="#hero" class="nav-logo"><img src="images/logo-sm.jpg" alt="하루재클럽"></a>
+    <a href="#hero" class="nav-logo"><img src="images/logo-sm.png" alt="하루재클럽"></a>
     <ul class="nav-links">
       <li><a href="#books" class="nav-link">책 소개
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
@@ -2529,7 +2570,7 @@
   <footer>
     <div class="footer-inner">
       <div>
-        <div class="footer-logo"><img src="images/logo-sm.jpg" alt="하루재클럽"></div>
+        <div class="footer-logo"><img src="images/logo-sm.png" alt="하루재클럽"></div>
         <div class="footer-copy">© 2026 하루재클럽. All rights reserved.</div>
         <div class="footer-contact">
           <span>서울특별시 서초구 나루터로 15길 6 신사 제2빌딩 801호</span>
@@ -3067,6 +3108,287 @@
 
       startAuto();
     })();
+  </script>
+
+  <!-- ── 히어로 편집 도구 (개발용) ── -->
+  <script>
+  (function() {
+    const root = document.documentElement;
+
+    const TARGETS = [
+      { sel: '.hero-kanji', name: '山 한자' },
+      { sel: '.hero-label', name: '소제목' },
+      { sel: '.hero-title', name: '메인 제목' },
+      { sel: '.hero-desc',  name: '설명 글' },
+      { sel: '.hero-cta',   name: 'CTA 버튼' },
+      { sel: '__bg__',      name: '배경 사진' },
+    ];
+
+    let editMode = false;
+    let activeSel = null;
+    let dragging = false;
+
+    // 요소별 상태
+    const state = {};
+    TARGETS.forEach(({ sel }) => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      state[sel] = { el, tx: 0, ty: 0, origFontSize: parseFloat(getComputedStyle(el).fontSize) };
+    });
+
+    // 山 전용 상태
+    let kLeft = 3, kBottom = -5, kSize = 50, kOpacity = 7;
+    // 배경 이미지 상태
+    let bgY = 60;
+
+    function applyKanji() {
+      root.style.setProperty('--kanji-left',    `${kLeft.toFixed(1)}vw`);
+      root.style.setProperty('--kanji-bottom',  `${kBottom.toFixed(1)}vh`);
+      root.style.setProperty('--kanji-size',    `clamp(200px,${kSize}vw,900px)`);
+      root.style.setProperty('--kanji-opacity', (kOpacity/100).toFixed(2));
+    }
+
+    // ── 토글 버튼 ──
+    const toggleBtn = document.createElement('button');
+    toggleBtn.textContent = '✏️ 편집 모드';
+    Object.assign(toggleBtn.style, {
+      position:'fixed', bottom:'24px', right:'24px', zIndex:'99999',
+      background:'#2C4A1E', color:'#fff', border:'none',
+      padding:'10px 18px', borderRadius:'8px', cursor:'pointer',
+      fontSize:'13px', fontFamily:'sans-serif',
+      boxShadow:'0 2px 12px rgba(0,0,0,0.35)'
+    });
+    document.body.appendChild(toggleBtn);
+
+    // ── 선택 하이라이트 ──
+    const hl = document.createElement('div');
+    Object.assign(hl.style, {
+      position:'fixed', border:'2px dashed #7dff9a', borderRadius:'4px',
+      pointerEvents:'none', zIndex:'99998', display:'none',
+      boxShadow:'0 0 0 4px rgba(125,255,154,0.15)'
+    });
+    document.body.appendChild(hl);
+
+    function updateHL(el) {
+      if (!el) { hl.style.display = 'none'; return; }
+      const r = el.getBoundingClientRect();
+      Object.assign(hl.style, {
+        display: 'block',
+        left:   (r.left - 6) + 'px', top:    (r.top - 6) + 'px',
+        width:  (r.width + 12) + 'px', height: (r.height + 12) + 'px',
+      });
+    }
+
+    // ── 패널 ──
+    const panel = document.createElement('div');
+    Object.assign(panel.style, {
+      display:'none', position:'fixed', bottom:'72px', right:'24px',
+      zIndex:'99999', background:'rgba(12,20,12,0.97)', color:'#fff',
+      padding:'18px 20px', borderRadius:'12px', fontSize:'12px',
+      width:'250px', fontFamily:'sans-serif', lineHeight:'2',
+      boxShadow:'0 4px 24px rgba(0,0,0,0.5)'
+    });
+    document.body.appendChild(panel);
+
+    // 요소 탭 목록
+    function buildPanel(sel) {
+      activeSel = sel;
+      const isKanji = sel === '.hero-kanji';
+      const isBg    = sel === '__bg__';
+      const s = state[sel];
+
+      const tabsHTML = TARGETS.map(t =>
+        `<button data-sel="${t.sel}" style="
+          padding:5px 10px; border:none; border-radius:5px; cursor:pointer;
+          font-size:11px; font-family:sans-serif;
+          background:${t.sel === sel ? '#2C4A1E' : '#1a2a1a'};
+          color:${t.sel === sel ? '#7dff9a' : '#888'};
+          margin:2px;
+        ">${t.name}</button>`
+      ).join('');
+
+      const controlsHTML = isBg ? `
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          상하 위치 <input type="range" id="pBgY" min="0" max="100" value="${bgY}" style="flex:1">
+          <span id="pBgYV" style="width:40px;text-align:right;">${bgY}%</span>
+        </label>
+        <div style="color:#888;font-size:10px;margin-top:4px;">0% = 위쪽 · 100% = 아래쪽</div>
+      ` : isKanji ? `
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          크기 <input type="range" id="pSize" min="20" max="80" value="${kSize}" style="flex:1">
+          <span id="pSizeV" style="width:40px;text-align:right;">${kSize}vw</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          진하기 <input type="range" id="pOp" min="1" max="20" value="${kOpacity}" style="flex:1">
+          <span id="pOpV" style="width:40px;text-align:right;">${(kOpacity/100).toFixed(2)}</span>
+        </label>
+      ` : `
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          글자 크기 <input type="range" id="pFS" min="50" max="200" value="100" style="flex:1">
+          <span id="pFSV" style="width:40px;text-align:right;">100%</span>
+        </label>
+      `;
+
+      const dragHint = isBg ? '' : '<div style="color:#888;font-size:11px;margin-bottom:10px;">드래그로 위치 이동</div>';
+
+      panel.innerHTML = `
+        <div style="font-weight:700;font-size:13px;color:#7dff9a;margin-bottom:10px;">✏️ 히어로 편집</div>
+        <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:12px;">${tabsHTML}</div>
+        ${dragHint}
+        ${controlsHTML}
+        <div style="background:#0a0f0a;padding:10px;border-radius:6px;font-family:monospace;
+          font-size:10px;color:#7dff9a;white-space:pre;line-height:1.8;margin-top:10px;" id="pCode"></div>
+        <button id="pSend" style="margin-top:10px;width:100%;padding:8px;
+          background:#2C4A1E;color:#fff;border:none;border-radius:6px;
+          cursor:pointer;font-size:12px;font-family:sans-serif;">
+          📋 값 복사 → 나한테 붙여넣기
+        </button>
+      `;
+
+      // 탭 전환
+      panel.querySelectorAll('[data-sel]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          buildPanel(btn.dataset.sel);
+          updateHL(state[btn.dataset.sel]?.el);
+        });
+      });
+
+      // 슬라이더 이벤트
+      if (isBg) {
+        panel.querySelector('#pBgY').addEventListener('input', e => {
+          bgY = parseInt(e.target.value);
+          panel.querySelector('#pBgYV').textContent = bgY + '%';
+          root.style.setProperty('--hero-bg-y', bgY + '%');
+          updateCode();
+        });
+      } else if (isKanji) {
+        panel.querySelector('#pSize').addEventListener('input', e => {
+          kSize = parseInt(e.target.value);
+          panel.querySelector('#pSizeV').textContent = kSize + 'vw';
+          applyKanji(); updateCode();
+        });
+        panel.querySelector('#pOp').addEventListener('input', e => {
+          kOpacity = parseInt(e.target.value);
+          panel.querySelector('#pOpV').textContent = (kOpacity/100).toFixed(2);
+          applyKanji(); updateCode();
+        });
+      } else {
+        panel.querySelector('#pFS').addEventListener('input', e => {
+          const pct = parseInt(e.target.value);
+          panel.querySelector('#pFSV').textContent = pct + '%';
+          s.el.style.fontSize = (s.origFontSize * pct / 100) + 'px';
+          updateCode();
+        });
+      }
+
+      panel.querySelector('#pSend').addEventListener('click', () => {
+        navigator.clipboard.writeText(panel.querySelector('#pCode').textContent).then(() => {
+          panel.querySelector('#pSend').textContent = '복사됨 ✓ 저한테 붙여넣기!';
+          setTimeout(() => panel.querySelector('#pSend').textContent = '📋 값 복사 → 나한테 붙여넣기', 2000);
+        });
+      });
+
+      updateCode();
+    }
+
+    function updateCode() {
+      const codeEl = panel.querySelector('#pCode');
+      if (!codeEl) return;
+      if (activeSel === '__bg__') {
+        codeEl.textContent = `--hero-bg-y: ${bgY}%;`;
+      } else if (activeSel === '.hero-kanji') {
+        codeEl.textContent =
+          `--kanji-left:    ${kLeft.toFixed(1)}vw;\n` +
+          `--kanji-bottom:  ${kBottom.toFixed(1)}vh;\n` +
+          `--kanji-size:    clamp(200px,${kSize}vw,900px);\n` +
+          `--kanji-opacity: ${(kOpacity/100).toFixed(2)};`;
+      } else {
+        const s = state[activeSel];
+        codeEl.textContent =
+          `[${activeSel}]\n` +
+          `transform: translate(${s.tx.toFixed(0)}px, ${s.ty.toFixed(0)}px);\n` +
+          `font-size: ${s.el.style.fontSize || '(변경없음)'};`;
+      }
+    }
+
+    // ── 드래그 ──
+    document.addEventListener('mousedown', e => {
+      if (!editMode) return;
+      const hit = TARGETS.find(t => state[t.sel]?.el.contains(e.target));
+      if (!hit) return;
+
+      const sel = hit.sel;
+      const s   = state[sel];
+      buildPanel(sel);
+      updateHL(s.el);
+
+      dragging = true;
+      const mx0 = e.clientX, my0 = e.clientY;
+      const tx0 = sel === '.hero-kanji' ? kLeft   : s.tx;
+      const ty0 = sel === '.hero-kanji' ? kBottom : s.ty;
+      s.el.style.cursor = 'grabbing';
+
+      function onMove(e) {
+        if (!dragging) return;
+        const dx = e.clientX - mx0;
+        const dy = e.clientY - my0;
+        if (sel === '.hero-kanji') {
+          kLeft   = tx0 + dx / window.innerWidth  * 100;
+          kBottom = ty0 - dy / window.innerHeight * 100;
+          applyKanji();
+        } else {
+          s.tx = tx0 + dx;
+          s.ty = ty0 + dy;
+          s.el.style.transform = `translate(${s.tx.toFixed(0)}px,${s.ty.toFixed(0)}px)`;
+        }
+        updateHL(s.el);
+        updateCode();
+      }
+      function onUp() {
+        dragging = false;
+        s.el.style.cursor = 'grab';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      e.preventDefault();
+    });
+
+    // ── 토글 ──
+    function enterEdit() {
+      editMode = true;
+      toggleBtn.textContent = '편집 종료 ✕';
+      toggleBtn.style.background = '#8B0000';
+      panel.style.display = 'block';
+      TARGETS.forEach(({ sel }) => {
+        const s = state[sel];
+        if (!s) return;
+        s.el.style.cursor = 'grab';
+        s.el.style.userSelect = 'none';
+        if (sel === '.hero-kanji') s.el.style.pointerEvents = 'auto';
+      });
+      buildPanel('.hero-kanji');
+      updateHL(state['.hero-kanji']?.el);
+    }
+
+    function exitEdit() {
+      editMode = false;
+      toggleBtn.textContent = '✏️ 편집 모드';
+      toggleBtn.style.background = '#2C4A1E';
+      panel.style.display = 'none';
+      hl.style.display = 'none';
+      TARGETS.forEach(({ sel }) => {
+        const s = state[sel];
+        if (!s) return;
+        s.el.style.cursor = '';
+        s.el.style.userSelect = '';
+        if (sel === '.hero-kanji') s.el.style.pointerEvents = 'none';
+      });
+    }
+
+    toggleBtn.addEventListener('click', () => editMode ? exitEdit() : enterEdit());
+  })();
   </script>
 </body>
 </html>
