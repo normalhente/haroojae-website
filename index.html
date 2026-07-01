@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <script>
+  (function(d) {
+    var config = {
+      kitId: 'ral7dhj',
+      scriptTimeout: 3000,
+      async: true
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -30,10 +40,12 @@
     }
 
     body {
-      font-family: 'Noto Serif KR', 'Apple SD Gothic Neo', Georgia, serif;
+      font-family: source-han-serif-korean, 'Noto Serif KR', Georgia, serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
 
     /* ── Scroll Animation ── */
@@ -168,8 +180,10 @@
     }
     .nav-link:hover svg path { stroke-dashoffset: 0; }
 
-    .nav-cta { background: var(--accent); color: var(--bg) !important; padding: 9px 20px; }
+    .nav-cta { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; background: var(--accent); color: var(--bg) !important; padding: 9px 20px; border-radius: 2px; letter-spacing: 0.03em; }
     .nav-cta:hover { background: var(--accent-light) !important; }
+    .nav-sns { display: flex; align-items: center; color: var(--muted); transition: color 0.2s; }
+    .nav-sns:hover { color: var(--accent); }
 
     .hamburger {
       display: none;
@@ -216,16 +230,26 @@
 
     .inner { max-width: 1000px; margin: 0 auto; }
 
+    /* ── 타이포 위계 ──
+       Tag   : 10px uppercase tracking  → 분류 레이블
+       Title : 30px serif 600           → 섹션 제목
+       Sub   : 17px serif 600           → 서브헤딩 (phil-label 등)
+       Body  : 15–16px, line-height 2   → 본문
+       Caption: 11–12px                 → 보조 설명
+    ── */
     .section-tag {
+      font-family: 'garamond-premier-pro', Georgia, serif;
       font-size: 11px;
       letter-spacing: 0.16em;
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 12px;
+      margin-left: 0.08em;
     }
 
     .section-title {
-      font-size: 26px;
+      font-family: 'garamond-premier-pro-subhead', 'source-han-serif-korean', Georgia, serif;
+      font-size: 30px;
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 52px;
@@ -264,11 +288,11 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(250, 250, 247, 0.55) 0%,
-        rgba(250, 250, 247, 0.55) 45%,
-        rgba(250, 250, 247, 0.85) 72%,
-        rgba(250, 250, 247, 1.00) 92%,
-        rgba(250, 250, 247, 1.00) 100%
+        rgba(250, 250, 247, 0.60) 0%,
+        rgba(250, 250, 247, 0.75) 30%,
+        rgba(250, 250, 247, 0.75) 60%,
+        rgba(250, 250, 247, 0.92) 80%,
+        rgba(250, 250, 247, 1.00) 95%
       );
       z-index: 1;
       pointer-events: none;
@@ -290,7 +314,7 @@
       line-height: 1;
       color: var(--accent);
       opacity: var(--kanji-opacity);
-      font-family: 'Ma Shan Zheng', 'Noto Serif KR', Georgia, serif;
+      font-family: 'Ma Shan Zheng', source-han-serif-korean, 'Noto Serif KR', Georgia, serif;
       font-weight: 900;
       pointer-events: none;
       user-select: none;
@@ -298,11 +322,12 @@
     }
 
     .hero-label {
+      font-family: 'garamond-premier-pro', Georgia, serif;
       font-size: 14.08px;
       letter-spacing: 0.16em;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
       transform: translate(0px, -1px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
@@ -313,7 +338,8 @@
       font-weight: 600;
       letter-spacing: -0.02em;
       line-height: 1.4;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
+      margin-left: -0.05em;
       max-width: 680px;
     }
     .hero-title .title-line {
@@ -336,24 +362,39 @@
       max-width: 480px;
       line-height: 2;
       margin-bottom: 52px;
+      text-shadow: 0 1px 12px rgba(250,250,247,0.9);
       opacity: 0;
       animation: fadeUp 0.9s ease 1.5s forwards;
     }
 
     .hero-cta {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
       font-size: 14px;
-      padding: 15px 36px;
+      padding: 14px 32px;
       text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.05em;
+      transition: background 0.25s, color 0.25s, transform 0.2s;
       opacity: 0;
       animation: fadeUp 0.9s ease 1.7s forwards;
     }
-
-    .hero-cta:hover { background: var(--accent-light); transform: translateY(-2px); }
+    .hero-cta::after {
+      content: '→';
+      transition: transform 0.2s;
+    }
+    .hero-cta:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .hero-cta:hover::after { transform: translateX(4px); }
 
     .hero-stat {
       margin-top: 80px;
@@ -364,14 +405,14 @@
     }
 
     .stat-num {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 32px;
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
 
-    .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+    .stat-label { font-family: 'garamond-premier-pro', Georgia, serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
     .stat-num--text { font-size: 18px; letter-spacing: -0.01em; }
 
     @keyframes fadeUp {
@@ -390,10 +431,10 @@
     }
 
     .filter-btn {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 12px;
-      letter-spacing: 0.05em;
-      padding: 8px 18px;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+      padding: 9px 22px;
       border: 1px solid var(--border);
       background: transparent;
       color: var(--muted);
@@ -604,7 +645,7 @@
     .modal-close:hover { color: var(--text); }
 
     .modal-lang {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: 'garamond-premier-pro', Georgia, serif;
       font-size: 10px;
       letter-spacing: 0.14em;
       color: var(--accent);
@@ -634,7 +675,7 @@
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 10px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       line-height: 1.65;
     }
 
@@ -650,7 +691,7 @@
       align-items: center;
       padding: 3px 9px;
       border-radius: 2px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -663,7 +704,7 @@
     .award-badge--noba        { background: #4a1942; color: #fff; }
 
     .modal-meta {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11.5px;
       color: var(--muted);
       letter-spacing: 0.01em;
@@ -681,7 +722,7 @@
       color: #333;
       line-height: 2.05;
       margin-bottom: 28px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
     }
 
     .modal-quote {
@@ -712,7 +753,7 @@
     }
 
     .modal-author-bio {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12.5px;
       line-height: 1.85;
       color: #666;
@@ -728,7 +769,7 @@
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 8px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
     }
 
     .modal-tags {
@@ -739,7 +780,7 @@
     }
 
     .modal-tag-item {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       padding: 4px 10px;
       border: 1px solid var(--border);
@@ -758,7 +799,7 @@
     }
 
     .modal-buy-label {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
       letter-spacing: 0.09em;
       color: var(--muted);
@@ -774,7 +815,7 @@
     .modal-buy-btn {
       flex: 1;
       padding: 13px 16px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       letter-spacing: 0.05em;
       text-align: center;
@@ -846,7 +887,7 @@
 
     .pick-badge {
       display: inline-block;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: 'garamond-premier-pro', Georgia, serif;
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -870,7 +911,7 @@
     }
 
     .pick-author {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12.5px;
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.01em;
@@ -893,7 +934,7 @@
     }
 
     .pick-note {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12.5px;
       color: rgba(255,255,255,0.42);
       line-height: 1.8;
@@ -965,23 +1006,24 @@
       line-height: 1.9;
       max-width: 680px;
       margin-bottom: 64px;
+      word-break: keep-all;
       color: rgba(255,255,255,0.92);
     }
 
     .philosophy-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 
     .phil-label {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 16px;
-      padding-bottom: 12px;
+      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 14px;
+      padding-bottom: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
-    .phil-text { font-size: 15px; color: rgba(255,255,255,0.78); line-height: 2; }
+    .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 2.1; }
 
     /* ── About ── */
     #about { background: #EFEAE2; }
@@ -1000,7 +1042,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.05em;
@@ -1009,7 +1051,7 @@
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
     .about-name { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
-    .about-role { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
+    .about-role { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
     .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
     .about-quote {
@@ -1043,12 +1085,12 @@
     .form-full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+    .form-group label { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       background: var(--bg);
       border: 1px solid var(--border);
       padding: 12px 16px;
@@ -1067,7 +1109,7 @@
     .form-group textarea { resize: vertical; min-height: 120px; }
 
     .form-submit {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       background: var(--accent);
       color: #fff;
       border: none;
@@ -1149,7 +1191,7 @@
     }
 
     .mem-recent-label {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       letter-spacing: 0.05em;
       color: var(--muted);
@@ -1183,7 +1225,7 @@
     }
 
     .mem-guarantee span {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11.5px;
       color: var(--muted);
     }
@@ -1224,7 +1266,7 @@
       font-weight: 700;
       letter-spacing: 0.05em;
       color: var(--gold);
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       padding-top: 3px;
       flex-shrink: 0;
     }
@@ -1238,7 +1280,7 @@
     }
 
     .mem-reason-desc {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 13.5px;
       color: var(--muted);
       line-height: 1.9;
@@ -1267,7 +1309,7 @@
       top: -14px; left: 40px;
       background: var(--gold);
       color: var(--dark);
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.01em;
@@ -1275,10 +1317,10 @@
       box-shadow: 0 4px 12px rgba(26,40,32,0.18);
     }
 
-    .mem-type { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .mem-type { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em; }
 
-    .mem-price { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+    .mem-price { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
+    .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 
     .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
 
@@ -1294,22 +1336,24 @@
     .mem-list li::before { content: "—"; color: var(--accent); flex-shrink: 0; }
 
     .mem-btn {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
       gap: 10px;
       text-align: center;
-      padding: 15px;
+      padding: 16px;
       font-size: 14px;
+      letter-spacing: 0.04em;
       text-decoration: none;
-      letter-spacing: 0.01em;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      transition: all 0.2s;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 2px;
+      transition: all 0.25s;
     }
 
-    .mem-btn:hover { background: var(--accent); color: #fff; }
+    .mem-btn:hover { background: var(--accent-light); transform: translateY(-2px); }
 
     .book-icon { position: relative; width: 17px; height: 13px; perspective: 50px; }
     .book-page { position: absolute; top: 0; width: 8.5px; height: 13px; background: currentColor; opacity: 0.85; }
@@ -1345,7 +1389,7 @@
     }
 
     .newsletter-input {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       flex: 1;
       background: #fff;
       border: 1px solid var(--border);
@@ -1363,7 +1407,7 @@
     .newsletter-input::placeholder { color: #bbb; }
 
     .newsletter-btn {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       background: var(--accent);
       color: #fff;
       border: 1px solid var(--accent);
@@ -1397,16 +1441,17 @@
 
     .footer-logo { margin-bottom: 10px; }
     .footer-logo img { height: 24px; width: auto; display: block; filter: invert(1); }
-    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .footer-copy { font-family: 'garamond-premier-pro', Georgia, serif; font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
     .footer-contact { display: flex; flex-direction: column; gap: 3px; }
     .footer-contact a, .footer-contact span {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       color: rgba(255,255,255,0.35);
       text-decoration: none;
       transition: color 0.2s;
     }
     .footer-contact a:hover { color: var(--gold); }
+    .footer-sns { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
     .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.9; text-align: right; }
     .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
     .compass:hover { opacity: 1; }
@@ -1450,7 +1495,7 @@
     #quiz .section-tag { color: var(--gold); border-color: rgba(200,169,110,0.3); }
     #quiz .section-title { color: #fff; }
     #quiz .section-title::after { background: repeating-linear-gradient(-35deg, rgba(200,169,110,0.3) 0px, rgba(200,169,110,0.3) 3px, transparent 3px, transparent 6px); }
-    #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 15px; }
+    #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 15px; }
 
     .quiz-wrap {
       max-width: 680px;
@@ -1476,7 +1521,7 @@
     .quiz-progress-label {
       position: absolute;
       right: 0; top: 8px;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       letter-spacing: 0.09em;
       color: rgba(255,255,255,0.3);
@@ -1516,7 +1561,7 @@
     }
 
     .quiz-intro p {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 15px;
       color: rgba(255,255,255,0.5);
       line-height: 1.8;
@@ -1533,14 +1578,14 @@
       letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
-      font-family: 'Noto Serif KR', serif;
+      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
     }
 
     .quiz-start-btn:hover { opacity: 0.88; transform: translateY(-2px); }
 
     /* 질문 */
     .quiz-q-num {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 11px;
       letter-spacing: 0.14em;
       color: var(--gold);
@@ -1596,7 +1641,7 @@
     }
 
     .quiz-opt-sub {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       color: rgba(255,255,255,0.4);
       line-height: 1.5;
@@ -1609,7 +1654,7 @@
     }
 
     .quiz-result-header p {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 13px;
       letter-spacing: 0.09em;
       color: var(--gold);
@@ -1659,7 +1704,7 @@
     }
 
     .quiz-result-lang {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 10px;
       letter-spacing: 0.14em;
       color: var(--gold);
@@ -1685,7 +1730,7 @@
     }
 
     .quiz-result-author {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 13px;
       color: rgba(255,255,255,0.4);
       margin-bottom: 20px;
@@ -1703,7 +1748,7 @@
     }
 
     .quiz-result-reason {
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       color: rgba(255,255,255,0.35);
       margin-bottom: 24px;
@@ -1719,7 +1764,7 @@
       font-size: 12px;
       letter-spacing: 0.05em;
       cursor: pointer;
-      font-family: 'Noto Serif KR', serif;
+      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
       transition: border-color 0.2s, color 0.2s;
     }
 
@@ -1730,7 +1775,7 @@
       text-align: center;
       background: none;
       border: none;
-      font-family: 'Apple SD Gothic Neo', sans-serif;
+      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
       font-size: 12px;
       color: rgba(255,255,255,0.3);
       cursor: pointer;
@@ -1774,6 +1819,9 @@
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
       </a></li>
       <li><a href="#membership" class="nav-cta">멤버십 가입</a></li>
+      <li><a href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer" class="nav-sns" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+      </a></li>
     </ul>
     <div class="hamburger" id="hamburger">
       <span></span><span></span><span></span>
@@ -2202,7 +2250,7 @@
         <div class="animate animate-delay-1">
           <div class="about-name">변기태</div>
           <div class="about-role">하루재클럽 대표 · 한국산악회 회장</div>
-          <p class="about-body">2015년부터 하루재클럽을 이끌며 총 42권의 산서를 출간했습니다. 고등학교 시절부터 40여 년간 산서를 수집해온 애서가로, 해외 원서를 포함해 5,000여 권의 산서를 소장하고 있습니다. 한국산서회 창립 멤버이며, 현재 한국산악회 회장을 역임하고 있습니다.</p>
+          <p class="about-body">2015년부터 하루재클럽을 이끌며 총 42권의 산서를 출간했습니다. 고등학교 시절부터 50여 년간 산서를 수집해온 애서가로, 해외 원서를 포함해 5,000여 권의 산서를 소장하고 있습니다. 한국산서회 창립 멤버이며, 현재 한국산악회 회장을 역임하고 있습니다.</p>
           <div class="about-quote">
             <p>"다른 분야에서는 좋은 책이 많이 나오는데 유독 산서는 찾아보기 힘든 현실이 안타까웠습니다. 산서 읽기 붐을 일으켜 출판사들이 산서 출간에 의욕을 갖게 만드는 환경을 만들고 싶습니다."</p>
           </div>
@@ -2551,21 +2599,6 @@
     </div>
   </section>
 
-  <!-- 뉴스레터 -->
-  <section id="newsletter">
-    <div class="animate">
-      <h2 class="newsletter-title">하루재 뉴스레터 구독</h2>
-      <p class="newsletter-desc">신간 소식, 산악 문화 이야기, 번역 비하인드를 월 1회 보내드립니다.</p>
-      <form class="newsletter-form" id="newsletterForm">
-        <input class="newsletter-input" type="email" placeholder="이메일 주소를 입력해주세요" required>
-        <button type="submit" class="newsletter-btn">구독하기</button>
-      </form>
-      <div class="newsletter-success" id="newsletterSuccess">구독 신청이 완료되었습니다. 감사합니다.</div>
-    </div>
-  </section>
-
-  <div class="mist-divider"></div>
-
   <!-- Footer -->
   <footer>
     <div class="footer-inner">
@@ -2576,6 +2609,10 @@
           <span>서울특별시 서초구 나루터로 15길 6 신사 제2빌딩 801호</span>
           <a href="tel:02-521-0067">02-521-0067</a>
           <a href="mailto:haroojaeclub@naver.com">haroojaeclub@naver.com</a>
+          <a href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer" class="footer-sns">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
+            @haroojaeclub
+          </a>
         </div>
       </div>
       <svg class="compass" viewBox="0 0 32 32" aria-hidden="true">
