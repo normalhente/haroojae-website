@@ -2787,21 +2787,25 @@
     });
 
     // ── Forms ──
-    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+    // 폼이 없는 페이지에서도 안전하도록 null 체크(옵셔널 체이닝) 사용
+    document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
-      document.getElementById('reviewSuccess').style.display = 'block';
+      const s = document.getElementById('reviewSuccess');
+      if (s) s.style.display = 'block';
       this.reset();
     });
 
-    document.getElementById('requestForm').addEventListener('submit', function(e) {
+    document.getElementById('requestForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
-      document.getElementById('requestSuccess').style.display = 'block';
+      const s = document.getElementById('requestSuccess');
+      if (s) s.style.display = 'block';
       this.reset();
     });
 
-    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
-      document.getElementById('newsletterSuccess').style.display = 'block';
+      const s = document.getElementById('newsletterSuccess');
+      if (s) s.style.display = 'block';
       this.reset();
     });
 
@@ -3148,8 +3152,14 @@
   </script>
 
   <!-- ── 히어로 편집 도구 (개발용) ── -->
+  <!-- 실제 배포 사이트에는 나타나지 않고, 로컬(localhost/127.0.0.1/파일 열기)에서만 활성화됩니다. -->
   <script>
   (function() {
+    // 개발 환경에서만 편집 도구 활성화 (배포 도메인에서는 실행 안 함)
+    const host = location.hostname;
+    const isDev = host === 'localhost' || host === '127.0.0.1' || host === '' || location.protocol === 'file:';
+    if (!isDev) return;
+
     const root = document.documentElement;
 
     const TARGETS = [
