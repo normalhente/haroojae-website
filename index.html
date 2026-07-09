@@ -1408,6 +1408,10 @@
 
       /* .hero-title 크기는 위 clamp()가 담당 (모바일 하드코딩 제거) */
       .hero-desc { font-size: 13px; line-height: 1.9; margin-bottom: 36px; }
+      /* 세로 화면에선 cover가 사진 전체 높이를 넣어 상단이 안개뿐 → 확대+아래 정렬로 능선을 중단까지 */
+      #hero { background-size: auto 155%; background-position: center bottom; }
+      /* 山 한자: 하단 능선과 겹쳐 잘려 보이던 것을 우측 상단 워터마크로 이동 */
+      .hero-kanji { left: auto; right: -8vw; bottom: auto; top: 2vh; font-size: 52vw; }
       .hero-stat { gap: 32px; flex-wrap: wrap; }
       .stat-num { font-size: 24px; }
 
