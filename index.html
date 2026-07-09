@@ -1369,73 +1369,6 @@
     .book-page-right { left: 8.5px; border-radius: 0 2px 1px 1px; transform-origin: left center; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
     .mem-btn:hover .book-page-right { transform: rotateY(-165deg); }
 
-    /* ── Newsletter ── */
-    #newsletter {
-      background: #EFEAE2;
-      padding: 80px 48px;
-      text-align: center;
-    }
-
-    .newsletter-title {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-    }
-
-    .newsletter-desc {
-      font-size: 15px;
-      color: var(--text);
-      margin-bottom: 36px;
-    }
-
-    .newsletter-form {
-      display: flex;
-      gap: 0;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .newsletter-input {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
-      flex: 1;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-right: none;
-      padding: 14px 18px;
-      font-size: 14px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    .newsletter-input:focus { border-color: var(--accent); }
-    .newsletter-input::placeholder { color: #bbb; }
-
-    .newsletter-btn {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
-      background: var(--accent);
-      color: #fff;
-      border: 1px solid var(--accent);
-      padding: 14px 24px;
-      font-size: 14px;
-      letter-spacing: 0.01em;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    .newsletter-btn:hover { background: var(--accent-light); }
-
-    .newsletter-success {
-      display: none;
-      font-size: 14px;
-      color: var(--text);
-      margin-top: 16px;
-    }
-
     /* ── Footer ── */
     footer { background: var(--dark); padding: 56px 48px; }
 
@@ -1487,8 +1420,6 @@
       .form-grid { grid-template-columns: 1fr; }
       .mem-card { padding: 36px 24px; }
       .mem-badge { left: 24px; }
-      .newsletter-form { flex-direction: column; }
-      .newsletter-input { border-right: 1px solid var(--border); border-bottom: none; }
       .footer-inner { flex-direction: column; gap: 24px; align-items: flex-start; }
       .footer-tagline { text-align: left; }
       .compass { display: none; }
@@ -2901,13 +2832,6 @@
     document.getElementById('requestForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
       const s = document.getElementById('requestSuccess');
-      if (s) s.style.display = 'block';
-      this.reset();
-    });
-
-    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const s = document.getElementById('newsletterSuccess');
       if (s) s.style.display = 'block';
       this.reset();
     });
