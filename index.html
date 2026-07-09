@@ -1415,14 +1415,17 @@
       .hero-stat { gap: 32px; flex-wrap: wrap; }
       .stat-num { font-size: 24px; }
 
-      .books-filter { justify-content: center; gap: 8px; }
-      .filter-btn { font-size: 12.5px; padding: 8px 16px; }
+      /* 필터: 줄바꿈으로 엉성해지던 것 → 가로 스크롤 한 줄(모바일 칩 표준) */
+      .books-filter { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 8px; margin: 0 -24px 32px; padding: 0 24px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .books-filter::-webkit-scrollbar { display: none; }
+      .filter-btn { flex-shrink: 0; font-size: 12.5px; padding: 8px 16px; }
       .books-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .modal-overlay { padding: 0; align-items: flex-start; overflow-y: auto; }
-      /* minmax(0,1fr): 1fr은 내용 최소폭 이하로 줄어들지 않아 텍스트가 화면 밖으로 밀려남 */
-      .modal-box { grid-template-columns: minmax(0, 1fr); width: 100%; max-height: none; border-left: none; border-right: none; }
-      .modal-cover { min-height: 0; height: 200px; }
-      .modal-body { padding: 28px 24px; max-height: none; min-width: 0; }
+      /* minmax(0,1fr): 1fr은 내용 최소폭 이하로 못 줄어들어 텍스트가 화면 밖으로 밀려남 */
+      /* overflow:visible: 기본 .modal-box의 overflow:hidden이 모바일에서 내용을 잘라 "좌측상단만" 보이게 하던 버그 해제 */
+      .modal-box { grid-template-columns: minmax(0, 1fr); width: 100%; max-height: none; overflow: visible; border-left: none; border-right: none; }
+      .modal-cover { min-width: 0; min-height: 0; height: 200px; }
+      .modal-body { padding: 28px 24px; max-height: none; min-width: 0; overflow-y: visible; }
       .modal-close { color: rgba(255,255,255,0.85); }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
