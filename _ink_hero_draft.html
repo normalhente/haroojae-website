@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수묵화 히어로 비교 — 하루재클럽</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --font-serif: 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
+    --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
+    --bg:#FAFAF7; --text:#1A1A1A; --muted:#8A8A8A; --accent:#2C4A1E; --border:#E6E2DA;
+
+    /* 조절 대상 */
+    --ink-y: 100%;        /* 배경 세로 위치 */
+    --ink-scale: cover;   /* 배경 맞춤 */
+    --veil: 0.62;         /* 원경 크림 베일 세기 */
+    --aerial: 1.00;       /* 공기원근법 — 0이면 베일 자체가 꺼짐 */
+    --deepen: 0.55;       /* 근경 먹색 심화 (앞을 진하게) */
+    --fold: 1.00;         /* 하단 접힘 — 다음 섹션과 잇는 띠 */
+    --scrim: 0.60;        /* 좌측 스크림 — 글자 뒤만 밝게 */
+    --mist-op: 1;         /* 운무 진하기 배수 */
+    --mist-speed: 1;      /* 운무 속도 배수 */
+  }
+  body { font-family: var(--font-serif); background:var(--bg); color:var(--text); }
+
+  /* ── 히어로 (index.html 구조 그대로) ── */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display:flex; align-items:center; position:relative; overflow:clip;
+    background-repeat:no-repeat;
+    background-size: var(--ink-scale);
+    background-position: center var(--ink-y);
+    isolation: isolate;   /* .deepen 의 multiply 가 페이지 배경까지 번지지 않도록 가둔다 */
+  }
+  /* ── 공기원근법: 원경 날리기 ──
+     이 수묵화들은 이미 공기원근법이 그려져 있다. 원경은 이미 흰 종이(밝기 247)라
+     크림 베일을 덮어도 더 밝아지지 않고, 근경은 짙은 먹(76)이라 덮는 족족 표백된다.
+     즉 크림 베일을 전체에 깔면 원경엔 무효고 근경만 파괴한다 — 깊이가 거꾸로 간다.
+     그래서 크림은 위쪽에만 걸고 72%부터는 완전히 0으로 뺀다. 근경은 아래 .deepen 이 맡는다.
+     (측정: 이 구성에서 원경 +30 연해지고 근경 -25 진해짐) */
+  .hero::before {
+    content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
+    background: linear-gradient(to bottom,
+      rgba(250,250,247, calc(var(--veil) * var(--aerial) * 1.00))  0%,
+      rgba(250,250,247, calc(var(--veil) * var(--aerial) * 0.70)) 25%,
+      rgba(250,250,247, calc(var(--veil) * var(--aerial) * 0.35)) 45%,
+      rgba(250,250,247, calc(var(--veil) * var(--aerial) * 0.12)) 60%,
+      rgba(250,250,247, 0) 72%,
+      rgba(250,250,247, 0) 100%);
+  }
+  /* 하단 접힘 — 다음 섹션(크림)과 잇는 최소한의 띠. 0이면 먹색 그대로 끊긴다.
+     스크림(z4)보다 위에 얹어야 좌측 하단 이음매가 깨끗하다. */
+  .hero .fold {
+    position:absolute; inset:0; z-index:5; pointer-events:none;
+    background: linear-gradient(to bottom,
+      rgba(250,250,247,0) 96%,
+      rgba(250,250,247, var(--fold)) 100%);
+  }
+  /* 좌측 스크림 — 글자 뒤쪽만 밝게 띄우고 우측 수묵은 살린다 */
+  .hero::after {
+    content:''; position:absolute; inset:0; z-index:4; pointer-events:none;
+    background: linear-gradient(to right,
+      rgba(250,250,247, var(--scrim)) 0%,
+      rgba(250,250,247, calc(var(--scrim) * 0.72)) 34%,
+      rgba(250,250,247, calc(var(--scrim) * 0.28)) 58%,
+      rgba(250,250,247, 0) 78%);
+  }
+
+  /* ── 근경 심화 ──
+     "앞을 진하게"는 이쪽이 전담한다. multiply 로 아래쪽 먹색을 실제로 눌러
+     맨 앞이 가장 짙게 끝나도록 100%까지 세기를 유지한다 (중간에 빼면 앞이 도로 연해진다). */
+  .deepen {
+    position:absolute; inset:0; z-index:2; pointer-events:none;
+    mix-blend-mode: multiply;
+    background: linear-gradient(to bottom,
+      rgba(255,255,255,0) 48%,
+      rgba(150,148,142, calc(var(--deepen) * 0.25)) 65%,
+      rgba(140,138,132, calc(var(--deepen) * 0.65)) 80%,
+      rgba(132,130,124, var(--deepen)) 92%,
+      rgba(132,130,124, var(--deepen)) 100%);
+  }
+
+  .hero .inner {
+    position:relative; z-index:6; flex:1 1 auto; min-width:0; width:100%;
+    max-width:1200px; margin:0 auto; padding:0 40px;
+  }
+
+  /* ── 운무: 능선 사이를 옆으로 흐르는 안개 띠 (_hero_draft.html에서 이식) ── */
+  .mist {
+    position:absolute; left:-50%; width:200%;
+    z-index:1; pointer-events:none; will-change:transform;
+  }
+  .mist-a {
+    bottom:30vh; height:16vh; opacity:calc(0.85 * var(--mist-op));
+    background:
+      radial-gradient(ellipse 22% 58% at 12% 55%, rgba(245,238,233,0.9), transparent 70%),
+      radial-gradient(ellipse 30% 70% at 38% 45%, rgba(240,232,228,0.75), transparent 70%),
+      radial-gradient(ellipse 25% 55% at 63% 60%, rgba(246,240,236,0.85), transparent 70%),
+      radial-gradient(ellipse 28% 65% at 88% 50%, rgba(240,233,229,0.7), transparent 70%);
+    animation: mistDrift calc(90s / var(--mist-speed)) linear infinite;
+  }
+  .mist-b {
+    bottom:21vh; height:14vh; opacity:calc(0.75 * var(--mist-op));
+    background:
+      radial-gradient(ellipse 26% 62% at 20% 50%, rgba(238,230,226,0.85), transparent 70%),
+      radial-gradient(ellipse 32% 55% at 50% 58%, rgba(244,236,231,0.7), transparent 70%),
+      radial-gradient(ellipse 24% 68% at 78% 45%, rgba(238,231,227,0.8), transparent 70%);
+    animation: mistDrift calc(65s / var(--mist-speed)) linear infinite reverse;
+  }
+  .mist-c {
+    bottom:11vh; height:13vh; opacity:calc(0.6 * var(--mist-op));
+    background:
+      radial-gradient(ellipse 30% 60% at 15% 55%, rgba(228,224,222,0.8), transparent 70%),
+      radial-gradient(ellipse 26% 66% at 45% 48%, rgba(233,228,225,0.65), transparent 70%),
+      radial-gradient(ellipse 34% 58% at 72% 55%, rgba(228,223,221,0.75), transparent 70%),
+      radial-gradient(ellipse 22% 60% at 95% 50%, rgba(233,229,226,0.6), transparent 70%);
+    animation: mistDrift calc(48s / var(--mist-speed)) linear infinite;
+  }
+  @keyframes mistDrift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(25%); }
+  }
+  /* 안개 숨쉬기 (아주 미세한 밝기 변화) */
+  .mist::after {
+    content:''; position:absolute; inset:0;
+    background: inherit; opacity:0;
+    animation: mistBreath calc(14s / var(--mist-speed)) ease-in-out infinite;
+  }
+  @keyframes mistBreath {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.35; }
+  }
+  /* 접근성: 모션 최소화 설정을 켠 사용자에겐 흐름을 멈춘다 */
+  @media (prefers-reduced-motion: reduce) {
+    .mist-a, .mist-b, .mist-c, .mist::after { animation: none; }
+  }
+  .hero-label {
+    font-family:var(--font-sans); font-size:14.08px; letter-spacing:0.16em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:16px;
+  }
+  .hero-title {
+    font-size:clamp(28px,7.5vw,52px); font-weight:600; letter-spacing:-0.02em;
+    line-height:1.4; margin-bottom:24px; margin-left:-0.05em; max-width:680px;
+  }
+  .hero-title .title-line { display:block; }
+  .hero-desc {
+    font-size:16px; color:var(--muted); max-width:480px; line-height:2;
+    margin-bottom:52px; text-shadow:0 1px 12px rgba(250,250,247,0.9);
+  }
+  .hero-cta {
+    display:inline-flex; align-items:center; gap:10px; font-family:var(--font-sans);
+    background:transparent; color:var(--accent); border:1px solid var(--accent);
+    border-radius:2px; font-size:14px; padding:14px 32px; text-decoration:none;
+    letter-spacing:0.05em;
+  }
+  .hero-cta::after { content:'→'; }
+
+  /* ── 배경 이미지 ── */
+  .v-now { background-image:url('images/hero-himalaya.jpg'); }
+  .v-a   { background-image:url('images/hero-drafts/ink-a.jpg'); }
+  .v-b   { background-image:url('images/hero-drafts/ink-b.jpg'); }
+  .v-c   { background-image:url('images/hero-drafts/ink-c.jpg'); }
+  .v-m   { background-image:url('images/hero-drafts/ink-mobile.jpg'); }
+
+  /* 현재 라이브 버전은 비교 기준 — 원래의 짙은 오버레이를 그대로 재현하고 조절에서 제외 */
+  .v-now::before {
+    background: linear-gradient(to bottom,
+      rgba(250,250,247,0.60) 0%, rgba(250,250,247,0.75) 30%,
+      rgba(250,250,247,0.75) 60%, rgba(250,250,247,0.92) 80%,
+      rgba(250,250,247,1.00) 95%);
+  }
+  .v-now::after { background: none; }   /* 스크림 없음 */
+  .v-now .deepen, .v-now .fold { display: none; }   /* 근경 심화·접힘 없음 */
+  .v-now { background-size:cover; background-position:center 72%; }
+  .v-now .hero-kanji {
+    position:absolute; left:17.1vw; bottom:8vh; z-index:1;
+    font-size:clamp(200px,50vw,900px); line-height:1;
+    color:var(--accent); opacity:0.07;
+    font-family:'Ma Shan Zheng', var(--font-serif); font-weight:900;
+    pointer-events:none; user-select:none; letter-spacing:-0.05em;
+  }
+
+  /* ── 라벨 ── */
+  .tag {
+    position:absolute; top:24px; left:40px; z-index:5;
+    font-family:var(--font-sans); font-size:12px; letter-spacing:0.14em;
+    text-transform:uppercase; color:#fff; background:rgba(26,40,32,0.85);
+    padding:8px 16px; border-radius:2px;
+  }
+  .tag em { font-style:normal; opacity:0.65; margin-left:8px; text-transform:none; letter-spacing:0; }
+  .note {
+    max-width:760px; margin:0 auto; padding:56px 40px 72px; text-align:center;
+    color:var(--muted); font-size:15px; line-height:1.9;
+  }
+  .note strong { color:var(--accent); font-weight:700; }
+
+  /* ── 컨트롤 패널 ── */
+  .panel {
+    position:fixed; right:20px; bottom:20px; z-index:100;
+    background:rgba(255,255,255,0.96); border:1px solid var(--border);
+    border-radius:4px; padding:18px 20px; width:264px;
+    font-family:var(--font-sans); font-size:12px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.14); backdrop-filter:blur(8px);
+  }
+  .panel h4 { font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  .panel label { display:block; margin-bottom:12px; color:#555; }
+  .panel .row { display:flex; justify-content:space-between; margin-bottom:5px; }
+  .panel .val { color:var(--accent); font-variant-numeric:tabular-nums; }
+  .panel input[type=range] { width:100%; accent-color:var(--accent); }
+  .panel .seg { display:flex; gap:4px; margin-bottom:12px; }
+  .panel .seg button {
+    flex:1; font-family:inherit; font-size:11px; padding:6px 0; cursor:pointer;
+    border:1px solid var(--border); background:#fff; border-radius:2px; color:#555;
+  }
+  .panel .seg button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .panel code {
+    display:block; margin-top:12px; padding:10px; background:#F4F2ED;
+    border-radius:2px; font-size:10.5px; line-height:1.7; color:#333;
+    white-space:pre-wrap; word-break:break-all;
+  }
+  .panel .hint { margin-top:10px; color:#999; font-size:10.5px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<section class="hero v-now">
+  <div class="tag">현재 라이브 <em>hero-himalaya.jpg</em></div>
+  <div class="hero-kanji" aria-hidden="true">山</div>
+  <div class="inner">
+    <div class="hero-label">하루재클럽</div>
+    <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
+    <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+    <a href="#" class="hero-cta">멤버십 알아보기</a>
+  </div>
+</section>
+<div class="note">↑ 사진 위에 크림 오버레이를 <strong>60~100%</strong>나 덮어 억지로 흐리게 만든 상태. 아래는 진짜 수묵화 3안 — 오버레이가 거의 필요 없습니다.</div>
+
+<section class="hero v-a">
+  <div class="tag">A안 — 추천 <em>먹 번짐 능선 · 여백 넓음</em></div>
+  <div class="mist mist-a" aria-hidden="true"></div>
+  <div class="mist mist-b" aria-hidden="true"></div>
+  <div class="mist mist-c" aria-hidden="true"></div>
+  <div class="deepen" aria-hidden="true"></div>
+  <div class="fold" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="hero-label">하루재클럽</div>
+    <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
+    <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+    <a href="#" class="hero-cta">멤버십 알아보기</a>
+  </div>
+</section>
+<div class="note">능선이 <strong>가로로 겹겹이</strong> 쌓인 구도 → “쌓아온 것들” 카피와 시각적으로 맞물립니다. 종이색이 사이트 배경(#FAFAF7)과 거의 같아 이어짐이 자연스럽습니다.</div>
+
+<section class="hero v-b">
+  <div class="tag">B안 <em>호수 반영 · 대칭 구도</em></div>
+  <div class="mist mist-a" aria-hidden="true"></div>
+  <div class="mist mist-b" aria-hidden="true"></div>
+  <div class="mist mist-c" aria-hidden="true"></div>
+  <div class="deepen" aria-hidden="true"></div>
+  <div class="fold" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="hero-label">하루재클럽</div>
+    <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
+    <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+    <a href="#" class="hero-cta">멤버십 알아보기</a>
+  </div>
+</section>
+<div class="note">가장 아름답지만 <strong>푸른 톤</strong>이라 사이트 크림톤과 충돌하고, 좌우 대칭 구도가 좌측 정렬 텍스트와 경쟁합니다.</div>
+
+<section class="hero v-c">
+  <div class="tag">C안 <em>정통 수묵 · 소나무와 정자</em></div>
+  <div class="mist mist-a" aria-hidden="true"></div>
+  <div class="mist mist-b" aria-hidden="true"></div>
+  <div class="mist mist-c" aria-hidden="true"></div>
+  <div class="deepen" aria-hidden="true"></div>
+  <div class="fold" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="hero-label">하루재클럽</div>
+    <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
+    <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+    <a href="#" class="hero-cta">멤버십 알아보기</a>
+  </div>
+</section>
+<div class="note">가장 “동양화”답지만 좌측 소나무가 텍스트와 겹치고, 우측 <strong>중국풍 정자</strong>가 서양 알피니즘 원서 출판사라는 정체성과 어긋납니다.</div>
+
+<section class="hero v-m" id="mobile-preview">
+  <div class="tag">모바일안 <em>ChatGPT 세로 이미지</em></div>
+  <div class="mist mist-a" aria-hidden="true"></div>
+  <div class="mist mist-b" aria-hidden="true"></div>
+  <div class="mist mist-c" aria-hidden="true"></div>
+  <div class="deepen" aria-hidden="true"></div>
+  <div class="fold" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="hero-label">하루재클럽</div>
+    <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
+    <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+    <a href="#" class="hero-cta">멤버십 알아보기</a>
+  </div>
+</section>
+<div class="note">세로 이미지라 <strong>모바일 전용</strong>. 지금 모바일은 가로 사진을 <code style="display:inline;padding:2px 6px">auto 155%</code>로 억지 확대 중인데, 세로 원본이면 그럴 필요가 없어집니다. 브라우저 창을 좁혀서 확인해 보세요.</div>
+
+<div class="panel">
+  <h4>수묵 히어로 조절</h4>
+
+  <div class="seg" id="fit">
+    <button data-fit="cover">cover</button>
+    <button data-fit="100% auto">가로맞춤</button>
+    <button data-fit="auto 130%">확대</button>
+  </div>
+
+  <label>
+    <div class="row"><span>배경 세로 위치</span><span class="val" id="v-y">100%</span></div>
+    <input type="range" id="s-y" min="0" max="100" step="1" value="100">
+  </label>
+
+  <label>
+    <div class="row"><span><b>원경 날리기</b> (뒤를 연하게)</span><span class="val" id="v-veil">0.62</span></div>
+    <input type="range" id="s-veil" min="0" max="1" step="0.01" value="0.62">
+  </label>
+
+  <label>
+    <div class="row"><span><b>근경 심화</b> (앞을 진하게)</span><span class="val" id="v-deepen">0.55</span></div>
+    <input type="range" id="s-deepen" min="0" max="0.9" step="0.01" value="0.55">
+  </label>
+
+  <label>
+    <div class="row"><span>하단 접힘</span><span class="val" id="v-fold">1.00</span></div>
+    <input type="range" id="s-fold" min="0" max="1" step="0.01" value="1">
+  </label>
+
+  <label>
+    <div class="row"><span>좌측 스크림 <b>(글자 가독성)</b></span><span class="val" id="v-scrim">0.60</span></div>
+    <input type="range" id="s-scrim" min="0" max="1" step="0.01" value="0.60">
+  </label>
+
+  <label>
+    <div class="row"><span>운무 진하기</span><span class="val" id="v-mo">1.00</span></div>
+    <input type="range" id="s-mo" min="0" max="1.8" step="0.05" value="1">
+  </label>
+
+  <label>
+    <div class="row"><span>운무 속도</span><span class="val" id="v-ms">1.00</span></div>
+    <input type="range" id="s-ms" min="0.2" max="3" step="0.05" value="1">
+  </label>
+
+  <code id="out"></code>
+  <div class="hint">글자 가독성은 <b>좌측 스크림</b>부터 올려보세요. 전체 베일을 올리면 수묵화까지 같이 흐려집니다. 값이 정해지면 이 CSS를 알려주세요.</div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const out  = document.getElementById('out');
+  let fit = 'cover';
+
+  const sY  = document.getElementById('s-y');
+  const sV  = document.getElementById('s-veil');
+  const sD  = document.getElementById('s-deepen');
+  const sF  = document.getElementById('s-fold');
+  const sS  = document.getElementById('s-scrim');
+  const sMO = document.getElementById('s-mo');
+  const sMS = document.getElementById('s-ms');
+
+  function render() {
+    root.style.setProperty('--ink-y', sY.value + '%');
+    root.style.setProperty('--veil', sV.value);
+    root.style.setProperty('--deepen', sD.value);
+    root.style.setProperty('--fold', sF.value);
+    root.style.setProperty('--scrim', sS.value);
+    root.style.setProperty('--mist-op', sMO.value);
+    root.style.setProperty('--mist-speed', sMS.value);
+    root.style.setProperty('--ink-scale', fit);
+
+    document.getElementById('v-y').textContent      = sY.value + '%';
+    document.getElementById('v-veil').textContent   = (+sV.value).toFixed(2);
+    document.getElementById('v-deepen').textContent = (+sD.value).toFixed(2);
+    document.getElementById('v-fold').textContent   = (+sF.value).toFixed(2);
+    document.getElementById('v-scrim').textContent  = (+sS.value).toFixed(2);
+    document.getElementById('v-mo').textContent     = (+sMO.value).toFixed(2);
+    document.getElementById('v-ms').textContent     = (+sMS.value).toFixed(2);
+
+    out.textContent =
+      'background-size: ' + fit + ';\n' +
+      'background-position: center ' + sY.value + '%;\n' +
+      '--veil: ' + (+sV.value).toFixed(2) + ';\n' +
+      '--deepen: ' + (+sD.value).toFixed(2) + ';\n' +
+      '--fold: ' + (+sF.value).toFixed(2) + ';\n' +
+      '--scrim: ' + (+sS.value).toFixed(2) + ';\n' +
+      '--mist-op: ' + (+sMO.value).toFixed(2) + ';\n' +
+      '--mist-speed: ' + (+sMS.value).toFixed(2) + ';';
+  }
+
+  [sY, sV, sD, sF, sS, sMO, sMS].forEach(el => el.addEventListener('input', render));
+
+  document.querySelectorAll('#fit button').forEach(b => {
+    b.addEventListener('click', () => {
+      fit = b.dataset.fit;
+      document.querySelectorAll('#fit button').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    });
+  });
+
+  document.querySelector('#fit button').classList.add('on');
+  render();
+</script>
+
+</body>
+</html>

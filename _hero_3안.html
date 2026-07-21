@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>히어로 3안 비교 — 하루재클럽</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+  --bg:#FAFAF7; --text:#1A1A1A; --muted:#8A8A8A;
+  --accent:#2C4A1E; --border:#E6E2DA;
+  --font-serif:'Gowun Batang','Noto Serif KR',Georgia,serif;
+  --font-sans:'Pretendard Variable',Pretendard,'Apple SD Gothic Neo',sans-serif;
+}
+
+body{ font-family:var(--font-serif); background:#EFEDE7; color:var(--text);
+      line-height:1.8; word-break:keep-all; padding-top:56px; }
+
+/* ── 상단 컨트롤 바 ── */
+.bar{ position:fixed; top:0; left:0; right:0; height:56px; z-index:100;
+      display:flex; align-items:center; gap:20px; padding:0 20px;
+      background:rgba(26,40,32,.96); color:#fff; font-family:var(--font-sans); font-size:12.5px;
+      backdrop-filter:blur(8px); }
+.bar strong{ font-weight:600; letter-spacing:.04em; margin-right:auto; }
+.bar .grp{ display:flex; align-items:center; gap:6px; }
+.bar .grp span{ opacity:.55; letter-spacing:.06em; }
+.bar button{ font-family:inherit; font-size:12px; padding:5px 11px; cursor:pointer;
+      background:transparent; color:#fff; border:1px solid rgba(255,255,255,.28); border-radius:2px;
+      transition:background .18s,border-color .18s; }
+.bar button:hover{ border-color:rgba(255,255,255,.6); }
+.bar button[aria-pressed="true"]{ background:#fff; color:#1A2820; border-color:#fff; }
+
+/* ── 시안 프레임 ── */
+.case{ padding:0 0 12px; }
+.case-head{ max-width:1100px; margin:0 auto; padding:30px 22px 14px; }
+.case-head h2{ font-size:19px; font-weight:700; letter-spacing:-.01em; }
+.case-head h2 em{ font-style:normal; font-family:var(--font-sans); font-size:11px; font-weight:600;
+      letter-spacing:.12em; color:#fff; background:#2C4A1E; padding:4px 9px; border-radius:2px;
+      vertical-align:middle; margin-right:10px; }
+.case-head p{ font-size:14px; color:#6E6A62; line-height:1.85; margin-top:8px; max-width:640px; }
+
+.stage{ container-type:inline-size; width:100%; margin:0 auto; background:var(--bg);
+        border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+        transition:width .28s ease; }
+body[data-vp="mobile"] .stage{ width:390px; border:1px solid var(--border); box-shadow:0 10px 40px rgba(0,0,0,.10); }
+
+/* 공통 히어로 껍데기 */
+.hero{ position:relative; height:min(760px,86vh); overflow:clip; isolation:isolate;
+       background:var(--bg); display:flex; }
+.inner{ position:relative; z-index:6; width:100%; max-width:1100px; margin:0 auto; padding:0 6cqw; }
+
+.h-label{ font-family:var(--font-sans); font-size:clamp(11px,1.35cqw,14px); letter-spacing:.16em;
+       color:var(--accent); margin-bottom:16px; }
+.h-title{ font-size:clamp(27px,4.9cqw,52px); font-weight:700; letter-spacing:-.02em;
+       line-height:1.4; margin-bottom:24px; margin-left:-.05em; }
+body[data-tw="light"] .h-title{ font-weight:400; letter-spacing:-.005em; }
+.h-title span{ display:block; }
+.h-desc{ font-size:clamp(13px,1.5cqw,16px); color:var(--muted); max-width:34em; line-height:2;
+       margin-bottom:clamp(30px,4cqw,52px); }
+.h-cta{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-sans);
+       color:var(--accent); border:1px solid var(--accent); border-radius:2px;
+       font-size:clamp(12.5px,1.35cqw,14px); padding:13px 30px; text-decoration:none; letter-spacing:.05em;
+       transition:background .25s,color .25s; }
+.h-cta::after{ content:'→'; }
+.h-cta:hover{ background:var(--accent); color:#fff; }
+
+/* 山 워터마크 */
+.kanji{ position:absolute; font-family:'Ma Shan Zheng',serif; color:#1A1A1A;
+       line-height:.8; pointer-events:none; user-select:none; z-index:2; }
+
+/* 운무 — 비교용이라 정지 상태로 둔다 (실제 적용 시 index.html 의 흐르는 운무를 그대로 씀).
+   무한 애니메이션 레이어를 3개 겹치면 합성 부하가 커서 이 페이지에선 뺐다. */
+.mist{ position:absolute; left:0; right:0; z-index:3; pointer-events:none; }
+.mist-a{ height:15%; opacity:.85;
+  background:radial-gradient(ellipse 24% 60% at 14% 52%,rgba(250,248,244,.95),transparent 70%),
+             radial-gradient(ellipse 32% 70% at 44% 46%,rgba(248,244,240,.8),transparent 70%),
+             radial-gradient(ellipse 26% 56% at 76% 58%,rgba(250,246,242,.9),transparent 70%); }
+.mist-b{ height:13%; opacity:.62;
+  background:radial-gradient(ellipse 28% 64% at 22% 50%,rgba(244,240,236,.9),transparent 70%),
+             radial-gradient(ellipse 30% 56% at 58% 56%,rgba(248,244,239,.75),transparent 70%),
+             radial-gradient(ellipse 24% 66% at 88% 46%,rgba(244,241,237,.85),transparent 70%); }
+
+
+/* ═══ A안 — 여백이 주인공 ═══ */
+.a .inner{ align-self:flex-start; padding-top:clamp(36px,5cqw,58px); }
+.a .h-title{ line-height:1.35; }
+.a .h-desc{ margin-bottom:clamp(24px,2.8cqw,32px); }
+/* 그림을 하단 띠로만: 위쪽 가장자리를 마스크로 종이에 녹인다 (스크림 불필요) */
+.a .band{ position:absolute; left:0; right:0; bottom:0; height:44%; z-index:1;
+  background:url('images/hero-drafts/ink-b.jpg') center 42%/cover no-repeat;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%,#000 100%);
+          mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.35) 12%,#000 34%,#000 100%); }
+.a .fold{ position:absolute; left:0; right:0; bottom:0; height:14%; z-index:4; pointer-events:none;
+  background:linear-gradient(to bottom,rgba(250,250,247,0),rgba(250,250,247,.92) 78%,var(--bg)); }
+.a .kanji{ right:7cqw; top:clamp(24px,4cqw,60px); font-size:clamp(110px,18cqw,240px); opacity:.05; }
+.a .mist-a{ bottom:26%; } .a .mist-b{ bottom:17%; }
+@container (max-width:520px){
+  .a .inner{ padding-top:34px; }
+  .a .band{ height:38%; background-position:center 46%; }
+  .a .kanji{ font-size:30cqw; opacity:.045; right:5cqw; top:14px; }
+  .a .mist-a{ bottom:22%; } .a .mist-b{ bottom:14%; }
+}
+
+/* ═══ B안 — 액자형 ═══ */
+.b{ align-items:center; }
+.b .inner{ display:grid; grid-template-columns:1fr 0.82fr; gap:6cqw; align-items:center;
+           padding-top:clamp(30px,4cqw,56px); padding-bottom:clamp(30px,4cqw,56px); }
+.b .plate{ position:relative; aspect-ratio:3/4; max-height:64vh; justify-self:end; width:100%;
+  background:url('images/hero-ink-mobile.jpg') center/cover no-repeat;
+  box-shadow:0 2px 4px rgba(60,55,45,.06), 0 18px 46px -12px rgba(60,55,45,.28);
+  /* 가장자리만 아주 살짝 종이로 흡수 — 액자 안 그림처럼 */
+  -webkit-mask-image:radial-gradient(115% 108% at 50% 50%,#000 78%,rgba(0,0,0,.55) 100%);
+          mask-image:radial-gradient(115% 108% at 50% 50%,#000 78%,rgba(0,0,0,.55) 100%); }
+.b .seal{ position:absolute; right:14px; bottom:14px; z-index:2; font-family:'Ma Shan Zheng',serif;
+  font-size:clamp(15px,1.9cqw,21px); line-height:1; color:#FAFAF7; padding:9px 7px;
+  background:#9B3A2E; border-radius:2px; writing-mode:vertical-rl; letter-spacing:.06em;
+  box-shadow:0 2px 8px rgba(0,0,0,.22); }
+.b .rule{ width:52px; height:1px; background:var(--border); margin:0 0 26px; }
+@container (max-width:760px){
+  .b .inner{ grid-template-columns:1fr; gap:clamp(26px,5cqw,40px); }
+  .b .plate{ aspect-ratio:16/10; max-height:34vh; justify-self:stretch; order:-1;
+             background-position:center 34%; }
+  .b .seal{ font-size:15px; right:11px; bottom:11px; }
+}
+
+/* ═══ C안 — 현재 구조 + 교정 ═══ */
+.c{ align-items:center;
+  /* 교정 1: 크롭을 좌하단 먹이 들어오게 (현재는 center 100%) */
+  background:url('images/hero-ink.jpg') 28% 88%/cover no-repeat; }
+/* 교정 2: 원경 베일 1.00 → 0.52 */
+.c .veil{ position:absolute; inset:0; z-index:3; pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(250,250,247,.52) 0%, rgba(250,250,247,.36) 25%,
+    rgba(250,250,247,.18) 45%, rgba(250,250,247,.06) 60%, rgba(250,250,247,0) 72%); }
+/* 교정 3: 좌측 스크림 1.00 → 0.60, 폭도 좁혀 먹을 남긴다 */
+.c .scrim{ position:absolute; inset:0; z-index:4; pointer-events:none;
+  background:linear-gradient(to right,
+    rgba(250,250,247,.60) 0%, rgba(250,250,247,.40) 30%,
+    rgba(250,250,247,.14) 52%, rgba(250,250,247,0) 70%); }
+.c .deepen{ position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:multiply;
+  background:linear-gradient(to bottom, rgba(255,255,255,0) 52%,
+    rgba(150,148,142,.18) 68%, rgba(140,138,132,.44) 84%, rgba(132,130,124,.55) 100%); }
+.c .fold{ position:absolute; inset:0; z-index:5; pointer-events:none;
+  background:linear-gradient(to bottom,rgba(250,250,247,0) 95%,var(--bg) 100%); }
+/* 교정 4: 山 복귀 */
+.c .kanji{ right:5cqw; bottom:6%; font-size:clamp(160px,30cqw,380px); opacity:.07; }
+.c .h-desc{ text-shadow:0 1px 14px rgba(250,250,247,.95); }
+.c .mist-a{ bottom:26%; } .c .mist-b{ bottom:16%; }
+@container (max-width:520px){
+  .c{ background-image:url('images/hero-ink-mobile.jpg'); background-position:center center; }
+  .c .scrim{ background:linear-gradient(to bottom,
+      rgba(250,250,247,.30) 0%, rgba(250,250,247,.62) 34%,
+      rgba(250,250,247,.62) 74%, rgba(250,250,247,.15) 100%); }
+  .c .kanji{ font-size:34cqw; top:2%; bottom:auto; }
+}
+
+.note{ max-width:1100px; margin:0 auto; padding:14px 22px 40px; font-size:13px; color:#6E6A62;
+       font-family:var(--font-sans); line-height:1.9; }
+.note b{ color:#3A362E; font-weight:600; }
+</style>
+</head>
+<body data-vp="desktop" data-tw="bold">
+
+<div class="bar">
+  <strong>히어로 3안 비교</strong>
+  <div class="grp"><span>화면</span>
+    <button data-vp="desktop" aria-pressed="true">데스크톱</button>
+    <button data-vp="mobile" aria-pressed="false">모바일 390</button>
+  </div>
+  <div class="grp"><span>타이틀 굵기</span>
+    <button data-tw="bold" aria-pressed="true">700 현재</button>
+    <button data-tw="light" aria-pressed="false">400 가벼움</button>
+  </div>
+</div>
+
+
+<!-- ══════ A안 ══════ -->
+<section class="case" id="a">
+  <div class="case-head">
+    <h2><em>A안</em>여백이 주인공</h2>
+    <p>그림을 하단 띠로 내리고 위쪽은 진짜 종이 여백으로 비웁니다. 글자가 그림 위에 얹히지 않으니 스크림·베일이 아예 필요 없고, 먹 농담이 100% 그대로 살아납니다. 지금까지 안 쓰이던 호수 반영 이미지를 씁니다 — 수평 대칭이라 띠로 잘라도 구도가 무너지지 않습니다.</p>
+  </div>
+  <div class="stage">
+    <div class="hero a">
+      <div class="band" aria-hidden="true"></div>
+      <div class="mist mist-a" aria-hidden="true"></div>
+      <div class="mist mist-b" aria-hidden="true"></div>
+      <div class="fold" aria-hidden="true"></div>
+      <div class="kanji" aria-hidden="true">山</div>
+      <div class="inner">
+        <div class="h-label">하루재클럽</div>
+        <h1 class="h-title"><span>세계가 산에 대해</span><span>쌓아온 것들,</span><span>이제 한국어로.</span></h1>
+        <p class="h-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+        <a href="#" class="h-cta">멤버십 알아보기</a>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>강점</b> 대비 문제 원천 소멸 · 먹이 안 죽음 · 가장 조용하고 수묵답다  ·  <b>약점</b> 그림 면적이 줄어 첫인상의 압도감은 덜함</div>
+</section>
+
+
+<!-- ══════ B안 ══════ -->
+<section class="case" id="b">
+  <div class="case-head">
+    <h2><em>B안</em>액자형 — 종이 위의 작품</h2>
+    <p>풀블리드를 버리고 크림 종이 위에 그림을 한 점의 '작품'으로 얹습니다. 텍스트는 그림 바깥 여백에 두어 겹치지 않고, 낙관(印)을 찍어 출판사·산서의 격을 냅니다. 세로 구도 이미지를 쓰므로 모바일에서도 같은 그림이 이어집니다.</p>
+  </div>
+  <div class="stage">
+    <div class="hero b">
+      <div class="inner">
+        <div>
+          <div class="h-label">하루재클럽</div>
+          <h1 class="h-title"><span>세계가 산에 대해</span><span>쌓아온 것들,</span><span>이제 한국어로.</span></h1>
+          <div class="rule" aria-hidden="true"></div>
+          <p class="h-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+          <a href="#" class="h-cta">멤버십 알아보기</a>
+        </div>
+        <div class="plate" aria-hidden="true"><div class="seal">山</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>강점</b> 책 표지 같은 인상 · 대비 문제 없음 · 그림 전체를 손대지 않고 보여줌  ·  <b>약점</b> 웹사이트 히어로치곤 얌전함 · 낙관은 취향을 탐</div>
+</section>
+
+
+<!-- ══════ C안 ══════ -->
+<section class="case" id="c">
+  <div class="case-head">
+    <h2><em>C안</em>현재 구조 + 교정</h2>
+    <p>지금 배치를 유지하되 네 군데를 고칩니다. ① 크롭을 <code>28% 88%</code>로 옮겨 좌하단 짙은 먹을 화면 안으로 ② 원경 베일 1.00 → 0.52 ③ 좌측 스크림 1.00 → 0.60(폭도 축소) ④ 山 워터마크 복귀. 변경량이 가장 적습니다.</p>
+  </div>
+  <div class="stage">
+    <div class="hero c">
+      <div class="deepen" aria-hidden="true"></div>
+      <div class="mist mist-a" aria-hidden="true"></div>
+      <div class="mist mist-b" aria-hidden="true"></div>
+      <div class="veil" aria-hidden="true"></div>
+      <div class="scrim" aria-hidden="true"></div>
+      <div class="fold" aria-hidden="true"></div>
+      <div class="kanji" aria-hidden="true">山</div>
+      <div class="inner">
+        <div class="h-label">하루재클럽</div>
+        <h1 class="h-title"><span>세계가 산에 대해</span><span>쌓아온 것들,</span><span>이제 한국어로.</span></h1>
+        <p class="h-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
+        <a href="#" class="h-cta">멤버십 알아보기</a>
+      </div>
+    </div>
+  </div>
+  <div class="note"><b>강점</b> 화면을 가득 채우는 압도감 · 변경 최소  ·  <b>약점</b> 글자 뒤를 밝혀야 하는 구조가 남아 먹과 가독성이 계속 서로를 갉아먹음</div>
+</section>
+
+<script>
+document.querySelectorAll('.bar button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var key = btn.dataset.vp ? 'vp' : 'tw';
+    var val = btn.dataset.vp || btn.dataset.tw;
+    document.body.dataset[key] = val;
+    document.querySelectorAll('.bar button[data-'+key+']').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+  });
+});
+</script>
+</body>
+</html>
