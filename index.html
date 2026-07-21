@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-  <script>
-  (function(d) {
-    var config = {
-      kitId: 'ral7dhj',
-      scriptTimeout: 3000,
-      async: true
-    },
-    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-  })(document);
-  </script>
+  <!-- 서체: 고운바탕(제목·본문) + 프리텐다드(UI) + Ma Shan Zheng(山 한자) — 전부 무료, 어도비 구독 불필요 -->
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: clip; }
+
+    :root {
+      /* ── 서체 시스템 (2서체 원칙) ──
+         serif = 고운바탕: 제목·본문·인용 (400/700 두 굵기만 있음 — 600 지정 시 700으로 렌더)
+         sans  = 프리텐다드: 버튼·라벨·폼·캡션 등 UI 전반 */
+      --font-serif: 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
+      --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
+    }
 
     :root {
       --bg: #FAFAF7;
@@ -30,17 +30,24 @@
       --gold: #C8A96E;
 
       /* ── 배경 이미지 위치 (0%=위, 100%=아래) ── */
-      --hero-bg-y: 72%;
+      --hero-bg-y: 100%;
 
-      /* ── 山 한자 위치 조절 ── */
-      --kanji-left: 17.1vw;
-      --kanji-bottom: 8.0vh;
-      --kanji-size: clamp(200px, 50vw, 900px);
-      --kanji-opacity: 0.07;
+      /* ── 히어로 수묵 오버레이 (공기원근법: 뒤는 연하게, 앞은 진하게) ── */
+      --hero-veil: 1.00;    /* 원경 크림 베일 — 뒤쪽 능선을 종이로 날림 */
+      --hero-deepen: 0.80;  /* 근경 먹색 심화 — 앞쪽 능선을 진하게 눌러줌 */
+      --hero-fold: 1.00;    /* 하단 접힘 — 다음 섹션과 잇는 띠 */
+      --hero-scrim: 1.00;   /* 좌측 스크림 — 글자 뒤를 밝혀 가독성 확보 */
+      --mist-op: 1.75;      /* 운무 진하기 */
+      --mist-speed: 2.35;   /* 운무 흐름 속도 */
+    }
+
+    /* 영어 모드: 라틴 글리프는 Lora(웹 시대의 클래식 세리프)가 먼저 받고, 한글은 고운바탕으로 폴백 */
+    html[lang="en"] {
+      --font-serif: 'Lora', 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
     }
 
     body {
-      font-family: source-han-serif-korean, 'Noto Serif KR', Georgia, serif;
+      font-family: var(--font-serif);
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
@@ -61,14 +68,6 @@
     .animate-delay-1 { transition-delay: 0.1s; }
     .animate-delay-2 { transition-delay: 0.2s; }
     .animate-delay-3 { transition-delay: 0.3s; }
-    .animate-delay-4 { transition-delay: 0.4s; }
-
-    /* ── 등반 진행률 인디케이터 ── */
-    .climb-mountain {
-      position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
-      width: 52px; z-index: 90;
-      display: flex; flex-direction: column; align-items: center;
-    }
 
     /* ── 안개 전환 ── */
     .mist-divider {
@@ -81,9 +80,12 @@
       position: absolute; inset: 0;
       background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
       opacity: 0;
-      animation: mistDrift 8s ease-in-out infinite;
+      animation: dividerMist 8s ease-in-out infinite;
     }
-    @keyframes mistDrift {
+    /* 이름을 mistDrift 로 쓰면 아래 히어로 운무(389줄 부근)의 동명 정의에 덮여
+       opacity 를 올리는 프레임이 통째로 사라진다 → 구분선이 opacity:0 인 채로 죽는다.
+       @keyframes 는 이름이 같으면 나중 정의가 이긴다. 이름을 분리해 둘 것. */
+    @keyframes dividerMist {
       0%, 100% { opacity: 0.15; transform: translateX(-2%) scale(1); }
       50% { opacity: 0.35; transform: translateX(2%) scale(1.05); }
     }
@@ -183,10 +185,13 @@
     }
     .nav-link:hover svg path { stroke-dashoffset: 0; }
 
-    .nav-cta { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; background: var(--accent); color: var(--bg) !important; padding: 9px 20px; border-radius: 2px; letter-spacing: 0.03em; }
+    .nav-cta { font-family: var(--font-sans); background: var(--accent); color: var(--bg) !important; padding: 9px 20px; border-radius: 2px; letter-spacing: 0.03em; }
     .nav-cta:hover { background: var(--accent-light) !important; }
     .nav-sns { display: flex; align-items: center; color: var(--muted); transition: color 0.2s; }
     .nav-sns:hover { color: var(--accent); }
+    .nav-lang { font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.08em; padding: 7px 12px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+    .nav-lang:hover { color: var(--accent); border-color: var(--accent); }
+    .mobile-lang { font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; padding: 12px 0; cursor: pointer; text-align: left; }
 
     .hamburger {
       display: none;
@@ -241,7 +246,7 @@
        Caption: 11–12px                 → 보조 설명
     ── */
     .section-tag {
-      font-family: 'garamond-premier-pro', Georgia, serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       letter-spacing: 0.16em;
       color: var(--muted);
@@ -251,7 +256,7 @@
     }
 
     .section-title {
-      font-family: 'garamond-premier-pro-subhead', 'source-han-serif-korean', Georgia, serif;
+      font-family: var(--font-serif);
       font-size: 30px;
       font-weight: 600;
       letter-spacing: -0.01em;
@@ -281,60 +286,146 @@
       align-items: center;
       position: relative;
       overflow: clip;
-      background-image: url('images/hero-himalaya.jpg');
+      isolation: isolate;   /* .hero-deepen 의 multiply 가 페이지 배경까지 번지지 않도록 가둔다 */
+      background-image: url('images/hero-ink.jpg');
       background-size: cover;
       background-position: center var(--hero-bg-y);
     }
+    /* 원경 날리기: 이 수묵화는 이미 공기원근법이 그려져 뒤쪽이 흰 종이다.
+       크림 베일을 전체에 깔면 뒤엔 무효·앞만 표백되므로, 위쪽에만 걸고 72%부터 뺀다.
+       (근경은 아래 .hero-deepen 이 눌러 앞뒤 대비를 만든다) */
     #hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(250, 250, 247, 0.60) 0%,
-        rgba(250, 250, 247, 0.75) 30%,
-        rgba(250, 250, 247, 0.75) 60%,
-        rgba(250, 250, 247, 0.92) 80%,
-        rgba(250, 250, 247, 1.00) 95%
-      );
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+        rgba(250,250,247, calc(var(--hero-veil) * 1.00))  0%,
+        rgba(250,250,247, calc(var(--hero-veil) * 0.70)) 25%,
+        rgba(250,250,247, calc(var(--hero-veil) * 0.35)) 45%,
+        rgba(250,250,247, calc(var(--hero-veil) * 0.12)) 60%,
+        rgba(250,250,247, 0) 72%,
+        rgba(250,250,247, 0) 100%);
+    }
+    /* 좌측 스크림: 글자 뒤쪽만 밝혀 가독성 확보, 우측 수묵은 살린다 */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: linear-gradient(to right,
+        rgba(250,250,247, var(--hero-scrim)) 0%,
+        rgba(250,250,247, calc(var(--hero-scrim) * 0.72)) 34%,
+        rgba(250,250,247, calc(var(--hero-scrim) * 0.28)) 58%,
+        rgba(250,250,247, 0) 78%);
+    }
+    /* 근경 심화: multiply 로 아래쪽 먹색을 눌러 맨 앞이 가장 진하게 끝나도록 */
+    .hero-deepen {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      /* 눌러야 할 곳은 근경(79% 부근)이지 맨 밑단이 아니다. 바닥까지 최대로 눌러두면
+         아래 .hero-fold 의 크림과 짙은 먹이 바로 부딪혀 경계가 띠로 드러난다. */
+      background: linear-gradient(to bottom,
+        rgba(255,255,255,0) 50%,
+        rgba(150,148,142, calc(var(--hero-deepen) * 0.20)) 66%,
+        rgba(140,138,132, calc(var(--hero-deepen) * 0.42)) 79%,
+        rgba(138,136,130, calc(var(--hero-deepen) * 0.38)) 90%,
+        rgba(136,134,128, calc(var(--hero-deepen) * 0.12)) 100%);
+    }
+    /* 하단 접힘: 다음 섹션(크림)과 잇는 띠. 스크림보다 위에 얹어 좌하단 이음매를 깨끗이.
+       마지막 4%에서만 페이드하면 뚝 끊긴다. 28% 구간에 여러 정지점을 두어 곡선을 흉내 내야
+       종이로 스며든다(2점 그라데이션의 직선 변화는 눈에 띈다). */
+    .hero-fold {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+        rgba(250,250,247,0) 72%,
+        rgba(250,250,247, calc(var(--hero-fold) * 0.08)) 81%,
+        rgba(250,250,247, calc(var(--hero-fold) * 0.24)) 87%,
+        rgba(250,250,247, calc(var(--hero-fold) * 0.50)) 92%,
+        rgba(250,250,247, calc(var(--hero-fold) * 0.78)) 96%,
+        rgba(250,250,247, calc(var(--hero-fold) * 0.94)) 98.5%,
+        rgba(250,250,247, var(--hero-fold)) 100%);
+    }
+    /* ── 운무: 능선 사이를 옆으로 흐르는 안개 띠 3겹 (서로 다른 속도·방향) ── */
+    .mist {
+      position: absolute;
+      left: -50%;
+      width: 200%;
       z-index: 1;
       pointer-events: none;
+      will-change: transform;
     }
-    #hero .hero-kanji {
-      /* 배경 장식이므로 흐름에서 빼고(absolute) 텍스트 뒤로 보냄.
-         position:relative 로 두면 flex 아이템이 되어 본문을 우측으로 밀어냄 */
-      z-index: 1;
+    .mist-a {
+      bottom: 30vh; height: 16vh; opacity: calc(0.85 * var(--mist-op));
+      background:
+        radial-gradient(ellipse 22% 58% at 12% 55%, rgba(245,238,233,0.9), transparent 70%),
+        radial-gradient(ellipse 30% 70% at 38% 45%, rgba(240,232,228,0.75), transparent 70%),
+        radial-gradient(ellipse 25% 55% at 63% 60%, rgba(246,240,236,0.85), transparent 70%),
+        radial-gradient(ellipse 28% 65% at 88% 50%, rgba(240,233,229,0.7), transparent 70%);
+      animation: mistDrift calc(90s / var(--mist-speed)) linear infinite;
+    }
+    .mist-b {
+      bottom: 21vh; height: 14vh; opacity: calc(0.75 * var(--mist-op));
+      background:
+        radial-gradient(ellipse 26% 62% at 20% 50%, rgba(238,230,226,0.85), transparent 70%),
+        radial-gradient(ellipse 32% 55% at 50% 58%, rgba(244,236,231,0.7), transparent 70%),
+        radial-gradient(ellipse 24% 68% at 78% 45%, rgba(238,231,227,0.8), transparent 70%);
+      /* reverse 를 쓰면 중경만 역방향이라 원경·근경과 상쇄돼 '바람'이 안 읽힌다.
+         셋 다 같은 방향으로 두고 속도만 다르게 → 원경 느리게, 근경 빠르게(시차). */
+      animation: mistDrift calc(65s / var(--mist-speed)) linear infinite;
+    }
+    .mist-c {
+      bottom: 11vh; height: 13vh; opacity: calc(0.6 * var(--mist-op));
+      background:
+        radial-gradient(ellipse 30% 60% at 15% 55%, rgba(228,224,222,0.8), transparent 70%),
+        radial-gradient(ellipse 26% 66% at 45% 48%, rgba(233,228,225,0.65), transparent 70%),
+        radial-gradient(ellipse 34% 58% at 72% 55%, rgba(228,223,221,0.75), transparent 70%),
+        radial-gradient(ellipse 22% 60% at 95% 50%, rgba(233,229,226,0.6), transparent 70%);
+      animation: mistDrift calc(48s / var(--mist-speed)) linear infinite;
+    }
+    @keyframes mistDrift {
+      from { transform: translateX(0); }
+      to   { transform: translateX(25%); }
+    }
+    /* 안개 숨쉬기: 아주 미세한 밝기 변화 */
+    .mist::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: inherit; opacity: 0;
+      animation: mistBreath calc(14s / var(--mist-speed)) ease-in-out infinite;
+    }
+    @keyframes mistBreath {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.35; }
+    }
+    /* 모션 최소화 설정을 켠 사용자에겐 흐름을 멈춘다 */
+    @media (prefers-reduced-motion: reduce) {
+      .mist-a, .mist-b, .mist-c, .mist::after { animation: none; }
     }
     #hero .inner {
       position: relative;
-      z-index: 2;
+      z-index: 6;
       flex: 1 1 auto;   /* flex 아이템이 남는 가로 공간을 채우도록(콘텐츠가 우측으로 쏠리는 문제 해결) */
       min-width: 0;
       width: 100%;
     }
 
-    .hero-kanji {
-      position: absolute;
-      left: var(--kanji-left);
-      bottom: var(--kanji-bottom);
-      font-size: var(--kanji-size);
-      line-height: 1;
-      color: var(--accent);
-      opacity: var(--kanji-opacity);
-      font-family: 'Ma Shan Zheng', source-han-serif-korean, 'Noto Serif KR', Georgia, serif;
-      font-weight: 900;
-      pointer-events: none;
-      user-select: none;
-      letter-spacing: -0.05em;
-    }
-
     .hero-label {
-      font-family: 'garamond-premier-pro', Georgia, serif;
+      font-family: var(--font-sans);
       font-size: 14.08px;
       letter-spacing: 0.16em;
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 16px;
+      text-shadow: 0 1px 12px rgba(250,250,247,0.9);
       transform: translate(0px, -1px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
@@ -349,6 +440,9 @@
       margin-bottom: 24px;
       margin-left: -0.05em;
       max-width: 680px;
+      /* 능선의 짙은 먹이 글자 뒤로 지나갈 때 획이 묻힌다. 그림자가 아니라 종이빛 후광을
+         얇게 깔아 글자 가장자리만 띄운다. */
+      text-shadow: 0 1px 22px rgba(250,250,247,0.72);
     }
     .hero-title .title-line {
       display: block;
@@ -366,7 +460,9 @@
 
     .hero-desc {
       font-size: 16px;
-      color: var(--muted);
+      /* --muted(#8A8A8A)는 종이 배경에서 명도대비 3.30:1 로 WCAG AA(4.5:1) 미달이었다.
+         수묵 톤에 맞는 따뜻한 먹색으로 낮춰 7.31:1 확보(흐린 먹 위에서도 5.39:1). */
+      color: #57534C;
       max-width: 480px;
       line-height: 2;
       margin-bottom: 52px;
@@ -380,7 +476,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       background: transparent;
       color: var(--accent);
       border: 1px solid var(--accent);
@@ -404,25 +500,6 @@
     }
     .hero-cta:hover::after { transform: translateX(4px); }
 
-    .hero-stat {
-      margin-top: 80px;
-      display: flex;
-      gap: 60px;
-      opacity: 0;
-      animation: fadeUp 0.9s ease 1.9s forwards;
-    }
-
-    .stat-num {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .stat-label { font-family: 'garamond-premier-pro', Georgia, serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
-    .stat-num--text { font-size: 18px; letter-spacing: -0.01em; }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -439,7 +516,7 @@
     }
 
     .filter-btn {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 14px;
       letter-spacing: 0.01em;
       padding: 9px 22px;
@@ -511,16 +588,6 @@
 
     .book-card:hover .book-cover img { transform: scale(1.04); }
 
-    .book-cover-noimg {
-      background: linear-gradient(160deg, var(--dark) 0%, #2a3d30 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-    }
-    .book-cover-noimg::before {
-      content: '⛰';
-      font-size: 36px;
-      opacity: 0.35;
-    }
-
 
     .book-hover-info {
       position: absolute;
@@ -549,8 +616,6 @@
       line-height: 1.4;
     }
 
-    .book-title { display: none; }
-    .book-sub   { display: none; }
 
     /* ── Book Modal ── */
     .modal-overlay {
@@ -653,7 +718,7 @@
     .modal-close:hover { color: var(--text); }
 
     .modal-lang {
-      font-family: 'garamond-premier-pro', Georgia, serif;
+      font-family: var(--font-sans);
       font-size: 10px;
       letter-spacing: 0.14em;
       color: var(--accent);
@@ -683,7 +748,7 @@
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 10px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       line-height: 1.65;
     }
 
@@ -699,7 +764,7 @@
       align-items: center;
       padding: 3px 9px;
       border-radius: 2px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -712,7 +777,7 @@
     .award-badge--noba        { background: #4a1942; color: #fff; }
 
     .modal-meta {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11.5px;
       color: var(--muted);
       letter-spacing: 0.01em;
@@ -730,7 +795,7 @@
       color: #333;
       line-height: 2.05;
       margin-bottom: 28px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
     }
 
     .modal-quote {
@@ -749,7 +814,7 @@
       color: var(--gold);
       opacity: 0.25;
       line-height: 1;
-      font-family: Georgia, serif;
+      font-family: var(--font-serif);
     }
 
     .modal-quote p {
@@ -761,7 +826,7 @@
     }
 
     .modal-author-bio {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12.5px;
       line-height: 1.85;
       color: #666;
@@ -777,7 +842,7 @@
       color: var(--muted);
       text-transform: uppercase;
       margin-bottom: 8px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
     }
 
     .modal-tags {
@@ -788,7 +853,7 @@
     }
 
     .modal-tag-item {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       padding: 4px 10px;
       border: 1px solid var(--border);
@@ -807,7 +872,7 @@
     }
 
     .modal-buy-label {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 10px;
       letter-spacing: 0.09em;
       color: var(--muted);
@@ -823,7 +888,7 @@
     .modal-buy-btn {
       flex: 1;
       padding: 13px 16px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       letter-spacing: 0.05em;
       text-align: center;
@@ -895,7 +960,7 @@
 
     .pick-badge {
       display: inline-block;
-      font-family: 'garamond-premier-pro', Georgia, serif;
+      font-family: var(--font-sans);
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -919,7 +984,7 @@
     }
 
     .pick-author {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12.5px;
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.01em;
@@ -942,7 +1007,7 @@
     }
 
     .pick-note {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12.5px;
       color: rgba(255,255,255,0.42);
       line-height: 1.8;
@@ -1021,7 +1086,7 @@
     .philosophy-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 
     .phil-label {
-      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
+      font-family: var(--font-serif);
       font-size: 17px;
       font-weight: 600;
       letter-spacing: -0.01em;
@@ -1050,7 +1115,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.05em;
@@ -1059,7 +1124,7 @@
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
     .about-name { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
-    .about-role { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
+    .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
     .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
     .about-quote {
@@ -1093,12 +1158,12 @@
     .form-full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+    .form-group label { font-family: var(--font-sans); font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       background: var(--bg);
       border: 1px solid var(--border);
       padding: 12px 16px;
@@ -1117,7 +1182,7 @@
     .form-group textarea { resize: vertical; min-height: 120px; }
 
     .form-submit {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       background: var(--accent);
       color: #fff;
       border: none;
@@ -1194,35 +1259,6 @@
     /* ── Membership ── */
     #membership { background: var(--bg); }
 
-    .mem-recent-section {
-      margin-bottom: 44px;
-    }
-
-    .mem-recent-label {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .mem-recent-covers {
-      display: flex;
-      gap: 10px;
-    }
-
-    .mem-recent-covers img {
-      width: 80px;
-      height: 112px;
-      object-fit: cover;
-      border: 1px solid var(--border);
-      box-shadow: 2px 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-
-    .mem-recent-covers img:hover { transform: translateY(-3px); }
-
     .mem-guarantee {
       display: flex;
       gap: 16px;
@@ -1233,7 +1269,7 @@
     }
 
     .mem-guarantee span {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11.5px;
       color: var(--muted);
     }
@@ -1247,7 +1283,6 @@
       margin-top: -24px;
     }
 
-    .membership-grid { display: flex; justify-content: center; }
 
     .mem-layout {
       display: grid;
@@ -1274,7 +1309,7 @@
       font-weight: 700;
       letter-spacing: 0.05em;
       color: var(--gold);
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       padding-top: 3px;
       flex-shrink: 0;
     }
@@ -1288,7 +1323,7 @@
     }
 
     .mem-reason-desc {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 13.5px;
       color: var(--muted);
       line-height: 1.9;
@@ -1317,7 +1352,7 @@
       top: -14px; left: 40px;
       background: var(--gold);
       color: var(--dark);
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.01em;
@@ -1325,9 +1360,9 @@
       box-shadow: 0 4px 12px rgba(26,40,32,0.18);
     }
 
-    .mem-type { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em; }
+    .mem-type { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em; }
 
-    .mem-price { font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
+    .mem-price { font-family: var(--font-sans); font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
     .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 
     .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
@@ -1344,7 +1379,7 @@
     .mem-list li::before { content: "—"; color: var(--accent); flex-shrink: 0; }
 
     .mem-btn {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1382,10 +1417,10 @@
 
     .footer-logo { margin-bottom: 10px; }
     .footer-logo img { height: 24px; width: auto; display: block; filter: invert(1); }
-    .footer-copy { font-family: 'garamond-premier-pro', Georgia, serif; font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .footer-copy { font-family: var(--font-sans); font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
     .footer-contact { display: flex; flex-direction: column; gap: 3px; }
     .footer-contact a, .footer-contact span {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       color: rgba(255,255,255,0.35);
       text-decoration: none;
@@ -1408,12 +1443,19 @@
 
       /* .hero-title 크기는 위 clamp()가 담당 (모바일 하드코딩 제거) */
       .hero-desc { font-size: 13px; line-height: 1.9; margin-bottom: 36px; }
-      /* 세로 화면에선 cover가 사진 전체 높이를 넣어 상단이 안개뿐 → 확대+아래 정렬로 능선을 중단까지 */
-      #hero { background-size: auto 155%; background-position: center bottom; }
-      /* 山 한자: 헤더 근처(top:2vh)에서 → 타이틀 옆(우측) 워터마크로. 타이틀 중앙에 맞춰 살짝 위로 */
-      .hero-kanji { left: auto; right: -8vw; bottom: auto; top: 42%; transform: translateY(-50%); font-size: 56vw; }
-      .hero-stat { gap: 32px; flex-wrap: wrap; }
-      .stat-num { font-size: 24px; }
+      /* 모바일은 세로 수묵 이미지로 교체 → cover 로 화면을 꽉 채운다 */
+      #hero { background-image: url('images/hero-ink-mobile.jpg'); background-size: cover; background-position: center center; }
+      /* 데스크톱의 28% 접힘을 그대로 쓰면 748px 히어로에서 209px 가 페이드에 먹힌다.
+         가로로 넓은 데스크톱에선 여백처럼 읽히지만 세로 화면에선 낭비다 → 16% 로 좁힌다. */
+      .hero-fold {
+        background: linear-gradient(to bottom,
+          rgba(250,250,247,0) 84%,
+          rgba(250,250,247, calc(var(--hero-fold) * 0.12)) 89%,
+          rgba(250,250,247, calc(var(--hero-fold) * 0.38)) 93%,
+          rgba(250,250,247, calc(var(--hero-fold) * 0.72)) 96.5%,
+          rgba(250,250,247, calc(var(--hero-fold) * 0.92)) 98.5%,
+          rgba(250,250,247, var(--hero-fold)) 100%);
+      }
 
       /* 필터: 줄바꿈으로 엉성해지던 것 → 가로 스크롤 한 줄(모바일 칩 표준) */
       .books-filter { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 8px; margin: 0 -24px 32px; padding: 0 24px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -1447,7 +1489,7 @@
     #quiz .section-tag { color: var(--gold); border-color: rgba(200,169,110,0.3); }
     #quiz .section-title { color: #fff; }
     #quiz .section-title::after { background: repeating-linear-gradient(-35deg, rgba(200,169,110,0.3) 0px, rgba(200,169,110,0.3) 3px, transparent 3px, transparent 6px); }
-    #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif; font-size: 15px; }
+    #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: var(--font-sans); font-size: 15px; }
 
     .quiz-wrap {
       max-width: 680px;
@@ -1473,7 +1515,7 @@
     .quiz-progress-label {
       position: absolute;
       right: 0; top: 8px;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       letter-spacing: 0.09em;
       color: rgba(255,255,255,0.3);
@@ -1513,7 +1555,7 @@
     }
 
     .quiz-intro p {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 15px;
       color: rgba(255,255,255,0.5);
       line-height: 1.8;
@@ -1530,14 +1572,14 @@
       letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
-      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
+      font-family: var(--font-serif);
     }
 
     .quiz-start-btn:hover { opacity: 0.88; transform: translateY(-2px); }
 
     /* 질문 */
     .quiz-q-num {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       letter-spacing: 0.14em;
       color: var(--gold);
@@ -1593,7 +1635,7 @@
     }
 
     .quiz-opt-sub {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       color: rgba(255,255,255,0.4);
       line-height: 1.5;
@@ -1606,7 +1648,7 @@
     }
 
     .quiz-result-header p {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 13px;
       letter-spacing: 0.09em;
       color: var(--gold);
@@ -1656,7 +1698,7 @@
     }
 
     .quiz-result-lang {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 10px;
       letter-spacing: 0.14em;
       color: var(--gold);
@@ -1682,7 +1724,7 @@
     }
 
     .quiz-result-author {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 13px;
       color: rgba(255,255,255,0.4);
       margin-bottom: 20px;
@@ -1700,7 +1742,7 @@
     }
 
     .quiz-result-reason {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       color: rgba(255,255,255,0.35);
       margin-bottom: 24px;
@@ -1716,7 +1758,7 @@
       font-size: 12px;
       letter-spacing: 0.05em;
       cursor: pointer;
-      font-family: source-han-serif-korean, 'Noto Serif KR', serif;
+      font-family: var(--font-serif);
       transition: border-color 0.2s, color 0.2s;
     }
 
@@ -1727,7 +1769,7 @@
       text-align: center;
       background: none;
       border: none;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       color: rgba(255,255,255,0.3);
       cursor: pointer;
@@ -1746,7 +1788,7 @@
     }
 
     .quiz-result-header .quiz-persona-tagline {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 13px;
       color: rgba(255,255,255,0.45);
       letter-spacing: 0;
@@ -1756,7 +1798,7 @@
 
     .quiz-pick-label {
       text-align: center;
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       letter-spacing: 0.08em;
       color: var(--gold);
@@ -1767,7 +1809,7 @@
     .quiz-companions { margin-top: 28px; }
 
     .quiz-companions-label {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 12px;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.45);
@@ -1817,7 +1859,7 @@
     }
 
     .quiz-companion-author {
-      font-family: source-han-sans-korean, 'Apple SD Gothic Neo', sans-serif;
+      font-family: var(--font-sans);
       font-size: 11px;
       color: rgba(255,255,255,0.4);
       overflow: hidden;
@@ -1858,6 +1900,7 @@
       <li><a href="#faq" class="nav-link">FAQ
         <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
       </a></li>
+      <li><button class="nav-lang" id="langToggle" onclick="toggleLang()" aria-label="Switch language">EN</button></li>
       <li><a href="#membership" class="nav-cta">멤버십 가입</a></li>
       <li><a href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer" class="nav-sns" aria-label="Instagram">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg>
@@ -1875,11 +1918,16 @@
     <a href="#forms" onclick="closeMobile()">참여하기</a>
     <a href="#faq" onclick="closeMobile()">FAQ</a>
     <a href="#membership" onclick="closeMobile()">멤버십 가입</a>
+    <button class="mobile-lang" onclick="toggleLang()">EN · English</button>
   </div>
 
   <!-- Hero -->
   <section id="hero">
-    <div class="hero-kanji" aria-hidden="true">山</div>
+    <div class="mist mist-a" aria-hidden="true"></div>
+    <div class="mist mist-b" aria-hidden="true"></div>
+    <div class="mist mist-c" aria-hidden="true"></div>
+    <div class="hero-deepen" aria-hidden="true"></div>
+    <div class="hero-fold" aria-hidden="true"></div>
     <div class="inner">
       <div class="hero-label">하루재클럽</div>
       <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
@@ -3210,7 +3258,6 @@
     const root = document.documentElement;
 
     const TARGETS = [
-      { sel: '.hero-kanji', name: '山 한자' },
       { sel: '.hero-label', name: '소제목' },
       { sel: '.hero-title', name: '메인 제목' },
       { sel: '.hero-desc',  name: '설명 글' },
@@ -3462,8 +3509,8 @@
         s.el.style.userSelect = 'none';
         if (sel === '.hero-kanji') s.el.style.pointerEvents = 'auto';
       });
-      buildPanel('.hero-kanji');
-      updateHL(state['.hero-kanji']?.el);
+      buildPanel('.hero-label');
+      updateHL(state['.hero-label']?.el);
     }
 
     function exitEdit() {
@@ -3484,5 +3531,150 @@
     toggleBtn.addEventListener('click', () => editMode ? exitEdit() : enterEdit());
   })();
   </script>
+<script>
+  // ══════════ 언어 전환 (KO/EN) ══════════
+  // 항목: {sel, en} = innerHTML 교체 · {sel, en, text:true} = 첫 텍스트 노드만 교체(아이콘·svg 보존)
+  //       {sel, en, attr:'placeholder'} = 속성 교체 · en이 배열이면 sel 매칭 순서대로, null은 건너뜀
+  // 한국어 원문은 첫 전환 때 data-ko*에 캐시 → KO 복귀 시 복원. 번역 수정은 아래 사전만 고치면 됨.
+  const I18N = [
+    // 배너 · 내비게이션
+    { sel: '#banner > span', en: 'New release · <em>Pilgrims of the Vertical</em> (May 2026) — <a href="#books">View the books</a>' },
+    { sel: '.nav-links .nav-link', text: true, en: ['Books', 'Philosophy', 'About', 'FAQ'] },
+    { sel: '.nav-cta', en: 'Join Membership' },
+    { sel: '#mobileMenu a', en: ['Books', 'Philosophy', 'About', 'Participate', 'FAQ', 'Membership'] },
+
+    // 히어로
+    { sel: '.hero-label', en: 'HAROOJAE CLUB' },
+    { sel: '.hero-title', en: '<span class="title-line">What the world has written</span><span class="title-line">about mountains,</span><span class="title-line">now in Korean.</span>' },
+    { sel: '.hero-desc', en: 'A publisher for those the climb alone cannot satisfy.<br>Korea&rsquo;s only publisher dedicated to mountain literature.' },
+    { sel: '.hero-cta', en: 'Explore Membership' },
+
+    // 섹션 제목
+    { sel: '#books .section-title', en: 'Our Books' },
+    { sel: '#philosophy .section-title', en: 'Our Philosophy' },
+    { sel: '#picks .section-title', en: 'Start With These' },
+    { sel: '#about .section-title', en: 'The Publisher' },
+    { sel: '#quiz .section-title', en: 'Find Your Book' },
+    { sel: '#forms .section-title', en: 'Get Involved' },
+    { sel: '#faq .section-title', en: 'FAQ' },
+    { sel: '#membership .section-title', en: 'Membership' },
+
+    // 도서 필터
+    { sel: '#booksFilter .filter-btn', text: true, en: ['All', 'Biography', 'Expeditions', 'History & Culture', 'Skills & Training', 'Photo Books'] },
+
+    // 출판사 철학
+    { sel: '.philosophy-lead', en: 'Some people are not fulfilled by climbing alone.<br>They want to know the mountain&rsquo;s history, its people, its philosophy.<br>Haroojae exists so that there will be more of them.' },
+    { sel: '.phil-label', en: ['What We Do', 'The Reader&rsquo;s Experience'] },
+    { sel: '.phil-text', en: ['We bring what the world&rsquo;s mountaineering culture has built over decades to Korean readers for the first time. More than translation — it is an introduction to mountain culture itself.', 'After reading a Haroojae book, your next hike feels different. As those changes quietly accumulate, your relationship with the mountains deepens.'] },
+
+    // 대표 소개
+    { sel: '.about-name', en: 'Byun Ki-tae' },
+    { sel: '.about-role', en: 'Publisher of Haroojae Club · President of the Corean Alpine Club' },
+    { sel: '.about-body', en: 'Since 2015, he has led Haroojae Club and published 42 mountain books. A lifelong bibliophile who has collected mountain literature for over fifty years — from his high-school days on — he keeps a library of some 5,000 titles, foreign originals included. He is a founding member of the Korean Mountain Book Society and currently serves as President of the Corean Alpine Club.' },
+    { sel: '.about-quote p', en: '&ldquo;It always saddened me that so many good books existed in other fields, yet mountain literature was so hard to find. I want to spark a mountain-book reading culture — so that publishers, too, find the will to publish them.&rdquo;' },
+
+    // 책 추천 퀴즈
+    { sel: '#quiz .section-sub', en: 'Four questions to find the mountain book that fits you' },
+    { sel: '#quiz-intro h3', en: 'Which mountain book is right for me?' },
+    { sel: '#quiz-intro .quiz-intro p', en: 'Hard to choose among 42 titles?<br>This test is a place to start.' },
+    { sel: '.quiz-start-btn', en: 'Start the Test' },
+    { sel: '#quiz-q1 .quiz-question', en: 'What draws you most to the mountains?' },
+    { sel: '#quiz-q1 .quiz-opt-main', en: ['Conquering 8000 meters', 'Pure technique', 'Exploration and nature', 'Life and philosophy'] },
+    { sel: '#quiz-q1 .quiz-opt-sub', en: ['The limits of human endurance', 'Routes, rock, the perfect move', 'Toward lands still unknown', 'What mountains teach us'] },
+    { sel: '#quiz-q2 .quiz-question', en: 'What kind of story do you want?' },
+    { sel: '#quiz-q2 .quiz-opt-main', en: ['A vivid expedition log', 'A whole life', 'History and eras', 'Controversy and mystery'] },
+    { sel: '#quiz-q2 .quiz-opt-sub', en: ['The tension of being there', 'How one person lived', 'The big picture of climbing history', 'A relentless pursuit of truth'] },
+    { sel: '#quiz-q3 .quiz-question', en: 'What should linger after the last page?' },
+    { sel: '#quiz-q3 .quiz-opt-main', en: ['Heart-pounding tension', 'Lasting emotion', 'New knowledge and perspective', 'The afterglow of nature'] },
+    { sel: '#quiz-q3 .quiz-opt-sub', en: ['White knuckles all the way through', 'A story that stays for days', 'Learning a world you didn&rsquo;t know', 'A lyrical sense of being in the mountains'] },
+    { sel: '#quiz-q4 .quiz-question', en: 'What kind of reader are you?' },
+    { sel: '#quiz-q4 .quiz-opt-main', en: ['New to the mountain world', 'A hiker and general reader', 'Fairly versed in alpinism', 'A mountain-book devotee'] },
+    { sel: '#quiz-q4 .quiz-opt-sub', en: ['Looking for an easy way in', 'I love mountains, but I&rsquo;m no expert', 'Comfortable with terms and history', 'I&rsquo;ve read quite a few already'] },
+    { sel: '.quiz-result-header > p', en: '✦ Your mountaineer type' },
+    { sel: '.quiz-pick-label', en: '✦ The book for you' },
+    { sel: '#quizResultViewBtn', en: 'View in book list →' },
+    { sel: '.quiz-companions-label', en: 'Also worth reading' },
+    { sel: '.quiz-retry-btn', en: '↺ Take the test again' },
+
+    // 참여하기 폼
+    { sel: '.form-section-title', en: ['Leave a Review', 'Request a Translation'] },
+    { sel: '#reviewForm label', en: ['Name', 'Book you read', 'Rating', 'Review'] },
+    { sel: '#reviewForm input[type="text"]', attr: 'placeholder', en: ['Your name'] },
+    { sel: '#reviewForm textarea', attr: 'placeholder', en: ['Share your thoughts on the book.'] },
+    { sel: '#reviewForm option', en: ['Select a book', null, null, null, null, null, 'Other', null, null, null] },
+    { sel: '#reviewForm .form-submit', en: 'Submit Review' },
+    { sel: '#reviewSuccess', en: 'Thank you — your review has been received.' },
+    { sel: '#requestForm label', en: ['Original title', 'Author', 'Publisher', 'Language', 'Why this book?', 'Name (optional)', 'Email (optional)'] },
+    { sel: '#requestForm input[type="text"]', attr: 'placeholder', en: ['Original title', 'Author name', 'Publisher name', 'Your name'] },
+    { sel: '#requestForm input[type="email"]', attr: 'placeholder', en: ['Your email'] },
+    { sel: '#requestForm textarea', attr: 'placeholder', en: ['Tell us why you&rsquo;d like this book translated.'] },
+    { sel: '#requestForm option', en: ['Select a language', 'English', 'Japanese', 'German', 'French', 'Other'] },
+    { sel: '#requestForm .form-submit', en: 'Submit Request' },
+    { sel: '#requestSuccess', en: 'Request received. We&rsquo;ll review it carefully.' },
+
+    // FAQ
+    { sel: '.faq-question', text: true, en: ['How do I join the membership? ', 'When will I receive the books? ', 'How are the books selected? ', 'Can I cancel anytime? ', 'Can I buy earlier titles separately? '] },
+    { sel: '.faq-answer p', en: [
+      'You can sign up via the Naver form in the membership section at the bottom of this page. It costs ₩10,000 per month (₩120,000 per year), and 3–4 mountain books are delivered annually.',
+      'Books are shipped in turn after you join — 3 to 4 times a year, each a title selected by Haroojae. Timing may vary with the publishing schedule.',
+      'We choose books of depth — about the history, philosophy, and people of mountain culture, not mere climbing logs. Our standard: bringing the strata of world mountain culture to Korean readers.',
+      'Yes, you can cancel at any time. Billing stops from the following month. Contact us for details.',
+      'Yes. Previously published books can be purchased individually — each book&rsquo;s detail page links to YES24 and Kyobo Book Centre. Some titles are members-only.'
+    ] },
+
+    // 멤버십
+    { sel: '.membership-intro', en: 'Mountain books you can find nowhere else in Korea —<br>translated by Haroojae and delivered to your door.' },
+    { sel: '.mem-reason-title', en: ['Books that wouldn&rsquo;t exist without Haroojae', 'Chosen by the President of the Corean Alpine Club', 'The mountain changes after you read'] },
+    { sel: '.mem-reason-desc', en: [
+      'All 42 of our titles are first-ever Korean translations. They exist in Korean because Haroojae read them first and judged them worth it.',
+      'Our publisher — a climber of forty years — reads and selects the world&rsquo;s mountain books himself, by the essence of climbing culture rather than by trend.',
+      'One Haroojae book subtly changes your next climb. There is a moment you learn the difference between climbing a mountain and reading one.'
+    ] },
+    { sel: '.mem-badge', en: 'Join now and receive 4 welcome books' },
+    { sel: '.mem-type', en: 'Membership' },
+    { sel: '.mem-price', en: '₩10,000 / mo' },
+    { sel: '.mem-period', en: '₩120,000 / year' },
+    { sel: '.mem-list li', en: ['3–4 mountain books delivered yearly', 'Titles personally selected by the CAC President', 'Hardcover editions with color photographs'] },
+    { sel: '.mem-btn', text: true, en: 'Start with 4 welcome books' },
+    { sel: '.mem-guarantee span', en: ['✓ Cancel anytime', '✓ No commitment', '✓ Shipping included'] },
+
+    // 푸터
+    { sel: '.footer-contact > span', en: '801, Shinsa 2nd Bldg., 6 Naruteo-ro 15-gil, Seocho-gu, Seoul, Korea' },
+    { sel: '.footer-tagline', en: 'What the world has written about mountains,<br>now in Korean.' }
+  ];
+
+  function applyLang(lang) {
+    document.documentElement.lang = (lang === 'en') ? 'en' : 'ko';
+    I18N.forEach(item => {
+      document.querySelectorAll(item.sel).forEach((el, i) => {
+        const en = Array.isArray(item.en) ? item.en[i] : item.en;
+        if (en == null) return;
+        if (item.attr) {
+          if (el.dataset.koAttr == null) el.dataset.koAttr = el.getAttribute(item.attr) || '';
+          el.setAttribute(item.attr, lang === 'en' ? en.replace(/&rsquo;/g, '’') : el.dataset.koAttr);
+        } else if (item.text) {
+          const tn = Array.from(el.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim());
+          if (!tn) return;
+          if (el.dataset.ko == null) el.dataset.ko = tn.nodeValue;
+          tn.nodeValue = lang === 'en' ? en.replace(/&rsquo;/g, '’').replace(/&amp;/g, '&') : el.dataset.ko;
+        } else {
+          if (el.dataset.koHtml == null) el.dataset.koHtml = el.innerHTML;
+          el.innerHTML = lang === 'en' ? en : el.dataset.koHtml;
+        }
+      });
+    });
+    try { localStorage.setItem('hj-lang', lang); } catch (e) {}
+    const nav = document.getElementById('langToggle');
+    if (nav) nav.textContent = lang === 'en' ? 'KO' : 'EN';
+    document.querySelectorAll('.mobile-lang').forEach(b => b.textContent = lang === 'en' ? '한국어 · KO' : 'EN · English');
+  }
+
+  function toggleLang() {
+    applyLang(document.documentElement.lang === 'en' ? 'ko' : 'en');
+  }
+
+  // 저장된 언어 복원
+  try { if (localStorage.getItem('hj-lang') === 'en') applyLang('en'); } catch (e) {}
+</script>
 </body>
 </html>
