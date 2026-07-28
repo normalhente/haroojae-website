@@ -29,14 +29,20 @@
       --dark: #1A2820;
       --gold: #C8A96E;
 
-      /* ── 배경 이미지 위치 (0%=위, 100%=아래) ── */
-      --hero-bg-y: 100%;
+      /* ── 배경 이미지 위치 (0%=위, 100%=아래) ──
+         C안 교정 ①: center 100% 는 짙은 먹이 우하단에만 몰렸다. 28% 88% 로 옮겨
+         좌하단 먹을 화면 안으로 들인다. X를 변수로 뺀 건 편집 모드가 Y만 조정하기 때문 */
+      --hero-bg-x: 28%;
+      --hero-bg-y: 88%;
 
       /* ── 히어로 수묵 오버레이 (공기원근법: 뒤는 연하게, 앞은 진하게) ── */
-      --hero-veil: 1.00;    /* 원경 크림 베일 — 뒤쪽 능선을 종이로 날림 */
+      --hero-veil: 0.52;    /* 원경 크림 베일 — 뒤쪽 능선을 종이로 날림 (C안 교정 ②: 1.00 은 원경을 통째로 표백했음) */
       --hero-deepen: 0.80;  /* 근경 먹색 심화 — 앞쪽 능선을 진하게 눌러줌 */
       --hero-fold: 1.00;    /* 하단 접힘 — 다음 섹션과 잇는 띠 */
-      --hero-scrim: 1.00;   /* 좌측 스크림 — 글자 뒤를 밝혀 가독성 확보 */
+      /* 좌측 스크림 — 글자 뒤를 밝혀 가독성 확보.
+         C안 교정 ③: 1.00 은 좌측에서 운무를 61~100% 덮어 흐름이 아예 안 보였다 */
+      --hero-scrim: 0.60;
+      --hero-blur: 10px;    /* 좌측 흐림 — 스크림을 내린 만큼 잔디테일을 뭉개 글자를 띄운다 */
       --mist-op: 1.75;      /* 운무 진하기 */
       --mist-speed: 2.35;   /* 운무 흐름 속도 */
     }
@@ -289,16 +295,30 @@
       isolation: isolate;   /* .hero-deepen 의 multiply 가 페이지 배경까지 번지지 않도록 가둔다 */
       background-image: url('images/hero-ink.jpg');
       background-size: cover;
-      background-position: center var(--hero-bg-y);
+      background-position: var(--hero-bg-x) var(--hero-bg-y);
     }
     /* 원경 날리기: 이 수묵화는 이미 공기원근법이 그려져 뒤쪽이 흰 종이다.
        크림 베일을 전체에 깔면 뒤엔 무효·앞만 표백되므로, 위쪽에만 걸고 72%부터 뺀다.
        (근경은 아래 .hero-deepen 이 눌러 앞뒤 대비를 만든다) */
+    /* C안 교정 ⑤: 글자 뒤를 흰색으로 덮는 대신 흐린다. 흰 스크림은 먹의 명도까지 날리지만
+       블러는 글자와 싸우는 잔디테일만 뭉갠다. 수묵화를 흐리면 '안개'로 읽혀 그림과 논리도 맞는다.
+       직선 마스크는 능선을 가로지르며 경계가 드러나므로 글자 블록을 감싸는 타원으로 건다.
+       운무(1)·근경(2) 위, 베일(4)·스크림(5) 아래에 놓아 그 둘은 흐리지 않는다(평평한 크림이라 무의미). */
+    .hero-blur {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      -webkit-backdrop-filter: blur(var(--hero-blur));
+              backdrop-filter: blur(var(--hero-blur));
+      -webkit-mask-image: radial-gradient(ellipse 58% 72% at 20% 52%, #000 34%, rgba(0,0,0,0.5) 62%, transparent 82%);
+              mask-image: radial-gradient(ellipse 58% 72% at 20% 52%, #000 34%, rgba(0,0,0,0.5) 62%, transparent 82%);
+    }
     #hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      z-index: 3;
+      z-index: 4;
       pointer-events: none;
       background: linear-gradient(to bottom,
         rgba(250,250,247, calc(var(--hero-veil) * 1.00))  0%,
@@ -313,7 +333,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 5;
       pointer-events: none;
       background: linear-gradient(to right,
         rgba(250,250,247, var(--hero-scrim)) 0%,
@@ -343,7 +363,7 @@
     .hero-fold {
       position: absolute;
       inset: 0;
-      z-index: 5;
+      z-index: 6;
       pointer-events: none;
       background: linear-gradient(to bottom,
         rgba(250,250,247,0) 72%,
@@ -412,7 +432,7 @@
     }
     #hero .inner {
       position: relative;
-      z-index: 6;
+      z-index: 7;
       flex: 1 1 auto;   /* flex 아이템이 남는 가로 공간을 채우도록(콘텐츠가 우측으로 쏠리는 문제 해결) */
       min-width: 0;
       width: 100%;
@@ -460,9 +480,11 @@
 
     .hero-desc {
       font-size: 16px;
-      /* --muted(#8A8A8A)는 종이 배경에서 명도대비 3.30:1 로 WCAG AA(4.5:1) 미달이었다.
-         수묵 톤에 맞는 따뜻한 먹색으로 낮춰 7.31:1 확보(흐린 먹 위에서도 5.39:1). */
-      color: #57534C;
+      /* 스크림을 1.00 → 0.60 으로 내려 그림을 살린 대신 글자 뒤가 어두워졌다.
+         글자가 실제 놓인 자리의 픽셀을 합성해 재보니 #57534C 는 최악 2.86:1 로 AA 미달.
+         블러·스크림을 아무리 조정해도 중앙값이 4.3 에 묶여 색이 유일한 지렛대였다.
+         #332F29 는 같은 조건에서 최악 4.97:1. 제목(#1A1A1A)보다 밝아 위계도 남는다. */
+      color: #332F29;
       max-width: 480px;
       line-height: 2;
       margin-bottom: 52px;
@@ -1445,6 +1467,23 @@
       .hero-desc { font-size: 13px; line-height: 1.9; margin-bottom: 36px; }
       /* 모바일은 세로 수묵 이미지로 교체 → cover 로 화면을 꽉 채운다 */
       #hero { background-image: url('images/hero-ink-mobile.jpg'); background-size: cover; background-position: center center; }
+      /* 데스크톱 스크림은 좌→우다. 모바일은 글자가 가로로 꽉 차(좌 6% ~ 우 94%) 오른쪽 끝이
+         무방비가 된다(실측 최악 3.15:1). 글자 블록이 세로 26~73% 구간에 쌓이므로
+         스크림도 세로 띠로 돌린다. */
+      #hero::after {
+        background: linear-gradient(to bottom,
+          rgba(250,250,247, calc(var(--hero-scrim) * 0.30))  0%,
+          rgba(250,250,247, calc(var(--hero-scrim) * 0.78)) 20%,
+          rgba(250,250,247, calc(var(--hero-scrim) * 0.95)) 34%,
+          rgba(250,250,247, calc(var(--hero-scrim) * 0.95)) 64%,
+          rgba(250,250,247, calc(var(--hero-scrim) * 0.62)) 78%,
+          rgba(250,250,247, 0) 90%);
+      }
+      /* 블러 타원도 좌측 기준이라 모바일에선 글자를 덜 덮는다 → 가로로 넓은 띠로 */
+      .hero-blur {
+        -webkit-mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
+                mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
+      }
       /* 데스크톱의 28% 접힘을 그대로 쓰면 748px 히어로에서 209px 가 페이드에 먹힌다.
          가로로 넓은 데스크톱에선 여백처럼 읽히지만 세로 화면에선 낭비다 → 16% 로 좁힌다. */
       .hero-fold {
@@ -1927,6 +1966,7 @@
     <div class="mist mist-b" aria-hidden="true"></div>
     <div class="mist mist-c" aria-hidden="true"></div>
     <div class="hero-deepen" aria-hidden="true"></div>
+    <div class="hero-blur" aria-hidden="true"></div>
     <div class="hero-fold" aria-hidden="true"></div>
     <div class="inner">
       <div class="hero-label">하루재클럽</div>
@@ -3280,7 +3320,7 @@
     // 山 전용 상태
     let kLeft = 3, kBottom = -5, kSize = 50, kOpacity = 7;
     // 배경 이미지 상태
-    let bgY = 60;
+    let bgY = 88;   /* CSS의 --hero-bg-y 와 일치시킬 것 — 어긋나면 슬라이더를 처음 움직일 때 배경이 튄다 */
 
     function applyKanji() {
       root.style.setProperty('--kanji-left',    `${kLeft.toFixed(1)}vw`);
