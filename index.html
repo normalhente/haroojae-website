@@ -397,6 +397,11 @@
       z-index: 1;
       pointer-events: none;
       overflow: hidden;
+      /* 운무는 먹을 '덮는' 게 아니라 '들어올려야' 안개로 읽힌다.
+         normal 이면 크림색이 먹 위에 얹혀 대비가 죽지만, screen 은 밝은 쪽으로만 작용해
+         종이·먼 능선(이미 밝음)은 그대로 두고 골짜기의 중간 먹만 들어올린다.
+         #hero 의 isolation:isolate 가 페이지 배경까지 번지는 걸 막아 준다. */
+      mix-blend-mode: screen;
       -webkit-mask-image: url('images/hero-mist-mask.webp');
               mask-image: url('images/hero-mist-mask.webp');
       -webkit-mask-size: cover;              mask-size: cover;
