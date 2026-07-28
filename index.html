@@ -434,41 +434,53 @@
          V2 heroY 372 밝기 187 두께 54   (건너뜀)
          V3 heroY 470 밝기 178 두께 46   ← 중경
          V4 heroY 607 밝기 154 두께 28   ← 근경
-       멀수록 밝고 두껍다 = 그림에 이미 공기원근법이 있다. 띠도 그걸 따른다.
+       멀수록 밝고 두껍다 = 그림에 이미 공기원근법이 있다. 띠의 '중심'은 이 골짜기에 둔다.
        V2 를 건너뛰어 간격을 206 → 137 로 좁히면 원근 압축이 자연스럽다.
        vh 가 아니라 % 로 쓰는 이유: .mist-field 가 히어로 박스와 같으므로 % 는 곧 그림 좌표다.
+
+       ── 띠 높이는 골짜기 두께가 아니라 '능선을 삼킬 크기'로 잡는다 ──
+       한때 골짜기 두께 그대로(3.8~7.7%) 얇게 깔았더니 최대 농도여도 능선의 가로 한 줄만
+       가려서 아무 일도 안 일어났다. 원하는 그림은 운무가 지나가며 능선이 흐려졌다
+       드러나는 것이므로, 띠가 능선을 덮을 만큼 커야 한다 → 18/15/12%.
+
+       ── 농도는 양 끝까지 가야 한다 ──
+       예전 구성은 농도가 최소 28~41%, 최대 52~87% 사이에서만 오갔다. 능선이 늘 어중간하게
+       덮여 있으니 '변화'로 읽히지 않는다. 지금은 한 주기 안에서 0.00 → 0.85/0.76/0.69 로
+       움직인다(맑은 구간이 주기의 20~33%). 짙을 때 윤곽만 남기고, 옅을 때 완전히 걷힌다.
+       큰 타원 하나 + 작은 타원 하나를 '겹치게' 두는 게 요령이다. 둘을 떨어뜨려 놓으면
+       서로의 빈틈을 메워 최소 농도가 올라가 버린다(그래서 예전엔 0.28 이 바닥이었다).
        ※ 창이 아주 납작해지면(가로/세로 > 1.79) cover 가 가로 기준으로 바뀌어 골짜기가
           세로로 밀린다. 그때도 가림은 마스크가 처리하므로 깨지지는 않는다. */
     .mist-a {
-      bottom: 60.3%; height: 7.7%; opacity: calc(0.85 * var(--mist-op));
+      bottom: 55.1%; height: 18%; opacity: calc(0.85 * var(--mist-op));
       background:
-        radial-gradient(ellipse 18% 62% at -19% 54%, rgba(245,238,233,0.75), transparent 70%),
-        radial-gradient(ellipse 18% 62% at   6% 54%, rgba(245,238,233,0.75), transparent 70%),
-        radial-gradient(ellipse 18% 62% at  31% 54%, rgba(245,238,233,0.75), transparent 70%),
-        radial-gradient(ellipse 18% 62% at  56% 54%, rgba(245,238,233,0.75), transparent 70%),
-        radial-gradient(ellipse 18% 62% at  81% 54%, rgba(245,238,233,0.75), transparent 70%),
-        radial-gradient(ellipse 12% 52% at  -8% 43%, rgba(240,232,228,0.80), transparent 70%),
-        radial-gradient(ellipse 12% 52% at  17% 43%, rgba(240,232,228,0.80), transparent 70%),
-        radial-gradient(ellipse 12% 52% at  42% 43%, rgba(240,232,228,0.80), transparent 70%),
-        radial-gradient(ellipse 12% 52% at  67% 43%, rgba(240,232,228,0.80), transparent 70%),
-        radial-gradient(ellipse 12% 52% at  92% 43%, rgba(240,232,228,0.80), transparent 70%);
+        radial-gradient(ellipse 15% 70% at -12% 50%, rgba(245,238,233,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  13% 50%, rgba(245,238,233,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  38% 50%, rgba(245,238,233,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  63% 50%, rgba(245,238,233,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  88% 50%, rgba(245,238,233,0.87), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  -6% 50%, rgba(245,238,233,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  19% 50%, rgba(245,238,233,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  44% 50%, rgba(245,238,233,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  69% 50%, rgba(245,238,233,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  94% 50%, rgba(245,238,233,0.45), transparent 70%);
       --mist-rise: 8px;
       animation: mistDrift calc(90s / var(--mist-speed)) linear infinite,
                  mistRise  calc(34s / var(--mist-speed)) ease-in-out infinite;
     }
     .mist-b {
-      bottom: 33.0%; height: 6.3%; opacity: calc(0.75 * var(--mist-op));
+      bottom: 28.6%; height: 15%; opacity: calc(0.75 * var(--mist-op));
       background:
-        radial-gradient(ellipse 20% 54% at -11% 50%, rgba(238,230,226,0.65), transparent 70%),
-        radial-gradient(ellipse 20% 54% at  14% 50%, rgba(238,230,226,0.65), transparent 70%),
-        radial-gradient(ellipse 20% 54% at  39% 50%, rgba(238,230,226,0.65), transparent 70%),
-        radial-gradient(ellipse 20% 54% at  64% 50%, rgba(238,230,226,0.65), transparent 70%),
-        radial-gradient(ellipse 20% 54% at  89% 50%, rgba(238,230,226,0.65), transparent 70%),
-        radial-gradient(ellipse 10% 56% at   0% 58%, rgba(244,236,231,0.60), transparent 70%),
-        radial-gradient(ellipse 10% 56% at  25% 58%, rgba(244,236,231,0.60), transparent 70%),
-        radial-gradient(ellipse 10% 56% at  50% 58%, rgba(244,236,231,0.60), transparent 70%),
-        radial-gradient(ellipse 10% 56% at  75% 58%, rgba(244,236,231,0.60), transparent 70%),
-        radial-gradient(ellipse 10% 56% at 100% 58%, rgba(244,236,231,0.60), transparent 70%);
+        radial-gradient(ellipse 14% 70% at -12% 50%, rgba(240,232,228,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  13% 50%, rgba(240,232,228,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  38% 50%, rgba(240,232,228,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  63% 50%, rgba(240,232,228,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  88% 50%, rgba(240,232,228,0.87), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  -7% 50%, rgba(240,232,228,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  18% 50%, rgba(240,232,228,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  43% 50%, rgba(240,232,228,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  68% 50%, rgba(240,232,228,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  93% 50%, rgba(240,232,228,0.45), transparent 70%);
       /* reverse 를 쓰면 중경만 역방향이라 원경·근경과 상쇄돼 '바람'이 안 읽힌다.
          셋 다 같은 방향으로 두고 속도만 다르게 → 원경 느리게, 근경 빠르게(시차). */
       --mist-rise: 12px;
@@ -476,18 +488,18 @@
                  mistRise  calc(25s / var(--mist-speed)) ease-in-out infinite;
     }
     .mist-c {
-      bottom: 15.6%; height: 3.8%; opacity: calc(0.6 * var(--mist-op));
+      bottom: 11.5%; height: 12%; opacity: calc(0.6 * var(--mist-op));
       background:
-        radial-gradient(ellipse 20% 58% at  -4% 55%, rgba(228,224,222,0.75), transparent 70%),
-        radial-gradient(ellipse 20% 58% at  21% 55%, rgba(228,224,222,0.75), transparent 70%),
-        radial-gradient(ellipse 20% 58% at  46% 55%, rgba(228,224,222,0.75), transparent 70%),
-        radial-gradient(ellipse 20% 58% at  71% 55%, rgba(228,224,222,0.75), transparent 70%),
-        radial-gradient(ellipse 20% 58% at  96% 55%, rgba(228,224,222,0.75), transparent 70%),
-        radial-gradient(ellipse 14% 44% at   7% 46%, rgba(233,229,226,0.40), transparent 70%),
-        radial-gradient(ellipse 14% 44% at  32% 46%, rgba(233,229,226,0.40), transparent 70%),
-        radial-gradient(ellipse 14% 44% at  57% 46%, rgba(233,229,226,0.40), transparent 70%),
-        radial-gradient(ellipse 14% 44% at  82% 46%, rgba(233,229,226,0.40), transparent 70%),
-        radial-gradient(ellipse 14% 44% at 107% 46%, rgba(233,229,226,0.40), transparent 70%);
+        radial-gradient(ellipse 13% 70% at -12% 50%, rgba(232,227,224,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  13% 50%, rgba(232,227,224,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  38% 50%, rgba(232,227,224,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  63% 50%, rgba(232,227,224,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  88% 50%, rgba(232,227,224,0.94), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  -8% 50%, rgba(232,227,224,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  17% 50%, rgba(232,227,224,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  42% 50%, rgba(232,227,224,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  67% 50%, rgba(232,227,224,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  92% 50%, rgba(232,227,224,0.50), transparent 70%);
       --mist-rise: 16px;
       animation: mistDrift calc(48s / var(--mist-speed)) linear infinite,
                  mistRise  calc(18s / var(--mist-speed)) ease-in-out infinite;
@@ -1569,9 +1581,9 @@
         -webkit-mask-position: center center;
                 mask-position: center center;
       }
-      .mist-a { bottom: 64.0%; height: 6.0%; }
-      .mist-b { bottom: 48.0%; height: 5.0%; }
-      .mist-c { bottom: 32.5%; height: 4.0%; }
+      .mist-a { bottom: 59.9%; height: 14%; }
+      .mist-b { bottom: 44.3%; height: 12%; }
+      .mist-c { bottom: 29.5%; height: 10%; }
       /* 데스크톱 스크림은 좌→우다. 모바일은 글자가 가로로 꽉 차(좌 6% ~ 우 94%) 오른쪽 끝이
          무방비가 된다(실측 최악 3.15:1). 글자 블록이 세로 26~73% 구간에 쌓이므로
          스크림도 세로 띠로 돌린다. */
