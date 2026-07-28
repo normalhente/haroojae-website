@@ -48,7 +48,11 @@
          바람에 세 층이 전부 불투명 1.0 이 되어 원근 농도차가 사라졌다.
          원경이 1.0 을 넘지 않는 1/0.85 = 1.176 이 상한 → 1.15 로 둔다. */
       --mist-op: 1.15;
-      --mist-speed: 2.35;   /* 운무 흐름 속도 */
+      /* 운무 흐름 속도(나눗셈이라 클수록 빠름).
+         2.35 일 때 한 바퀴가 38/28/20초, 16.7~31.4px/s 였다. 화면 한 지점의 밝기가
+         255 중 7~12 만큼, 그것도 20~38초에 걸쳐 변하니 눈이 '움직임'으로 잡지 못했다
+         (초당 0.2%). 5.0 이면 18/13/10초, 35~65px/s 로 문턱을 넘는다. */
+      --mist-speed: 5.0;
     }
 
     /* 영어 모드: 라틴 글리프는 Lora(웹 시대의 클래식 세리프)가 먼저 받고, 한글은 고운바탕으로 폴백 */
@@ -448,7 +452,9 @@
         radial-gradient(ellipse 12% 52% at  42% 43%, rgba(240,232,228,0.80), transparent 70%),
         radial-gradient(ellipse 12% 52% at  67% 43%, rgba(240,232,228,0.80), transparent 70%),
         radial-gradient(ellipse 12% 52% at  92% 43%, rgba(240,232,228,0.80), transparent 70%);
-      animation: mistDrift calc(90s / var(--mist-speed)) linear infinite;
+      --mist-rise: 8px;
+      animation: mistDrift calc(90s / var(--mist-speed)) linear infinite,
+                 mistRise  calc(34s / var(--mist-speed)) ease-in-out infinite;
     }
     .mist-b {
       bottom: 33.0%; height: 6.3%; opacity: calc(0.75 * var(--mist-op));
@@ -465,7 +471,9 @@
         radial-gradient(ellipse 10% 56% at 100% 58%, rgba(244,236,231,0.60), transparent 70%);
       /* reverse 를 쓰면 중경만 역방향이라 원경·근경과 상쇄돼 '바람'이 안 읽힌다.
          셋 다 같은 방향으로 두고 속도만 다르게 → 원경 느리게, 근경 빠르게(시차). */
-      animation: mistDrift calc(65s / var(--mist-speed)) linear infinite;
+      --mist-rise: 12px;
+      animation: mistDrift calc(65s / var(--mist-speed)) linear infinite,
+                 mistRise  calc(25s / var(--mist-speed)) ease-in-out infinite;
     }
     .mist-c {
       bottom: 15.6%; height: 3.8%; opacity: calc(0.6 * var(--mist-op));
@@ -480,11 +488,24 @@
         radial-gradient(ellipse 14% 44% at  57% 46%, rgba(233,229,226,0.40), transparent 70%),
         radial-gradient(ellipse 14% 44% at  82% 46%, rgba(233,229,226,0.40), transparent 70%),
         radial-gradient(ellipse 14% 44% at 107% 46%, rgba(233,229,226,0.40), transparent 70%);
-      animation: mistDrift calc(48s / var(--mist-speed)) linear infinite;
+      --mist-rise: 16px;
+      animation: mistDrift calc(48s / var(--mist-speed)) linear infinite,
+                 mistRise  calc(18s / var(--mist-speed)) ease-in-out infinite;
     }
     @keyframes mistDrift {
       from { transform: translateX(0); }
       to   { transform: translateX(25%); }
+    }
+    /* ── 피어오름 ──
+       옆으로만 미끄러지면 가로 능선과 평행해 움직임이 안 읽힌다. 게다가 마스크가 실루엣을
+       못박아 놔서 가로 이동은 '고정된 창 안의 미세한 밝기 출렁임'이 되어 버린다.
+       세로로 흔들면 운무가 마스크 창을 드나들며 능선 가장자리에서 나타났다 먹힌다 —
+       위치 변화가 아니라 '생겼다 사라짐'이라 훨씬 잘 보인다.
+       transform(가로)과 translate(세로)는 별개 속성이라 주기를 따로 줘도 서로 덮어쓰지 않는다.
+       진폭은 가까울수록 크게(공기원근법), 주기는 서로 어긋나게 둬서 셋이 함께 출렁이지 않게. */
+    @keyframes mistRise {
+      0%, 100% { translate: 0 0; }
+      50%      { translate: 0 calc(-1 * var(--mist-rise)); }
     }
     /* 안개 숨쉬기: 아주 미세한 밝기 변화 */
     .mist::after {
