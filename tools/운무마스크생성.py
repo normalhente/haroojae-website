@@ -10,11 +10,26 @@ import sys
 from PIL import Image, ImageFilter
 import numpy as np
 
-LO, HI = 0.55, 0.92   # 행 기준 밝기 대비 이 구간에서 0→1
+# 행 기준 밝기 대비 이 구간에서 0→1.
+# 처음엔 0.55/0.92 였다 — 웬만큼 어두우면 다 차단하니 운무가 '밝은 골짜기만' 채웠다.
+# 골짜기는 이미 밝기 194~224 인데 운무가 241 이라 흰 위의 흰색이 되어 존재감이 5~7% 에
+# 그쳤고, 그 5~7% 가 미세하게 출렁이니 움직임은 0 에 수렴했다(라이브 실측: 프레임 간
+# 평균 ΔL 0.20, 화면의 2% 만 변화).
+# 0.22/0.48 은 '가장 짙은 먹 17%' 만 차단한다. 운무가 중간 먹 능선을 덮으므로
+# 대비가 생기고 — 존재감도 움직임도 같이 산다. 가장 짙은 근경은 여전히 가리므로 깊이는 유지.
+# 같은 문턱을 두 그림에 쓰면 안 된다. 그림마다 대비 분포가 달라 데스크톱 기준 0.22/0.48 을
+# 모바일에 쓰면 차단이 2.5% 밖에 안 돼 가림이 사라진다. '차단 14%' 를 맞추도록 따로 잡는다.
+THRESH = {
+    'hero-ink.jpg':        (0.22, 0.48),   # 차단 13.9%
+    'hero-ink-mobile.jpg': (0.40, 0.66),   # 차단 13.9%
+}
+LO, HI = THRESH['hero-ink.jpg']
 BLUR = 6              # 가장자리 부드럽게 (원본 해상도 기준)
 
 
-def make(src, dst, scale=0.5):
+def make(src, dst, scale=0.5, lo=None, hi=None):
+    import os
+    lo, hi = (lo, hi) if lo is not None else THRESH.get(os.path.basename(src), (LO, HI))
     im = Image.open(src).convert('L')
     W, H = im.size
     a = np.asarray(im, dtype=np.float32)
@@ -27,7 +42,7 @@ def make(src, dst, scale=0.5):
     base = np.convolve(pad, np.ones(k) / k, mode='valid')[:, None]
 
     r = a / base
-    alpha = (r - LO) / (HI - LO)
+    alpha = (r - lo) / (hi - lo)
     alpha = np.clip(alpha, 0.0, 1.0)
     alpha = alpha * alpha * (3 - 2 * alpha)              # smoothstep
 
