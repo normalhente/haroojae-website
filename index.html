@@ -778,11 +778,13 @@
     .book3d {
       position: relative;
       transform-style: preserve-3d;
-      transform: rotateY(var(--book-rot, -24deg));
+      /* 양수여야 왼쪽 모서리가 가까워져 책등이 보인다(z' = +sinθ·w/2).
+         -24deg 는 왼쪽을 멀어지게 해 책등을 등지고 있었다. */
+      transform: rotateY(var(--book-rot, 24deg));
       transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
     /* 마우스를 올리면 정면으로 펴서 표지를 온전히 보여준다 */
-    .modal-cover:hover .book3d { --book-rot: -8deg; }
+    .modal-cover:hover .book3d { --book-rot: 8deg; }
 
     .book3d-front {
       display: block;
@@ -799,9 +801,12 @@
       width: var(--book-thick, 26px);
       background: var(--book-spine, #55554E);
       transform-origin: left center;
-      transform: rotateY(-90deg);
-      /* 책등은 앞면보다 빛을 덜 받는다 — 안쪽으로 갈수록 어둡게 */
-      box-shadow: inset -14px 0 22px rgba(0,0,0,0.28);
+      /* +90deg 여야 뒤로 접힌다. -90deg 는 책등 바깥 모서리를 z=+thick 으로
+         밀어 뷰어 쪽으로 튀어나오게 만들었다 — 표지가 벗겨지는 것처럼 보였다.
+         (경첩이 왼쪽이므로 z' = -x·sinθ, θ=-90 → z'=+thick, θ=+90 → z'=-thick) */
+      transform: rotateY(90deg);
+      /* 책등은 앞면보다 빛을 덜 받는다 — 앞쪽(표지에 붙는 쪽)이 밝고 안쪽이 어둡다 */
+      box-shadow: inset 14px 0 22px rgba(0,0,0,0.28);
     }
 
     /* 바닥 그림자 — 책이 종이 위에 놓인 무게를 만든다 */
