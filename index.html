@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <!-- 서체: 고운바탕(제목·본문) + 프리텐다드(UI) + Ma Shan Zheng(山 한자) — 전부 무료, 어도비 구독 불필요 -->
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <!-- 서체 2종: 고운바탕(제목·인용) + 프리텐다드(정보·본문). 전부 무료, 어도비 구독 불필요.
+       Ma Shan Zheng(山 한자)은 제거했다 — .hero-kanji 가 CSS·마크업에서 이미 사라져
+       로드만 되고 쓰이는 글자가 없었다(편집 모드 JS 에 죽은 참조만 남아 있음).
+       unicode-range 로 쪼개져 있어 실제 다운로드는 0 이었지만, 선언 92개(3.56MB)와
+       서체 목소리 하나를 코드에서 덜어낸다.
+       Lora(영문 세리프)는 영어 모드에서만 필요하므로 applyLang 에서 지연 로드한다. -->
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -750,16 +755,62 @@
       min-height: 400px;
     }
 
-    .modal-cover img {
+    /* ── CSS 3D 책 ──
+       안그라픽스는 책마다 .glb 모델을 만들어 model-viewer 로 띄운다. 49권이면
+       모델 49개 + 라이브러리 300KB 라 1인 체제와 용량 예산에 맞지 않는다.
+       같은 인상을 CSS 3D 로 낸다 — 새 에셋 0개, 기존 표지 JPG 를 앞면으로 쓴다.
+
+       책등 색은 표지 왼쪽 6% 열의 중앙값을 0.82 배 눌러 미리 뽑아뒀다
+       (tools/책등색추출.py → 아래 SPINE 맵). 평균이 아니라 중앙값을 쓴 건
+       로고·띠 같은 국소 요소에 색이 끌려가지 않게 하려는 것이다.
+
+       크기는 JS 가 표지의 naturalWidth/Height 로 정확히 잡는다. object-fit:contain
+       으로는 요소 박스와 그림 박스가 어긋나 책등이 표지 왼쪽 끝에 붙지 않는다. */
+    .modal-cover {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1800px;
+    }
+
+    .book3d {
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(var(--book-rot, -24deg));
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    /* 마우스를 올리면 정면으로 펴서 표지를 온전히 보여준다 */
+    .modal-cover:hover .book3d { --book-rot: -8deg; }
+
+    .book3d-front {
+      display: block;
+      width: 100%; height: 100%;
+      border: 1px solid rgba(26,26,26,0.10);
+      backface-visibility: hidden;
+    }
+
+    /* 책등: 표지 왼쪽 끝에 경첩을 두고 뒤로 접는다 */
+    .book3d-spine {
       position: absolute;
-      top: 20px; right: 20px; bottom: 20px; left: 20px;
-      width: calc(100% - 40px);
-      height: calc(100% - 40px);
-      object-fit: contain;
-      /* 순백 표지(가장자리 255)와 바탕(240)의 밝기차는 15 뿐이라 테두리가 없으면
-         표지가 어디서 끝나는지 안 보인다. 책이 종이 위에 놓인 느낌도 같이 얻는다. */
-      border: 1px solid rgba(26,26,26,0.08);
-      box-shadow: 0 2px 14px rgba(26,26,26,0.10);
+      top: 0; left: 0;
+      height: 100%;
+      width: var(--book-thick, 26px);
+      background: var(--book-spine, #55554E);
+      transform-origin: left center;
+      transform: rotateY(-90deg);
+      /* 책등은 앞면보다 빛을 덜 받는다 — 안쪽으로 갈수록 어둡게 */
+      box-shadow: inset -14px 0 22px rgba(0,0,0,0.28);
+    }
+
+    /* 바닥 그림자 — 책이 종이 위에 놓인 무게를 만든다 */
+    .book3d::after {
+      content: '';
+      position: absolute;
+      left: 4%; right: -4%; bottom: -18px;
+      height: 22px;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(26,26,26,0.26), transparent 72%);
+      transform: translateZ(calc(var(--book-thick, 26px) / -2));
+      pointer-events: none;
     }
 
     .modal-cover-noimg {
@@ -810,36 +861,62 @@
 
     .modal-close:hover { color: var(--text); }
 
+    /* ══ 책 모달 타이포 스케일 ══
+       재정립 전 실측: 크기 8종(10/11.5/12/13/14/15.5/26) · 자간 8종 · 회색 5종.
+       11.5·12·13px 은 눈으로 구별이 안 되는데 서로 다른 값이었고, 같은 역할인
+       .modal-lang(600)과 .modal-buy-label(400)의 굵기가 어긋나 있었다.
+
+       4단으로 줄인다. 각 단은 '무엇을 하는 글자인가'로만 갈린다.
+         제목  26px  고운바탕 700  먹      — 책 이름. 유일한 세리프 + 유일한 큰 글자
+         본문  15.5px 프리텐다드 400 먹     — 읽는 글. 설명·저자소개
+         강조  13px  프리텐다드 600  먹      — 수상. 정보 중 가장 중요
+         정보  13px  프리텐다드 600  회색    — 저자·서지·태그
+         라벨  11px  프리텐다드 600  회색 대문자 — 구역 이름(LANGUAGE·ABOUT·BUY)
+       인용은 본문 크기의 세리프 이탤릭으로 목소리만 바꾼다(크기 추가 없음).
+
+       자간은 2종: 대문자 라벨 0.09em, 나머지 normal(제목만 -0.025em).
+       회색은 3종: 먹 #1A1A1A / 본문회색 #5A5A52 / 정보회색 #70706D.
+       #8A8A8A(대비 3.30)와 #444444 는 뺐다. */
+    :root {
+      --m-ink:   #1A1A1A;   /* 제목·본문·강조 */
+      --m-body:  #5A5A52;   /* 저자 소개 등 긴 보조 본문 — 대비 6.65 */
+      --m-info:  #70706D;   /* 저자·서지·태그·라벨 — 대비 4.75 */
+    }
+
     /* ── 모달 메타데이터: 색·선 대신 회색 농도와 굵기로만 위계를 만든다 ──
        안그라픽스 책 페이지의 방식이다. 그쪽은 메타데이터를 15.75px/700/#A9A9A9,
        본문을 18px/400/검정으로 두고 사이에 선이나 색 블록을 일절 쓰지 않는다.
        핵심은 '작고 연하게'가 아니라 '작지만 굵게, 색은 회색' 이라는 점 — 굵기가
        위계를 만들고 회색이 본문에 자리를 내준다. */
-    .modal-lang {
+    .modal-lang,
+    .modal-author-bio-label,
+    .modal-buy-label {
       font-family: var(--font-sans);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.14em;
-      color: #70706D;
+      letter-spacing: 0.09em;
+      color: var(--m-info);
       text-transform: uppercase;
       margin-bottom: 10px;
     }
 
     .modal-title {
+      font-family: var(--font-serif);
       font-size: 26px;
       font-weight: 700;
       letter-spacing: -0.025em;
+      color: var(--m-ink);
       line-height: 1.3;
       margin-bottom: 8px;
     }
 
     .modal-author {
+      font-family: var(--font-sans);
       font-size: 13px;
       font-weight: 600;
-      color: #70706D;
+      color: var(--m-info);
+      line-height: 1.7;
       margin-bottom: 10px;
-      font-family: var(--font-sans);
-      line-height: 1.65;
     }
 
     .modal-awards {
@@ -857,18 +934,16 @@
       display: inline-flex;
       align-items: center;
       font-family: var(--font-sans);
-      font-size: 11.5px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      color: var(--text);
+      color: var(--m-ink);
     }
 
     .modal-meta {
       font-family: var(--font-sans);
       font-size: 13px;
       font-weight: 600;
-      color: #70706D;
-      letter-spacing: 0.01em;
+      color: var(--m-info);
       line-height: 1.7;
       margin-bottom: 0;
     }
@@ -883,7 +958,7 @@
 
     .modal-desc {
       font-size: 15.5px;
-      color: var(--text);
+      color: var(--m-ink);
       line-height: 1.85;
       margin-bottom: 28px;
       font-family: var(--font-sans);
@@ -907,28 +982,20 @@
     }
 
     .modal-quote p {
+      font-family: var(--font-serif);
       font-style: italic;
-      font-size: 14px;
-      line-height: 1.9;
-      color: #444;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: var(--m-body);
       margin: 0;
     }
 
     .modal-author-bio {
       font-family: var(--font-sans);
-      font-size: 13px;
-      line-height: 1.8;
-      color: #5A5A52;
+      font-size: 13.5px;
+      line-height: 1.85;
+      color: var(--m-body);
       margin-bottom: 28px;
-    }
-
-    .modal-author-bio-label {
-      font-size: 10px;
-      letter-spacing: 0.09em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      font-family: var(--font-sans);
     }
 
     .modal-tags {
@@ -942,24 +1009,14 @@
        클릭 어포던스(테두리)가 필요 없었다. gap 은 .modal-tags 에서 12px 로 벌린다. */
     .modal-tag-item {
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
-      color: #70706D;
-      letter-spacing: 0.01em;
+      color: var(--m-info);
     }
 
     .modal-buy-wrap {
       margin-top: auto;
       padding-top: 32px;
-    }
-
-    .modal-buy-label {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      letter-spacing: 0.09em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 10px;
     }
 
     .modal-buy {
@@ -2260,7 +2317,10 @@
   <div class="modal-overlay" id="bookModal" onclick="closeModal(event)">
     <div class="modal-box">
       <div class="modal-cover" id="modalCover">
-        <img id="modalImg" src="" alt="" style="display:none;">
+        <div class="book3d" id="modalBook" style="display:none;">
+          <img class="book3d-front" id="modalImg" src="" alt="">
+          <div class="book3d-spine"></div>
+        </div>
         <div class="modal-cover-noimg" id="modalCoverNoImg" style="display:none;">
           <div class="modal-cover-title" id="modalCoverTitle"></div>
         </div>
@@ -2810,6 +2870,83 @@
   </footer>
 
   <script>
+  /* ── CSS 3D 책 ──
+     책등 색: tools/책등색추출.py 가 표지 왼쪽 6% 열의 중앙값을 0.82 배 눌러 뽑은 값.
+     표지를 교체·추가하면 그 스크립트를 다시 돌려 이 맵을 갱신할 것. */
+  const SPINE = {
+    'images/books/01-세로토레.jpg': '#020130',
+    'images/books/02-fallen-giants.jpg': '#747385',
+    'images/books/03-에베레스트.jpg': '#7B7B7B',
+    'images/books/04-무상의정복자.jpg': '#CDC8B5',
+    'images/books/05-꽃의계곡.jpg': '#D1D1D1',
+    'images/books/06-나의인생.jpg': '#000000',
+    'images/books/07-엘리자베스홀리.jpg': '#090505',
+    'images/books/08-freedom-climbers.jpg': '#826B69',
+    'images/books/09-리카르도캐신.jpg': '#52655A',
+    'images/books/10-캠프식스.jpg': '#022973',
+    'images/books/11-호랑이처럼.jpg': '#34677D',
+    'images/books/12-중국등산사.jpg': '#8B664D',
+    'images/books/13-일본여성등산사.jpg': '#110E5B',
+    'images/books/14-산책여행.jpg': '#D1D1D1',
+    'images/books/15-하늘에서추락하다.jpg': '#BD2B22',
+    'images/books/16-마터호른.jpg': '#4B6F99',
+    'images/books/17-ascent.jpg': '#050202',
+    'images/books/18-the-tower.jpg': '#31282A',
+    'images/books/19-free-solo.jpg': '#071C37',
+    'images/books/20-산의비밀.jpg': '#2F3951',
+    'images/books/21-산의전사들.jpg': '#452C36',
+    'images/books/22-태양의한조각.jpg': '#A6ADB6',
+    'images/books/23-카트린데스티벨.jpg': '#8A8E91',
+    'images/books/24-art-of-freedom.jpg': '#020202',
+    'images/books/25-아득한산들.jpg': '#D1D1D1',
+    'images/books/26-winter8000.jpg': '#034370',
+    'images/books/27-1001팁.jpg': '#D0B300',
+    'images/books/28-정당화할수없는위험.jpg': '#007A75',
+    'images/books/29-지옥은나를.jpg': '#3D0E39',
+    'images/books/30-다울라기리.jpg': '#C0C0C0',
+    'images/books/31-버티컬마인드.jpg': '#C2AB00',
+    'images/books/32-4차원세계.jpg': '#2E3F4C',
+    'images/books/33-산악계보.jpg': '#BDBDB8',
+    'images/books/34-캠프4.jpg': '#D1D1D1',
+    'images/books/35-성공률30.jpg': '#A8A7A8',
+    'images/books/36-북조선의산.jpg': '#949494',
+    'images/books/37-게리헤밍.jpg': '#1C2F33',
+    'images/books/38-수직의순례자.jpg': '#2A6295',
+    'images/books/39-whats-next.jpg': '#0B2444',
+    'images/books/40-떠오르는히말라야.jpg': '#B3B3B3',
+    'images/books/41-일러스트클라이밍.jpg': '#76A01A',
+    'images/books/42-클라이머즈.jpg': '#323234',
+    'images/books/ascent.jpg': '#D1D1D1',
+    'images/books/free-solo.jpg': '#D1D1D1',
+    'images/books/matterhorn.jpg': '#D1D1D1',
+    'images/books/san-bimil.jpg': '#D1D1D1',
+    'images/books/sancheck-yeohaeng.jpg': '#D1D1D1',
+    'images/books/sky-fall.jpg': '#D1D1D1',
+    'images/books/the-tower.jpg': '#D1D1D1',
+  };
+
+  /* 3D 책의 크기를 표지 비율에 정확히 맞춘다.
+     object-fit:contain 은 요소 박스와 그림 박스를 어긋나게 만들어 책등이
+     표지 왼쪽 끝에 붙지 않는다. 그래서 naturalWidth/Height 로 직접 계산한다. */
+  function sizeBook() {
+    const img  = document.getElementById('modalImg');
+    const book = document.getElementById('modalBook');
+    const box  = document.getElementById('modalCover');
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    const pad = box.clientWidth < 360 ? 24 : 48;
+    // 책등이 회전해 나오는 만큼 가로 여유를 더 둔다
+    const thick = box.clientWidth < 360 ? 16 : 26;
+    book.style.setProperty('--book-thick', thick + 'px');
+    const maxW = Math.max(40, box.clientWidth  - pad * 2 - thick);
+    const maxH = Math.max(40, box.clientHeight - pad * 2);
+    const s = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
+    book.style.width  = Math.round(img.naturalWidth  * s) + 'px';
+    book.style.height = Math.round(img.naturalHeight * s) + 'px';
+  }
+  window.addEventListener('resize', () => {
+    if (document.getElementById('modalBook').style.display === 'block') sizeBook();
+  });
+
     // ── Scroll Animation ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -2868,16 +3005,21 @@
         document.getElementById('modalYear').textContent   = card.dataset.year;
         document.getElementById('modalLang').textContent   = card.dataset.lang;
 
-        // 표지 이미지
+        // 표지 — CSS 3D 책으로 세운다
         const imgEl = document.getElementById('modalImg');
+        const bookEl = document.getElementById('modalBook');
         const noImgEl = document.getElementById('modalCoverNoImg');
         if (card.dataset.img) {
-          imgEl.src = card.dataset.img;
           imgEl.alt = card.dataset.title;
-          imgEl.style.display = 'block';
+          bookEl.style.setProperty('--book-spine', SPINE[card.dataset.img] || '#55554E');
+          bookEl.style.display = 'block';
           noImgEl.style.display = 'none';
+          // src 를 갈아끼우기 전에 크기를 비워야 이전 책 비율이 한 프레임 남지 않는다
+          bookEl.style.width = bookEl.style.height = '';
+          imgEl.src = card.dataset.img;
+          if (imgEl.complete) sizeBook(); else imgEl.onload = sizeBook;
         } else {
-          imgEl.style.display = 'none';
+          bookEl.style.display = 'none';
           noImgEl.style.display = 'flex';
           document.getElementById('modalCoverTitle').textContent = card.dataset.title;
         }
@@ -3732,8 +3874,20 @@
     { sel: '.footer-tagline', en: 'What the world has written about mountains,<br>now in Korean.' }
   ];
 
+  // 영문 세리프(Lora)는 영어 모드에서만 쓴다. 기본 로드에서 빼고 여기서 한 번만 주입한다.
+  // 지우면 영문이 고운바탕의 라틴 글리프로 떨어져 읽는 질이 나빠지므로 유지한다.
+  function ensureLatinSerif() {
+    if (document.getElementById('font-lora')) return;
+    const l = document.createElement('link');
+    l.id = 'font-lora';
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
+    document.head.appendChild(l);
+  }
+
   function applyLang(lang) {
     document.documentElement.lang = (lang === 'en') ? 'en' : 'ko';
+    if (lang === 'en') ensureLatinSerif();
     I18N.forEach(item => {
       document.querySelectorAll(item.sel).forEach((el, i) => {
         const en = Array.isArray(item.en) ? item.en[i] : item.en;
