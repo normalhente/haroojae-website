@@ -192,7 +192,7 @@
     .nav-cta:hover { background: var(--accent-light) !important; }
     .nav-sns { display: flex; align-items: center; color: var(--muted); transition: color 0.2s; }
     .nav-sns:hover { color: var(--accent); }
-    .nav-lang { font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.08em; padding: 7px 12px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+    .nav-lang { font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.08em; padding: 7px 12px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
     .nav-lang:hover { color: var(--accent); border-color: var(--accent); }
     .mobile-lang { font-family: var(--font-sans); font-size: 13px; letter-spacing: 0.08em; color: var(--muted); background: none; border: none; padding: 12px 0; cursor: pointer; text-align: left; }
 
@@ -260,7 +260,7 @@
 
     .section-title {
       font-family: var(--font-serif);
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 500;
       letter-spacing: -0.01em;
       /* 자일(대각 반복 스트라이프) 밑줄을 걷어냈다. 선이 사라진 만큼 제목과 본문이
@@ -537,7 +537,7 @@
 
     .hero-label {
       font-family: var(--font-sans);
-      font-size: 14.08px;
+      font-size: 15px;
       letter-spacing: 0.16em;
       color: var(--accent);
       text-transform: uppercase;
@@ -578,7 +578,7 @@
     }
 
     .hero-desc {
-      font-size: 16px;
+      font-size: 15px;
       /* 스크림을 1.00 → 0.60 으로 내려 그림을 살린 대신 글자 뒤가 어두워졌다.
          글자가 실제 놓인 자리의 픽셀을 합성해 재보니 #545454 는 최악 2.86:1 로 AA 미달.
          블러·스크림을 아무리 조정해도 중앙값이 4.3 에 묶여 색이 유일한 지렛대였다.
@@ -602,7 +602,7 @@
       color: var(--accent);
       border: 1px solid var(--accent);
       border-radius: 2px;
-      font-size: 14px;
+      font-size: 15px;
       padding: 14px 32px;
       text-decoration: none;
       letter-spacing: 0.05em;
@@ -638,7 +638,7 @@
 
     .filter-btn {
       font-family: var(--font-sans);
-      font-size: 14px;
+      font-size: 15px;
       letter-spacing: 0.01em;
       padding: 9px 22px;
       border: 1px solid var(--border);
@@ -660,7 +660,7 @@
     }
 
     .filter-btn .filter-count {
-      font-size: 10px;
+      font-size: 11px;
       opacity: 0.7;
       margin-left: 4px;
     }
@@ -688,7 +688,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 600;
       color: var(--muted);
       letter-spacing: -0.02em;
@@ -901,26 +901,35 @@
 
     .modal-close:hover { color: var(--text); }
 
-    /* ══ 책 모달 타이포 스케일 ══
-       재정립 전 실측: 크기 8종(10/11.5/12/13/14/15.5/26) · 자간 8종 · 회색 5종.
-       11.5·12·13px 은 눈으로 구별이 안 되는데 서로 다른 값이었고, 같은 역할인
-       .modal-lang(600)과 .modal-buy-label(400)의 굵기가 어긋나 있었다.
+    /* ══ 타이포 스케일 (사이트 전역) ══
+       재정립 전 실측: font-size 선언 97개에 서로 다른 값이 26종.
+       10 · 11.5 · 12.5 · 13.5 · 14.08 · 15.5px 같은 값이 섞여 있었고,
+       12·13·14px 은 눈으로 구별이 안 되는데 각각 다른 값이었다. 같은 역할인
+       .modal-lang(600)과 .modal-buy-label(400)의 굵기도 어긋나 있었다.
 
-       4단으로 줄인다. 각 단은 '무엇을 하는 글자인가'로만 갈린다.
-         제목  26px  고운바탕 700  먹      — 책 이름. 유일한 세리프 + 유일한 큰 글자
-         본문  15.5px 프리텐다드 400 먹     — 읽는 글. 설명·저자소개
-         강조  13px  프리텐다드 600  먹      — 수상. 정보 중 가장 중요
-         정보  13px  프리텐다드 600  회색    — 저자·서지·태그
-         라벨  11px  프리텐다드 600  회색 대문자 — 구역 이름(LANGUAGE·ABOUT·BUY)
-       인용은 본문 크기의 세리프 이탤릭으로 목소리만 바꾼다(크기 추가 없음).
+       글자는 7단만 쓴다. 각 단은 '무엇을 하는 글자인가'로만 갈린다.
+         11px  600 회색 대문자 — 라벨. 구역 이름(LANGUAGE·ABOUT·BUY), 태그 수
+         13px  600           — 정보. 저자·서지·태그·캡션·버튼
+                              (회색이면 정보, 먹이면 강조 = 수상)
+         15px  400 먹        — 본문. 읽는 글
+         17px  500 세리프    — 소제목
+         20px  500 세리프    — 중제목
+         26px  600 세리프    — 책 제목·대표 이름
+         32px  500 세리프    — 섹션 제목
 
-       자간은 2종: 대문자 라벨 0.09em, 나머지 normal(제목만 -0.025em).
+       예외 둘:
+       · 히어로 제목은 clamp(28px, 7.5vw, 52px) — 화면폭에 따라 변하는 디스플레이
+         크기라 단에 넣지 않는다.
+       · 아이콘·글리프(⛰ 56px, 퀴즈 아이콘 48/44/24px, 닫기 × 20/18px)는
+         위계가 아니므로 제외한다. 크기를 바꾸면 그림이 깨진다.
+
+       자간은 2종: 대문자 라벨 0.09em, 나머지 normal(제목만 -0.02em대).
        회색은 3종: 먹 #1A1A1A / 본문회색 #585858 / 정보회색 #6F6F6F.
-       #8A8A8A(대비 3.30)와 #444444 는 뺐다. */
+       #8A8A8A 는 새 배경 #F5F5F4 대비 3.16 이라 뺐고 #444444 도 정리했다. */
     :root {
       --m-ink:   #1A1A1A;   /* 제목·본문·강조 */
-      --m-body:  #585858;   /* 저자 소개 등 긴 보조 본문 — 대비 6.65 */
-      --m-info:  #6F6F6F;   /* 저자·서지·태그·라벨 — 대비 4.75 */
+      --m-body:  #585858;   /* 저자 소개 등 긴 보조 본문 — 대비 6.52 */
+      --m-info:  #6F6F6F;   /* 저자·서지·태그·라벨 — 대비 4.61 */
     }
 
     /* ── 모달 메타데이터: 색·선 대신 회색 농도와 굵기로만 위계를 만든다 ──
@@ -997,7 +1006,7 @@
     }
 
     .modal-desc {
-      font-size: 15.5px;
+      font-size: 15px;
       color: var(--m-ink);
       line-height: 1.85;
       margin-bottom: 28px;
@@ -1024,7 +1033,7 @@
     .modal-quote p {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 15.5px;
+      font-size: 15px;
       line-height: 1.85;
       color: var(--m-body);
       margin: 0;
@@ -1032,7 +1041,7 @@
 
     .modal-author-bio {
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 13px;
       line-height: 1.85;
       color: var(--m-body);
       margin-bottom: 28px;
@@ -1068,7 +1077,7 @@
       flex: 1;
       padding: 13px 16px;
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.05em;
       text-align: center;
       text-decoration: none;
@@ -1160,7 +1169,7 @@
 
     .pick-author {
       font-family: var(--font-sans);
-      font-size: 12.5px;
+      font-size: 13px;
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.01em;
     }
@@ -1183,7 +1192,7 @@
 
     .pick-note {
       font-family: var(--font-sans);
-      font-size: 12.5px;
+      font-size: 13px;
       color: rgba(255,255,255,0.42);
       line-height: 1.8;
       max-width: 440px;
@@ -1234,7 +1243,7 @@
       .picks-slider { height: auto; min-height: 400px; }
       .pick-slide { flex-direction: column-reverse; padding: 32px 24px; gap: 28px; justify-content: flex-end; }
       .pick-slide-cover { width: 120px; height: 180px; align-self: flex-start; }
-      .pick-title { font-size: 22px; }
+      .pick-title { font-size: 20px; }
       .picks-dots { left: 24px; bottom: 16px; }
       .picks-prev { left: 8px; }
       .picks-next { right: 8px; }
@@ -1248,7 +1257,7 @@
     #philosophy .inner { position: relative; z-index: 1; }
 
     .philosophy-lead {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 400;
       letter-spacing: -0.01em;
       line-height: 1.7;
@@ -1309,7 +1318,7 @@
       background: #E0E0DF;
     }
 
-    .about-quote p { font-size: 14px; color: #585858; line-height: 1.9; }
+    .about-quote p { font-size: 15px; color: #585858; line-height: 1.9; }
 
     /* ── Reviews ── */
 
@@ -1321,7 +1330,7 @@
     .form-box { background: #fff; padding: 36px; border: 1px solid var(--border); }
 
     .form-section-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 28px;
@@ -1333,7 +1342,7 @@
     .form-full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-family: var(--font-sans); font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+    .form-group label { font-family: var(--font-sans); font-size: 13px; color: var(--muted); letter-spacing: 0.05em; }
 
     .form-group input,
     .form-group select,
@@ -1342,7 +1351,7 @@
       background: var(--bg);
       border: 1px solid var(--border);
       padding: 12px 16px;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text);
       outline: none;
       transition: border-color 0.2s;
@@ -1362,7 +1371,7 @@
       color: #fff;
       border: none;
       padding: 14px 32px;
-      font-size: 14px;
+      font-size: 15px;
       letter-spacing: 0.01em;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
@@ -1376,7 +1385,7 @@
       background: #EBEBEA;
       border: 1px solid var(--border);
       padding: 14px 18px;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text);
       margin-top: 16px;
     }
@@ -1396,7 +1405,7 @@
       border: none;
       color: var(--bg);
       font-family: inherit;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: -0.01em;
       text-align: left;
@@ -1445,7 +1454,7 @@
 
     .mem-guarantee span {
       font-family: var(--font-sans);
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--muted);
     }
 
@@ -1490,7 +1499,7 @@
     }
 
     .mem-reason-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 10px;
@@ -1499,7 +1508,7 @@
 
     .mem-reason-desc {
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--muted);
       line-height: 1.7;
     }
@@ -1528,7 +1537,7 @@
       background: var(--text);
       color: var(--bg);
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.01em;
       padding: 8px 16px;
@@ -1537,13 +1546,13 @@
 
     .mem-type { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em; }
 
-    .mem-price { font-family: var(--font-sans); font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
+    .mem-price { font-family: var(--font-sans); font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
     .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
 
     .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
 
     .mem-list li {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text);
       padding: 12px 0;
       border-bottom: 1px solid var(--border);
@@ -1562,7 +1571,7 @@
       gap: 10px;
       text-align: center;
       padding: 16px;
-      font-size: 14px;
+      font-size: 15px;
       letter-spacing: 0.04em;
       text-decoration: none;
       background: var(--accent);
@@ -1592,11 +1601,11 @@
 
     .footer-logo { margin-bottom: 10px; }
     .footer-logo img { height: 24px; width: auto; display: block; filter: invert(1); }
-    .footer-copy { font-family: var(--font-sans); font-size: 12px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
+    .footer-copy { font-family: var(--font-sans); font-size: 13px; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
     .footer-contact { display: flex; flex-direction: column; gap: 3px; }
     .footer-contact a, .footer-contact span {
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       color: rgba(255,255,255,0.35);
       text-decoration: none;
       transition: color 0.2s;
@@ -1612,7 +1621,7 @@
     @media (max-width: 768px) {
       section { padding: 80px 24px; }
       nav { padding: 0 24px; }
-      #banner { padding: 10px 40px 10px 16px; font-size: 12px; text-align: left; }
+      #banner { padding: 10px 40px 10px 16px; font-size: 13px; text-align: left; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
@@ -1664,7 +1673,7 @@
       /* 필터: 줄바꿈으로 엉성해지던 것 → 가로 스크롤 한 줄(모바일 칩 표준) */
       .books-filter { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 8px; margin: 0 -24px 32px; padding: 0 24px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
       .books-filter::-webkit-scrollbar { display: none; }
-      .filter-btn { flex-shrink: 0; font-size: 12.5px; padding: 8px 16px; }
+      .filter-btn { flex-shrink: 0; font-size: 13px; padding: 8px 16px; }
       .books-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .modal-overlay { padding: 0; align-items: flex-start; overflow-y: auto; }
       /* minmax(0,1fr): 1fr은 내용 최소폭 이하로 못 줄어들어 텍스트가 화면 밖으로 밀려남 */
@@ -1771,7 +1780,7 @@
       color: var(--dark);
       border: none;
       padding: 14px 40px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: 0.05em;
       cursor: pointer;
@@ -1791,7 +1800,7 @@
     }
 
     .quiz-question {
-      font-size: 22px;
+      font-size: 20px;
       color: #fff;
       font-weight: 600;
       letter-spacing: -0.02em;
@@ -1831,7 +1840,7 @@
     .quiz-opt-icon { font-size: 24px; line-height: 1; }
 
     .quiz-opt-main {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: #fff;
       letter-spacing: -0.01em;
@@ -1840,7 +1849,7 @@
 
     .quiz-opt-sub {
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       color: rgba(255,255,255,0.4);
       line-height: 1.5;
     }
@@ -1903,7 +1912,7 @@
 
     .quiz-result-lang {
       font-family: var(--font-sans);
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.14em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 12px;
@@ -1940,14 +1949,14 @@
       background: rgba(255,255,255,0.04);
       margin-bottom: 20px;
       font-style: italic;
-      font-size: 13.5px;
+      font-size: 13px;
       color: rgba(255,255,255,0.75);
       line-height: 1.8;
     }
 
     .quiz-result-reason {
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       color: rgba(255,255,255,0.35);
       margin-bottom: 24px;
       line-height: 1.7;
@@ -1959,7 +1968,7 @@
       border: 1px solid rgba(255,255,255,0.25);
       color: rgba(255,255,255,0.7);
       padding: 10px 22px;
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.05em;
       cursor: pointer;
       font-family: var(--font-serif);
@@ -1974,7 +1983,7 @@
       background: none;
       border: none;
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       color: rgba(255,255,255,0.3);
       cursor: pointer;
       letter-spacing: 0.05em;
@@ -2003,7 +2012,7 @@
     .quiz-pick-label {
       text-align: center;
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 14px;
@@ -2014,7 +2023,7 @@
 
     .quiz-companions-label {
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.45);
       text-align: center;
