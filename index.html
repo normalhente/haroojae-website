@@ -82,26 +82,12 @@
     .animate-delay-2 { transition-delay: 0.2s; }
     .animate-delay-3 { transition-delay: 0.3s; }
 
-    /* ── 안개 전환 ── */
-    .mist-divider {
-      position: relative; height: 140px;
-      margin-top: -70px; margin-bottom: -70px;
-      z-index: 5; pointer-events: none;
-    }
-    .mist-divider::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
-      opacity: 0;
-      animation: dividerMist 8s ease-in-out infinite;
-    }
-    /* 이름을 mistDrift 로 쓰면 아래 히어로 운무(389줄 부근)의 동명 정의에 덮여
-       opacity 를 올리는 프레임이 통째로 사라진다 → 구분선이 opacity:0 인 채로 죽는다.
-       @keyframes 는 이름이 같으면 나중 정의가 이긴다. 이름을 분리해 둘 것. */
-    @keyframes dividerMist {
-      0%, 100% { opacity: 0.15; transform: translateX(-2%) scale(1); }
-      50% { opacity: 0.35; transform: translateX(2%) scale(1.05); }
-    }
+    /* ── 안개 전환(.mist-divider)은 제거했다 ──
+       섹션 경계 5곳(books→philosophy, philosophy→picks, picks→about,
+       forms→faq, faq→membership)에 흰빛 0.9 타원 글로우를 깔고 8초 주기로
+       opacity 0.15↔0.35 로 점멸시켰다. 색 블록 아래에서 헤드랜턴처럼 읽혔다.
+       height 140px 에 margin -70px/-70px 이라 레이아웃 기여가 0 이었으므로
+       걷어내도 섹션 간격은 그대로다. */
 
     /* ── Announcement Banner ── */
     #banner {
@@ -119,9 +105,9 @@
     }
 
     #banner a {
-      color: var(--gold);
+      color: rgba(255,255,255,0.92);
       text-decoration: none;
-      border-bottom: 1px solid var(--gold);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
     }
 
     .banner-close {
@@ -186,17 +172,10 @@
 
     .nav-links a:hover { color: var(--text); }
 
+    /* 능선 지그재그 밑줄(hover 시 stroke-dashoffset 으로 그려지던 SVG)을 걷어냈다.
+       자일 구분선과 같은 계열의 장식이라 그것만 남으면 오히려 튄다.
+       hover 표시는 색 변화(.nav-links a:hover, 187줄)로 충분하다. */
     .nav-link { position: relative; padding-bottom: 4px; }
-    .nav-link svg {
-      position: absolute; bottom: -2px; left: 0; width: 100%; height: 8px;
-      overflow: visible;
-    }
-    .nav-link svg path {
-      stroke: var(--accent); stroke-width: 1.4; fill: none;
-      stroke-dasharray: 60; stroke-dashoffset: 60;
-      transition: stroke-dashoffset 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-    }
-    .nav-link:hover svg path { stroke-dashoffset: 0; }
 
     .nav-cta { font-family: var(--font-sans); background: var(--accent); color: var(--bg) !important; padding: 9px 20px; border-radius: 2px; letter-spacing: 0.03em; }
     .nav-cta:hover { background: var(--accent-light) !important; }
@@ -568,7 +547,7 @@
          #332F29 는 같은 조건에서 최악 4.97:1. 제목(#1A1A1A)보다 밝아 위계도 남는다. */
       color: #332F29;
       max-width: 480px;
-      line-height: 2;
+      line-height: 1.7;
       margin-bottom: 52px;
       text-shadow: 0 1px 12px rgba(250,250,247,0.9);
       opacity: 0;
@@ -906,8 +885,8 @@
       position: relative;
       padding: 18px 22px 18px 26px;
       margin-bottom: 28px;
-      border-left: 2px solid var(--gold);
-      background: rgba(200,169,110,0.05);
+      border-left: 2px solid var(--border);
+      background: rgba(26,26,26,0.03);
     }
 
     .modal-quote::before {
@@ -915,7 +894,7 @@
       position: absolute;
       left: 6px; top: -6px;
       font-size: 56px;
-      color: var(--gold);
+      color: var(--muted);
       opacity: 0.25;
       line-height: 1;
       font-family: var(--font-serif);
@@ -1069,8 +1048,8 @@
       font-weight: 600;
       letter-spacing: 0.05em;
       padding: 4px 10px;
-      background: var(--gold);
-      color: #1a1a1a;
+      background: var(--text);
+      color: var(--bg);
       width: fit-content;
     }
 
@@ -1097,7 +1076,7 @@
     .pick-divider {
       width: 32px;
       height: 1px;
-      background: var(--gold);
+      background: var(--border);
       opacity: 0.6;
     }
 
@@ -1157,7 +1136,7 @@
       transition: background 0.3s, width 0.3s;
     }
 
-    .picks-dot.active { background: var(--gold); width: 36px; }
+    .picks-dot.active { background: var(--text); width: 36px; }
 
     @media (max-width: 768px) {
       .picks-slider { height: auto; min-height: 400px; }
@@ -1180,7 +1159,7 @@
       font-size: 22px;
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.9;
+      line-height: 1.7;
       max-width: 680px;
       margin-bottom: 64px;
       word-break: keep-all;
@@ -1200,7 +1179,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
-    .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 2.1; }
+    .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.8; }
 
     /* ── About ── */
     #about { background: #EFEAE2; }
@@ -1338,7 +1317,7 @@
       transition: color 0.2s;
     }
 
-    .faq-question:hover { color: var(--gold); }
+    .faq-question:hover { color: #fff; }
 
     .faq-icon {
       font-size: 20px;
@@ -1348,7 +1327,7 @@
       line-height: 1;
     }
 
-    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--gold); }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: #fff; }
 
     .faq-answer {
       max-height: 0;
@@ -1382,7 +1361,7 @@
       font-size: 15px;
       color: var(--text);
       max-width: 560px;
-      line-height: 2;
+      line-height: 1.7;
       margin-bottom: 52px;
       margin-top: -24px;
     }
@@ -1412,7 +1391,7 @@
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.05em;
-      color: var(--gold);
+      color: var(--muted);
       font-family: var(--font-sans);
       padding-top: 3px;
       flex-shrink: 0;
@@ -1430,7 +1409,7 @@
       font-family: var(--font-sans);
       font-size: 13.5px;
       color: var(--muted);
-      line-height: 1.9;
+      line-height: 1.7;
     }
 
     .mem-card-wrap { position: relative; }
@@ -1454,8 +1433,8 @@
     .mem-badge {
       position: absolute;
       top: -14px; left: 40px;
-      background: var(--gold);
-      color: var(--dark);
+      background: var(--text);
+      color: var(--bg);
       font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 600;
@@ -1530,9 +1509,9 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-contact a:hover { color: var(--gold); }
+    .footer-contact a:hover { color: #fff; }
     .footer-sns { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
-    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.9; text-align: right; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.7; text-align: right; }
     .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
     .compass:hover { opacity: 1; }
     .compass-needle { transform-origin: 16px 16px; transition: transform 0.15s ease-out; }
@@ -1546,7 +1525,7 @@
       .hamburger { display: flex; }
 
       /* .hero-title 크기는 위 clamp()가 담당 (모바일 하드코딩 제거) */
-      .hero-desc { font-size: 13px; line-height: 1.9; margin-bottom: 36px; }
+      .hero-desc { font-size: 13px; line-height: 1.7; margin-bottom: 36px; }
       /* 모바일은 세로 수묵 이미지로 교체 → cover 로 화면을 꽉 채운다 */
       #hero { background-image: url('images/hero-ink-mobile.jpg'); background-size: cover; background-position: center center; }
       /* 모바일은 그림도 크롭도 다르다 → 마스크와 골짜기도 따로.
@@ -1609,7 +1588,7 @@
       padding: 100px 24px;
     }
 
-    #quiz .section-tag { color: var(--gold); border-color: rgba(200,169,110,0.3); }
+    #quiz .section-tag { color: rgba(255,255,255,0.62); border-color: rgba(255,255,255,0.2); }
     #quiz .section-title { color: #fff; }
     #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: var(--font-sans); font-size: 15px; }
 
@@ -1629,7 +1608,7 @@
 
     .quiz-progress-fill {
       height: 100%;
-      background: var(--gold);
+      background: rgba(255,255,255,0.7);
       transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
       width: 0%;
     }
@@ -1704,7 +1683,7 @@
       font-family: var(--font-sans);
       font-size: 11px;
       letter-spacing: 0.14em;
-      color: var(--gold);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 16px;
     }
 
@@ -1736,14 +1715,14 @@
     }
 
     .quiz-option:hover {
-      background: rgba(200,169,110,0.1);
-      border-color: var(--gold);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.4);
       transform: translateY(-3px);
     }
 
     .quiz-option.selected {
-      background: rgba(200,169,110,0.15);
-      border-color: var(--gold);
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.7);
     }
 
     .quiz-opt-icon { font-size: 24px; line-height: 1; }
@@ -1773,7 +1752,7 @@
       font-family: var(--font-sans);
       font-size: 13px;
       letter-spacing: 0.09em;
-      color: var(--gold);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 8px;
     }
 
@@ -1823,7 +1802,7 @@
       font-family: var(--font-sans);
       font-size: 10px;
       letter-spacing: 0.14em;
-      color: var(--gold);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -1834,7 +1813,7 @@
       content: '';
       display: inline-block;
       width: 18px; height: 1px;
-      background: var(--gold);
+      background: rgba(255,255,255,0.4);
     }
 
     .quiz-result-title {
@@ -1854,8 +1833,8 @@
 
     .quiz-result-quote {
       padding: 14px 16px 14px 20px;
-      border-left: 2px solid var(--gold);
-      background: rgba(200,169,110,0.07);
+      border-left: 2px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.04);
       margin-bottom: 20px;
       font-style: italic;
       font-size: 13.5px;
@@ -1884,7 +1863,7 @@
       transition: border-color 0.2s, color 0.2s;
     }
 
-    .quiz-result-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .quiz-result-btn:hover { border-color: #fff; color: #fff; }
 
     .quiz-retry-btn {
       display: block;
@@ -1923,7 +1902,7 @@
       font-family: var(--font-sans);
       font-size: 12px;
       letter-spacing: 0.08em;
-      color: var(--gold);
+      color: rgba(255,255,255,0.62);
       margin-bottom: 14px;
     }
 
@@ -1958,8 +1937,8 @@
     }
 
     .quiz-companion:hover {
-      border-color: var(--gold);
-      background: rgba(200,169,110,0.06);
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
     }
 
     .quiz-companion-cover {
@@ -2010,18 +1989,10 @@
   <nav id="mainNav">
     <a href="#hero" class="nav-logo"><img src="images/logo-sm.png" alt="하루재클럽"></a>
     <ul class="nav-links">
-      <li><a href="#books" class="nav-link">책 소개
-        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
-      </a></li>
-      <li><a href="#philosophy" class="nav-link">출판사 철학
-        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
-      </a></li>
-      <li><a href="#about" class="nav-link">대표 소개
-        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
-      </a></li>
-      <li><a href="#faq" class="nav-link">FAQ
-        <svg viewBox="0 0 60 8" preserveAspectRatio="none"><path d="M0,6 L10,4 L18,7 L28,2 L36,6 L45,3 L60,5"/></svg>
-      </a></li>
+      <li><a href="#books" class="nav-link">책 소개</a></li>
+      <li><a href="#philosophy" class="nav-link">출판사 철학</a></li>
+      <li><a href="#about" class="nav-link">대표 소개</a></li>
+      <li><a href="#faq" class="nav-link">FAQ</a></li>
       <li><button class="nav-lang" id="langToggle" onclick="toggleLang()" aria-label="Switch language">EN</button></li>
       <li><a href="#membership" class="nav-cta">멤버십 가입</a></li>
       <li><a href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer" class="nav-sns" aria-label="Instagram">
@@ -2326,7 +2297,6 @@
     </div>
   </div>
 
-  <div class="mist-divider"></div>
 
   <!-- 출판사 철학 -->
   <section id="philosophy">
@@ -2351,7 +2321,6 @@
     </div>
   </section>
 
-  <div class="mist-divider"></div>
 
   <!-- 편집장 추천 -->
   <section id="picks">
@@ -2450,7 +2419,6 @@
     </div>
   </section>
 
-  <div class="mist-divider"></div>
 
   <!-- 대표 소개 -->
   <section id="about">
@@ -2729,7 +2697,6 @@
     </div>
   </section>
 
-  <div class="mist-divider"></div>
 
   <!-- FAQ -->
   <section id="faq">
@@ -2761,7 +2728,6 @@
     </div>
   </section>
 
-  <div class="mist-divider"></div>
 
   <!-- 멤버십 -->
   <section id="membership">
@@ -2838,8 +2804,8 @@
       </div>
       <svg class="compass" viewBox="0 0 32 32" aria-hidden="true">
         <circle cx="16" cy="16" r="14" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
-        <line id="compassNeedle" class="compass-needle" x1="16" y1="23" x2="16" y2="9" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="16" cy="16" r="1.3" fill="var(--gold)"/>
+        <line id="compassNeedle" class="compass-needle" x1="16" y1="23" x2="16" y2="9" stroke="rgba(255,255,255,0.6)" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="1.3" fill="rgba(255,255,255,0.6)"/>
       </svg>
       <div>
         <div class="footer-tagline">세계가 산에 대해 쌓아온 것들,<br>이제 한국어로.</div>
