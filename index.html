@@ -38,7 +38,6 @@
       /* ── 히어로 수묵 오버레이 (공기원근법: 뒤는 연하게, 앞은 진하게) ── */
       --hero-veil: 0.52;    /* 원경 크림 베일 — 뒤쪽 능선을 종이로 날림 (C안 교정 ②: 1.00 은 원경을 통째로 표백했음) */
       --hero-deepen: 0.80;  /* 근경 먹색 심화 — 앞쪽 능선을 진하게 눌러줌 */
-      --hero-fold: 1.00;    /* 하단 접힘 — 다음 섹션과 잇는 띠 */
       /* 좌측 스크림 — 글자 뒤를 밝혀 가독성 확보.
          C안 교정 ③: 1.00 은 좌측에서 운무를 61~100% 덮어 흐름이 아예 안 보였다 */
       --hero-scrim: 0.60;
@@ -274,18 +273,11 @@
       font-size: 30px;
       font-weight: 600;
       letter-spacing: -0.01em;
-      margin-bottom: 52px;
-      padding-bottom: 24px;
+      /* 자일(대각 반복 스트라이프) 밑줄을 걷어냈다. 선이 사라진 만큼 제목과 본문이
+         붙어 보이므로, 밑줄 자리로 쓰던 padding-bottom 24px 을 여백으로 넘긴다
+         (기존 52+24=76px → 68px. 선이 없으면 같은 간격도 더 넓게 읽힌다). */
+      margin-bottom: 68px;
       position: relative;
-    }
-    .section-title::after {
-      content: '';
-      position: absolute; left: 0; right: 0; bottom: 0;
-      height: 3px;
-      background: repeating-linear-gradient(-35deg, var(--border) 0px, var(--border) 3px, transparent 3px, transparent 6px);
-    }
-    #philosophy .section-title::after, #faq .section-title::after {
-      background: repeating-linear-gradient(-35deg, rgba(255,255,255,0.2) 0px, rgba(255,255,255,0.2) 3px, transparent 3px, transparent 6px);
     }
 
     /* ── 비히어로 섹션 글자 크기 ── */
@@ -359,7 +351,8 @@
       /* 공기원근법: 아래로 갈수록(가까울수록) 계속 어두워져야 한다.
          한때 띠를 피하려고 바닥에서 힘을 뺐더니(0.42→0.12) 최근경이 중경보다 밝아져
          원근이 뒤집혔다(밝기 실측 70~80% 0.208 → 90~100% 0.551).
-         바닥까지 눌러 두고, 대신 아래 .hero-fold 를 늦게 시작해 띠를 피한다. */
+         바닥까지 눌러 둔다. (예전엔 .hero-fold 로 바닥을 크림으로 태워 띠를 피했으나
+         그 장치를 걷어냈다 — 이제 먹이 끝까지 진한 채로 섹션 경계에서 끊긴다) */
       background: linear-gradient(to bottom,
         rgba(255,255,255,0) 50%,
         rgba(150,148,142, calc(var(--hero-deepen) * 0.22)) 66%,
@@ -367,24 +360,9 @@
         rgba(136,134,128, calc(var(--hero-deepen) * 0.60)) 92%,
         rgba(134,132,126, calc(var(--hero-deepen) * 0.62)) 100%);
     }
-    /* 하단 접힘: 다음 섹션(크림)과 잇는 띠. 스크림보다 위에 얹어 좌하단 이음매를 깨끗이.
-       마지막 4%에서만 페이드하면 뚝 끊긴다(기울기 변화 0.125 → 띠가 보였음).
-       여러 정지점으로 곡선을 흉내 내면 완만해진다. 다만 너무 일찍 시작하면(72%)
-       크림이 최근경까지 덮어 공기원근법이 뒤집히므로, 86% 부터 14% 구간에 6점을 둔다.
-       실측 기울기 변화 0.040 — 띠가 보였던 0.125 의 1/3 이라 안전하다. */
-    .hero-fold {
-      position: absolute;
-      inset: 0;
-      z-index: 6;
-      pointer-events: none;
-      background: linear-gradient(to bottom,
-        rgba(250,250,247,0) 86%,
-        rgba(250,250,247, calc(var(--hero-fold) * 0.14)) 90%,
-        rgba(250,250,247, calc(var(--hero-fold) * 0.34)) 93%,
-        rgba(250,250,247, calc(var(--hero-fold) * 0.62)) 96%,
-        rgba(250,250,247, calc(var(--hero-fold) * 0.84)) 98%,
-        rgba(250,250,247, var(--hero-fold)) 100%);
-    }
+    /* 하단 접힘(.hero-fold)은 제거했다 — 히어로 아래 14% 를 크림으로 태워 다음 섹션과
+       잇는 장치였다. 블록 경계를 흐리는 대신 먹이 그대로 끝나고 크림 섹션이 시작한다.
+       (참고: 안그라픽스는 블록 사이 그라디언트 없이 평면으로 끊는다) */
     /* ── 운무: 능선 사이를 옆으로 흐르는 안개 띠 3겹 (서로 다른 속도·방향) ── */
     /* ── 능선 가림 ──
        예전엔 띠가 그림 위에 그냥 얹혀 '데칼'로 읽혔다. 띠 하나가 골짜기와 능선을
@@ -1601,17 +1579,6 @@
         -webkit-mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
                 mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
       }
-      /* 데스크톱의 28% 접힘을 그대로 쓰면 748px 히어로에서 209px 가 페이드에 먹힌다.
-         가로로 넓은 데스크톱에선 여백처럼 읽히지만 세로 화면에선 낭비다 → 16% 로 좁힌다. */
-      .hero-fold {
-        background: linear-gradient(to bottom,
-          rgba(250,250,247,0) 84%,
-          rgba(250,250,247, calc(var(--hero-fold) * 0.12)) 89%,
-          rgba(250,250,247, calc(var(--hero-fold) * 0.38)) 93%,
-          rgba(250,250,247, calc(var(--hero-fold) * 0.72)) 96.5%,
-          rgba(250,250,247, calc(var(--hero-fold) * 0.92)) 98.5%,
-          rgba(250,250,247, var(--hero-fold)) 100%);
-      }
 
       /* 필터: 줄바꿈으로 엉성해지던 것 → 가로 스크롤 한 줄(모바일 칩 표준) */
       .books-filter { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; gap: 8px; margin: 0 -24px 32px; padding: 0 24px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -1644,7 +1611,6 @@
 
     #quiz .section-tag { color: var(--gold); border-color: rgba(200,169,110,0.3); }
     #quiz .section-title { color: #fff; }
-    #quiz .section-title::after { background: repeating-linear-gradient(-35deg, rgba(200,169,110,0.3) 0px, rgba(200,169,110,0.3) 3px, transparent 3px, transparent 6px); }
     #quiz .section-sub { color: rgba(255,255,255,0.45); text-align: center; margin-top: 12px; font-family: var(--font-sans); font-size: 15px; }
 
     .quiz-wrap {
@@ -2088,7 +2054,6 @@
     </div>
     <div class="hero-deepen" aria-hidden="true"></div>
     <div class="hero-blur" aria-hidden="true"></div>
-    <div class="hero-fold" aria-hidden="true"></div>
     <div class="inner">
       <div class="hero-label">하루재클럽</div>
       <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
