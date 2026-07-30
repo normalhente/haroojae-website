@@ -738,8 +738,14 @@
       to   { transform: translateY(0); opacity: 1; }
     }
 
+    /* ── 표지 바탕 ──
+       초록(--dark #1A2820)에서 종이 회색으로 옮겼다. 표지 49장의 가장자리 밝기를
+       재보면 21.6~255 로 극단이 다 있다 — 10장(20%)이 235 초과(6장은 순백 255),
+       가장 어두운 4장은 21~34. 어느 한쪽으로 가도 20%가 배경에 녹는다.
+       그래서 밝은 바탕에 두고 표지 자체에 테두리와 그림자를 줘 경계를 만든다.
+       페이지 바탕 #FAFAF7 보다 8 어둡게 잡아 패널로도 구분된다. */
     .modal-cover {
-      background: var(--dark);
+      background: #F2F0EA;
       position: relative;
       min-height: 400px;
     }
@@ -750,6 +756,10 @@
       width: calc(100% - 40px);
       height: calc(100% - 40px);
       object-fit: contain;
+      /* 순백 표지(가장자리 255)와 바탕(240)의 밝기차는 15 뿐이라 테두리가 없으면
+         표지가 어디서 끝나는지 안 보인다. 책이 종이 위에 놓인 느낌도 같이 얻는다. */
+      border: 1px solid rgba(26,26,26,0.08);
+      box-shadow: 0 2px 14px rgba(26,26,26,0.10);
     }
 
     .modal-cover-noimg {
@@ -765,13 +775,13 @@
     .modal-cover-noimg::before {
       content: '⛰';
       font-size: 56px;
-      opacity: 0.25;
+      color: rgba(26,26,26,0.22);
     }
 
     .modal-cover-noimg .modal-cover-title {
       font-size: 16px;
       font-weight: 600;
-      color: rgba(255,255,255,0.55);
+      color: #686864;   /* #F2F0EA 대비 4.91 */
       line-height: 1.5;
       letter-spacing: -0.01em;
     }
@@ -835,26 +845,23 @@
     .modal-awards {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 10px;
+      gap: 6px 16px;
+      margin-bottom: 12px;
     }
 
+    /* ── 수상 배지 ──
+       이모지 + 텍스트 + 색 칩으로 같은 정보를 세 겹 반복했다. 텍스트가 이미
+       상 이름을 말하므로 이모지와 칩을 걷어냈다. 태그(회색)와 구별해야 하니
+       먹색과 굵기로 위계를 준다 — 수상은 먹, 태그는 회색. */
     .award-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 9px;
-      border-radius: 2px;
       font-family: var(--font-sans);
-      font-size: 10px;
+      font-size: 11.5px;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      color: var(--text);
     }
-
-    .award-badge--banff       { background: #1a3a5c; color: #fff; }
-    .award-badge--sejong      { background: #2d5a27; color: #fff; }
-    .award-badge--goldenpick  { background: #7a5a10; color: #fff; }
-    .award-badge--academy     { background: #1a1a2e; color: #FFD700; }
-    .award-badge--noba        { background: #4a1942; color: #fff; }
 
     .modal-meta {
       font-family: var(--font-sans);
@@ -1033,22 +1040,18 @@
       box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.4);
     }
 
+    /* 모달 수상 배지와 같은 처리 — 색 칩을 걷어내고 먹색 텍스트만.
+       색 변종 4개(dark/rose/earth/blue)는 의미를 나르지 않고 변화만 줬다.
+       '자서전'·'솔로 클라이밍'은 장르, 'BANFF 수상'은 상 — 색을 빼도 잃는 게 없다. */
     .pick-badge {
       display: inline-block;
       font-family: var(--font-sans);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 4px 10px;
-      background: var(--text);
-      color: var(--bg);
+      letter-spacing: 0.06em;
+      color: var(--text);
       width: fit-content;
     }
-
-    .pick-badge--dark  { background: #1a1a2e; color: #FFD700; }
-    .pick-badge--rose  { background: #6b2737; color: #fff; }
-    .pick-badge--earth { background: #4a3728; color: #e8d5b0; }
-    .pick-badge--blue  { background: #2d5a27; color: #fff; }
 
     .pick-title {
       font-size: 32px;
@@ -1562,7 +1565,8 @@
       .modal-box { grid-template-columns: minmax(0, 1fr); width: 100%; max-height: none; overflow: visible; border-left: none; border-right: none; }
       .modal-cover { min-width: 0; min-height: 0; height: 200px; }
       .modal-body { padding: 28px 24px; max-height: none; min-width: 0; overflow-y: visible; }
-      .modal-close { color: rgba(255,255,255,0.85); }
+      /* 표지 바탕이 밝아졌으므로 흰색 닫기 버튼은 보이지 않는다 */
+      .modal-close { color: var(--text); }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
       .forms-grid { grid-template-columns: 1fr; }
@@ -2337,7 +2341,7 @@
 
         <div class="pick-slide">
           <div class="pick-slide-content">
-            <span class="pick-badge pick-badge--dark">아카데미상 수상</span>
+            <span class="pick-badge">아카데미상 수상</span>
             <div class="pick-title">프리솔로</div>
             <div class="pick-author">알렉스 호놀드 저 · 엘 캐피탄 900m, 로프 없이</div>
             <div class="pick-divider"></div>
@@ -2361,7 +2365,7 @@
 
         <div class="pick-slide">
           <div class="pick-slide-content">
-            <span class="pick-badge pick-badge--rose">자서전</span>
+            <span class="pick-badge">자서전</span>
             <div class="pick-title">카트린 데스티벨</div>
             <div class="pick-author">카트린 데스티벨 저 · 세계 최고 전천후 여성 클라이머</div>
             <div class="pick-divider"></div>
@@ -2373,7 +2377,7 @@
 
         <div class="pick-slide">
           <div class="pick-slide-content">
-            <span class="pick-badge pick-badge--earth">솔로 클라이밍</span>
+            <span class="pick-badge">솔로 클라이밍</span>
             <div class="pick-title">재미있는 성공률 30%</div>
             <div class="pick-author">야마노이 야스시 저 · 세계적 솔로 클라이머의 연대기</div>
             <div class="pick-divider"></div>
@@ -2385,7 +2389,7 @@
 
         <div class="pick-slide">
           <div class="pick-slide-content">
-            <span class="pick-badge pick-badge--blue">2022 세종도서</span>
+            <span class="pick-badge">2022 세종도서</span>
             <div class="pick-title">지옥은 나를<br>원하지않았다</div>
             <div class="pick-author">코르트코·피에트라셰프스키 저 · 비엘리츠키 전기</div>
             <div class="pick-divider"></div>
@@ -2880,17 +2884,18 @@
 
         // 수상 배지 (data-tags에서 자동 추출)
         const awardsEl = document.getElementById('modalAwards');
+        // 상별 색 클래스(award-badge--banff 등)는 색 칩을 걷어내면서 규칙이 없어졌다 → 제거
         const awardDefs = [
-          { key: 'BANFF',    cls: 'banff',      label: '🏔 BANFF 수상' },
-          { key: '세종도서', cls: 'sejong',     label: '📚 세종도서' },
-          { key: '황금피켈', cls: 'goldenpick', label: '⛏ 황금피켈상' },
-          { key: '아카데미상',cls: 'academy',   label: '🎬 아카데미상' },
-          { key: 'NOBA',     cls: 'noba',       label: '🏅 NOBA 수상' },
+          { key: 'BANFF',     label: 'BANFF 수상' },
+          { key: '세종도서',  label: '세종도서' },
+          { key: '황금피켈',  label: '황금피켈상' },
+          { key: '아카데미상', label: '아카데미상' },
+          { key: 'NOBA',      label: 'NOBA 수상' },
         ];
         const cardTags = card.dataset.tags || '';
         const badgeHtml = awardDefs
           .filter(a => cardTags.includes(a.key))
-          .map(a => `<span class="award-badge award-badge--${a.cls}">${a.label}</span>`)
+          .map(a => `<span class="award-badge">${a.label}</span>`)
           .join('');
         awardsEl.innerHTML = badgeHtml;
         awardsEl.style.display = badgeHtml ? 'flex' : 'none';
