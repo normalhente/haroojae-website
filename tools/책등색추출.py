@@ -6,6 +6,7 @@
 빛을 덜 받으므로 조금 어둡게 눌러 준다.
 """
 import glob, json, sys
+import unicodedata as ud
 import numpy as np
 from PIL import Image
 
@@ -26,7 +27,9 @@ if __name__ == '__main__':
     out = {}
     for f in sorted(glob.glob('images/books/*.jpg')) + sorted(glob.glob('images/books/*.png')):
         try:
-            out[f] = '#%02X%02X%02X' % spine_color(f)
+            # macOS 파일시스템은 한글을 NFD(자모 분해)로 준다. HTML 의 data-img 는
+            # NFC(조합형)이라 정규화하지 않으면 문자열 비교가 실패한다.
+            out[ud.normalize('NFC', f)] = '#%02X%02X%02X' % spine_color(f)
         except Exception as e:
             print('건너뜀 %s (%s)' % (f, e), file=sys.stderr)
     print(json.dumps(out, ensure_ascii=False, indent=1))
