@@ -727,10 +727,12 @@
 
     .modal-box {
       background: var(--bg);
-      max-width: 820px;
+      max-width: 940px;
       width: 100%;
       display: grid;
-      grid-template-columns: 260px 1fr;
+      /* 표지 칼럼 260px → 360px. 3D 책이 maxW 에 막혀 178px 에서 멈추고
+         위아래로 빈 공간이 남았다. 360px 이면 책이 278px 까지 커진다. */
+      grid-template-columns: 360px 1fr;
       gap: 0;
       animation: slideUp 0.38s cubic-bezier(0.16,1,0.3,1);
       position: relative;
