@@ -28,12 +28,15 @@
     }
 
     :root {
-      --bg: #FAFAF7;
+      --bg: #F5F5F4;
       --text: #1A1A1A;
-      --muted: #8A8A8A;
+      /* 밝은 배경 전용 보조 회색. #8A8A8A 는 새 배경 #F5F5F4 대비 3.16 으로
+         작은 글자 기준(4.5)에 한참 미달이었다 — 오래 열려 있던 문제다.
+         --m-info 와 같은 값으로 맞춰 회색 종류도 하나 줄인다(대비 4.61). */
+      --muted: #6F6F6F;
       --accent: #2C4A1E;
       --accent-light: #3D6428;
-      --border: #E6E2DA;
+      --border: #E2E2E1;
       --dark: #1A2820;
       --gold: #C8A96E;
 
@@ -138,7 +141,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: rgba(250, 250, 247, 0.96);
+      background: rgba(245, 245, 244, 0.96);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       height: 64px;
@@ -258,7 +261,7 @@
     .section-title {
       font-family: var(--font-serif);
       font-size: 30px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.01em;
       /* 자일(대각 반복 스트라이프) 밑줄을 걷어냈다. 선이 사라진 만큼 제목과 본문이
          붙어 보이므로, 밑줄 자리로 쓰던 padding-bottom 24px 을 여백으로 넘긴다
@@ -308,12 +311,12 @@
       z-index: 4;
       pointer-events: none;
       background: linear-gradient(to bottom,
-        rgba(250,250,247, calc(var(--hero-veil) * 1.00))  0%,
-        rgba(250,250,247, calc(var(--hero-veil) * 0.70)) 25%,
-        rgba(250,250,247, calc(var(--hero-veil) * 0.35)) 45%,
-        rgba(250,250,247, calc(var(--hero-veil) * 0.12)) 60%,
-        rgba(250,250,247, 0) 72%,
-        rgba(250,250,247, 0) 100%);
+        rgba(245,245,244, calc(var(--hero-veil) * 1.00))  0%,
+        rgba(245,245,244, calc(var(--hero-veil) * 0.70)) 25%,
+        rgba(245,245,244, calc(var(--hero-veil) * 0.35)) 45%,
+        rgba(245,245,244, calc(var(--hero-veil) * 0.12)) 60%,
+        rgba(245,245,244, 0) 72%,
+        rgba(245,245,244, 0) 100%);
     }
     /* 좌측 스크림: 글자 뒤쪽만 밝혀 가독성 확보, 우측 수묵은 살린다 */
     #hero::after {
@@ -323,10 +326,10 @@
       z-index: 5;
       pointer-events: none;
       background: linear-gradient(to right,
-        rgba(250,250,247, var(--hero-scrim)) 0%,
-        rgba(250,250,247, calc(var(--hero-scrim) * 0.72)) 34%,
-        rgba(250,250,247, calc(var(--hero-scrim) * 0.28)) 58%,
-        rgba(250,250,247, 0) 78%);
+        rgba(245,245,244, var(--hero-scrim)) 0%,
+        rgba(245,245,244, calc(var(--hero-scrim) * 0.72)) 34%,
+        rgba(245,245,244, calc(var(--hero-scrim) * 0.28)) 58%,
+        rgba(245,245,244, 0) 78%);
     }
     /* 근경 심화: multiply 로 아래쪽 먹색을 눌러 맨 앞이 가장 진하게 끝나도록 */
     .hero-deepen {
@@ -342,14 +345,39 @@
          그 장치를 걷어냈다 — 이제 먹이 끝까지 진한 채로 섹션 경계에서 끊긴다) */
       background: linear-gradient(to bottom,
         rgba(255,255,255,0) 50%,
-        rgba(150,148,142, calc(var(--hero-deepen) * 0.22)) 66%,
-        rgba(140,138,132, calc(var(--hero-deepen) * 0.48)) 80%,
-        rgba(136,134,128, calc(var(--hero-deepen) * 0.60)) 92%,
-        rgba(134,132,126, calc(var(--hero-deepen) * 0.62)) 100%);
+        rgba(147,147,146, calc(var(--hero-deepen) * 0.22)) 66%,
+        rgba(137,137,136, calc(var(--hero-deepen) * 0.48)) 80%,
+        rgba(133,133,132, calc(var(--hero-deepen) * 0.60)) 92%,
+        rgba(131,131,130, calc(var(--hero-deepen) * 0.62)) 100%);
     }
     /* 하단 접힘(.hero-fold)은 제거했다 — 히어로 아래 14% 를 크림으로 태워 다음 섹션과
        잇는 장치였다. 블록 경계를 흐리는 대신 먹이 그대로 끝나고 크림 섹션이 시작한다.
        (참고: 안그라픽스는 블록 사이 그라디언트 없이 평면으로 끊는다) */
+    /* ── 하단 경계 ──
+       걷어낸 .hero-fold(14%, 모바일 16%)와는 다른 물건이다. 그건 히어로 아래
+       1/7 을 태워 조명처럼 읽혔고, 이건 마지막 6%(736px 히어로에서 약 44px)만
+       잇는 테두리 처리다.
+
+       왜 필요한가: 베이지를 중성으로 바꿔도 단차가 98 → 95 로 거의 안 줄었다.
+       원인이 색의 따뜻함이 아니라 그림 하단의 짙은 먹이기 때문이다(x 50% 에서
+       화면값 73.7 vs 배경 245 → 단차 171). --hero-bg-y 로 밝은 부분을 끌어오는
+       방법은 쓸 수 없다 — 1280x736 에서 그림이 세로로 딱 맞아 Y 오프셋이 무효다.
+
+       실측: 단차 평균 94.6/최대 188.9 → 0. 세로 기울기 변화 0.032 로
+       예전에 띠가 보였던 0.125 의 1/4 이다. */
+    .hero-edge {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+        rgba(245,245,244,0)    94%,
+        rgba(245,245,244,0.22) 96%,
+        rgba(245,245,244,0.52) 97.5%,
+        rgba(245,245,244,0.80) 98.8%,
+        rgba(245,245,244,1)    100%);
+    }
+
     /* ── 운무: 능선 사이를 옆으로 흐르는 안개 띠 3겹 (서로 다른 속도·방향) ── */
     /* ── 능선 가림 ──
        예전엔 띠가 그림 위에 그냥 얹혀 '데칼'로 읽혔다. 띠 하나가 골짜기와 능선을
@@ -419,16 +447,16 @@
     .mist-a {
       bottom: 55.1%; height: 18%; opacity: calc(0.85 * var(--mist-op));
       background:
-        radial-gradient(ellipse 15% 70% at -12% 50%, rgba(245,238,233,0.87), transparent 70%),
-        radial-gradient(ellipse 15% 70% at  13% 50%, rgba(245,238,233,0.87), transparent 70%),
-        radial-gradient(ellipse 15% 70% at  38% 50%, rgba(245,238,233,0.87), transparent 70%),
-        radial-gradient(ellipse 15% 70% at  63% 50%, rgba(245,238,233,0.87), transparent 70%),
-        radial-gradient(ellipse 15% 70% at  88% 50%, rgba(245,238,233,0.87), transparent 70%),
-        radial-gradient(ellipse  8% 62% at  -6% 50%, rgba(245,238,233,0.45), transparent 70%),
-        radial-gradient(ellipse  8% 62% at  19% 50%, rgba(245,238,233,0.45), transparent 70%),
-        radial-gradient(ellipse  8% 62% at  44% 50%, rgba(245,238,233,0.45), transparent 70%),
-        radial-gradient(ellipse  8% 62% at  69% 50%, rgba(245,238,233,0.45), transparent 70%),
-        radial-gradient(ellipse  8% 62% at  94% 50%, rgba(245,238,233,0.45), transparent 70%);
+        radial-gradient(ellipse 15% 70% at -12% 50%, rgba(240,240,239,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  13% 50%, rgba(240,240,239,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  38% 50%, rgba(240,240,239,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  63% 50%, rgba(240,240,239,0.87), transparent 70%),
+        radial-gradient(ellipse 15% 70% at  88% 50%, rgba(240,240,239,0.87), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  -6% 50%, rgba(240,240,239,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  19% 50%, rgba(240,240,239,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  44% 50%, rgba(240,240,239,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  69% 50%, rgba(240,240,239,0.45), transparent 70%),
+        radial-gradient(ellipse  8% 62% at  94% 50%, rgba(240,240,239,0.45), transparent 70%);
       --mist-rise: 8px;
       animation: mistDrift calc(90s / var(--mist-speed)) linear infinite,
                  mistRise  calc(34s / var(--mist-speed)) ease-in-out infinite;
@@ -436,16 +464,16 @@
     .mist-b {
       bottom: 28.6%; height: 15%; opacity: calc(0.75 * var(--mist-op));
       background:
-        radial-gradient(ellipse 14% 70% at -12% 50%, rgba(240,232,228,0.87), transparent 70%),
-        radial-gradient(ellipse 14% 70% at  13% 50%, rgba(240,232,228,0.87), transparent 70%),
-        radial-gradient(ellipse 14% 70% at  38% 50%, rgba(240,232,228,0.87), transparent 70%),
-        radial-gradient(ellipse 14% 70% at  63% 50%, rgba(240,232,228,0.87), transparent 70%),
-        radial-gradient(ellipse 14% 70% at  88% 50%, rgba(240,232,228,0.87), transparent 70%),
-        radial-gradient(ellipse  7% 60% at  -7% 50%, rgba(240,232,228,0.45), transparent 70%),
-        radial-gradient(ellipse  7% 60% at  18% 50%, rgba(240,232,228,0.45), transparent 70%),
-        radial-gradient(ellipse  7% 60% at  43% 50%, rgba(240,232,228,0.45), transparent 70%),
-        radial-gradient(ellipse  7% 60% at  68% 50%, rgba(240,232,228,0.45), transparent 70%),
-        radial-gradient(ellipse  7% 60% at  93% 50%, rgba(240,232,228,0.45), transparent 70%);
+        radial-gradient(ellipse 14% 70% at -12% 50%, rgba(235,235,234,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  13% 50%, rgba(235,235,234,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  38% 50%, rgba(235,235,234,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  63% 50%, rgba(235,235,234,0.87), transparent 70%),
+        radial-gradient(ellipse 14% 70% at  88% 50%, rgba(235,235,234,0.87), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  -7% 50%, rgba(235,235,234,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  18% 50%, rgba(235,235,234,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  43% 50%, rgba(235,235,234,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  68% 50%, rgba(235,235,234,0.45), transparent 70%),
+        radial-gradient(ellipse  7% 60% at  93% 50%, rgba(235,235,234,0.45), transparent 70%);
       /* reverse 를 쓰면 중경만 역방향이라 원경·근경과 상쇄돼 '바람'이 안 읽힌다.
          셋 다 같은 방향으로 두고 속도만 다르게 → 원경 느리게, 근경 빠르게(시차). */
       --mist-rise: 12px;
@@ -455,16 +483,16 @@
     .mist-c {
       bottom: 11.5%; height: 12%; opacity: calc(0.6 * var(--mist-op));
       background:
-        radial-gradient(ellipse 13% 70% at -12% 50%, rgba(232,227,224,0.94), transparent 70%),
-        radial-gradient(ellipse 13% 70% at  13% 50%, rgba(232,227,224,0.94), transparent 70%),
-        radial-gradient(ellipse 13% 70% at  38% 50%, rgba(232,227,224,0.94), transparent 70%),
-        radial-gradient(ellipse 13% 70% at  63% 50%, rgba(232,227,224,0.94), transparent 70%),
-        radial-gradient(ellipse 13% 70% at  88% 50%, rgba(232,227,224,0.94), transparent 70%),
-        radial-gradient(ellipse  8% 58% at  -8% 50%, rgba(232,227,224,0.50), transparent 70%),
-        radial-gradient(ellipse  8% 58% at  17% 50%, rgba(232,227,224,0.50), transparent 70%),
-        radial-gradient(ellipse  8% 58% at  42% 50%, rgba(232,227,224,0.50), transparent 70%),
-        radial-gradient(ellipse  8% 58% at  67% 50%, rgba(232,227,224,0.50), transparent 70%),
-        radial-gradient(ellipse  8% 58% at  92% 50%, rgba(232,227,224,0.50), transparent 70%);
+        radial-gradient(ellipse 13% 70% at -12% 50%, rgba(228,228,227,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  13% 50%, rgba(228,228,227,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  38% 50%, rgba(228,228,227,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  63% 50%, rgba(228,228,227,0.94), transparent 70%),
+        radial-gradient(ellipse 13% 70% at  88% 50%, rgba(228,228,227,0.94), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  -8% 50%, rgba(228,228,227,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  17% 50%, rgba(228,228,227,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  42% 50%, rgba(228,228,227,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  67% 50%, rgba(228,228,227,0.50), transparent 70%),
+        radial-gradient(ellipse  8% 58% at  92% 50%, rgba(228,228,227,0.50), transparent 70%);
       --mist-rise: 16px;
       animation: mistDrift calc(48s / var(--mist-speed)) linear infinite,
                  mistRise  calc(18s / var(--mist-speed)) ease-in-out infinite;
@@ -514,7 +542,7 @@
       color: var(--accent);
       text-transform: uppercase;
       margin-bottom: 16px;
-      text-shadow: 0 1px 12px rgba(250,250,247,0.9);
+      text-shadow: 0 1px 12px rgba(245,245,244,0.9);
       transform: translate(0px, -1px);
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
@@ -523,7 +551,9 @@
     .hero-title {
       /* clamp(최소, 화면폭비례, 최대): 데스크톱 52px, 모바일에서 매끄럽게 축소 */
       font-size: clamp(28px, 7.5vw, 52px);
-      font-weight: 600;
+      /* 본명조는 고운바탕보다 같은 굵기에서 진하다. 600 은 수묵화의 옅은 농담과
+         부딪혀 글자가 그림 위에 붙은 스티커처럼 보였다 → 한 단 내린다. */
+      font-weight: 500;
       letter-spacing: -0.02em;
       line-height: 1.4;
       margin-bottom: 24px;
@@ -531,7 +561,7 @@
       max-width: 680px;
       /* 능선의 짙은 먹이 글자 뒤로 지나갈 때 획이 묻힌다. 그림자가 아니라 종이빛 후광을
          얇게 깔아 글자 가장자리만 띄운다. */
-      text-shadow: 0 1px 22px rgba(250,250,247,0.72);
+      text-shadow: 0 1px 22px rgba(245,245,244,0.72);
     }
     .hero-title .title-line {
       display: block;
@@ -550,14 +580,14 @@
     .hero-desc {
       font-size: 16px;
       /* 스크림을 1.00 → 0.60 으로 내려 그림을 살린 대신 글자 뒤가 어두워졌다.
-         글자가 실제 놓인 자리의 픽셀을 합성해 재보니 #57534C 는 최악 2.86:1 로 AA 미달.
+         글자가 실제 놓인 자리의 픽셀을 합성해 재보니 #545454 는 최악 2.86:1 로 AA 미달.
          블러·스크림을 아무리 조정해도 중앙값이 4.3 에 묶여 색이 유일한 지렛대였다.
-         #332F29 는 같은 조건에서 최악 4.97:1. 제목(#1A1A1A)보다 밝아 위계도 남는다. */
-      color: #332F29;
+         #302F2F 는 같은 조건에서 최악 4.97:1. 제목(#1A1A1A)보다 밝아 위계도 남는다. */
+      color: #302F2F;
       max-width: 480px;
       line-height: 1.7;
       margin-bottom: 52px;
-      text-shadow: 0 1px 12px rgba(250,250,247,0.9);
+      text-shadow: 0 1px 12px rgba(245,245,244,0.9);
       opacity: 0;
       animation: fadeUp 0.9s ease 1.5s forwards;
     }
@@ -653,7 +683,7 @@
     .book-cover {
       width: 100%;
       aspect-ratio: 2/3;
-      background: #f5f3ef;
+      background: #F3F3F2;
       position: relative;
       display: flex;
       align-items: center;
@@ -753,9 +783,9 @@
        재보면 21.6~255 로 극단이 다 있다 — 10장(20%)이 235 초과(6장은 순백 255),
        가장 어두운 4장은 21~34. 어느 한쪽으로 가도 20%가 배경에 녹는다.
        그래서 밝은 바탕에 두고 표지 자체에 테두리와 그림자를 줘 경계를 만든다.
-       페이지 바탕 #FAFAF7 보다 8 어둡게 잡아 패널로도 구분된다. */
+       페이지 바탕 #F5F5F4 보다 8 어둡게 잡아 패널로도 구분된다. */
     .modal-cover {
-      background: #F2F0EA;
+      background: #EFEFEE;
       position: relative;
       min-height: 400px;
     }
@@ -802,7 +832,7 @@
       top: 0; left: 0;
       height: 100%;
       width: var(--book-thick, 26px);
-      background: var(--book-spine, #55554E);
+      background: var(--book-spine, #545454);
       transform-origin: left center;
       /* +90deg 여야 뒤로 접힌다. -90deg 는 책등 바깥 모서리를 z=+thick 으로
          밀어 뷰어 쪽으로 튀어나오게 만들었다 — 표지가 벗겨지는 것처럼 보였다.
@@ -842,7 +872,7 @@
     .modal-cover-noimg .modal-cover-title {
       font-size: 16px;
       font-weight: 600;
-      color: #686864;   /* #F2F0EA 대비 4.91 */
+      color: #676767;   /* #EFEFEE 대비 4.91 */
       line-height: 1.5;
       letter-spacing: -0.01em;
     }
@@ -885,12 +915,12 @@
        인용은 본문 크기의 세리프 이탤릭으로 목소리만 바꾼다(크기 추가 없음).
 
        자간은 2종: 대문자 라벨 0.09em, 나머지 normal(제목만 -0.025em).
-       회색은 3종: 먹 #1A1A1A / 본문회색 #5A5A52 / 정보회색 #70706D.
+       회색은 3종: 먹 #1A1A1A / 본문회색 #585858 / 정보회색 #6F6F6F.
        #8A8A8A(대비 3.30)와 #444444 는 뺐다. */
     :root {
       --m-ink:   #1A1A1A;   /* 제목·본문·강조 */
-      --m-body:  #5A5A52;   /* 저자 소개 등 긴 보조 본문 — 대비 6.65 */
-      --m-info:  #70706D;   /* 저자·서지·태그·라벨 — 대비 4.75 */
+      --m-body:  #585858;   /* 저자 소개 등 긴 보조 본문 — 대비 6.65 */
+      --m-info:  #6F6F6F;   /* 저자·서지·태그·라벨 — 대비 4.75 */
     }
 
     /* ── 모달 메타데이터: 색·선 대신 회색 농도와 굵기로만 위계를 만든다 ──
@@ -913,7 +943,7 @@
     .modal-title {
       font-family: var(--font-serif);
       font-size: 26px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.025em;
       color: var(--m-ink);
       line-height: 1.3;
@@ -1122,7 +1152,7 @@
 
     .pick-title {
       font-size: 32px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: #fff;
@@ -1233,7 +1263,7 @@
     .phil-label {
       font-family: var(--font-serif);
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.01em;
       color: rgba(255,255,255,0.95);
       margin-bottom: 14px;
@@ -1244,7 +1274,7 @@
     .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.8; }
 
     /* ── About ── */
-    #about { background: #EFEAE2; }
+    #about { background: #EBEBEA; }
 
     .about-grid {
       display: grid;
@@ -1268,7 +1298,7 @@
     }
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .about-name { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .about-name { font-size: 26px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px; }
     .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
     .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
@@ -1276,10 +1306,10 @@
       margin-top: 32px;
       padding: 20px 24px;
       border-left: 3px solid var(--accent);
-      background: #E6E0D5;
+      background: #E0E0DF;
     }
 
-    .about-quote p { font-size: 14px; color: #5A5A52; line-height: 1.9; }
+    .about-quote p { font-size: 14px; color: #585858; line-height: 1.9; }
 
     /* ── Reviews ── */
 
@@ -1343,7 +1373,7 @@
 
     .form-success {
       display: none;
-      background: #EFEAE2;
+      background: #EBEBEA;
       border: 1px solid var(--border);
       padding: 14px 18px;
       font-size: 14px;
@@ -1608,17 +1638,27 @@
          스크림도 세로 띠로 돌린다. */
       #hero::after {
         background: linear-gradient(to bottom,
-          rgba(250,250,247, calc(var(--hero-scrim) * 0.30))  0%,
-          rgba(250,250,247, calc(var(--hero-scrim) * 0.78)) 20%,
-          rgba(250,250,247, calc(var(--hero-scrim) * 0.95)) 34%,
-          rgba(250,250,247, calc(var(--hero-scrim) * 0.95)) 64%,
-          rgba(250,250,247, calc(var(--hero-scrim) * 0.62)) 78%,
-          rgba(250,250,247, 0) 90%);
+          rgba(245,245,244, calc(var(--hero-scrim) * 0.30))  0%,
+          rgba(245,245,244, calc(var(--hero-scrim) * 0.78)) 20%,
+          rgba(245,245,244, calc(var(--hero-scrim) * 0.95)) 34%,
+          rgba(245,245,244, calc(var(--hero-scrim) * 0.95)) 64%,
+          rgba(245,245,244, calc(var(--hero-scrim) * 0.62)) 78%,
+          rgba(245,245,244, 0) 90%);
       }
       /* 블러 타원도 좌측 기준이라 모바일에선 글자를 덜 덮는다 → 가로로 넓은 띠로 */
       .hero-blur {
         -webkit-mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
                 mask-image: radial-gradient(ellipse 120% 40% at 50% 48%, #000 42%, rgba(0,0,0,0.5) 72%, transparent 90%);
+      }
+
+      /* 세로로 긴 화면에선 6% 가 너무 얇다 → 8% */
+      .hero-edge {
+        background: linear-gradient(to bottom,
+          rgba(245,245,244,0)    92%,
+          rgba(245,245,244,0.22) 95%,
+          rgba(245,245,244,0.52) 97%,
+          rgba(245,245,244,0.80) 98.6%,
+          rgba(245,245,244,1)    100%);
       }
 
       /* 필터: 줄바꿈으로 엉성해지던 것 → 가로 스크롤 한 줄(모바일 칩 표준) */
@@ -2088,6 +2128,7 @@
     </div>
     <div class="hero-deepen" aria-hidden="true"></div>
     <div class="hero-blur" aria-hidden="true"></div>
+    <div class="hero-edge" aria-hidden="true"></div>
     <div class="inner">
       <div class="hero-label">하루재클럽</div>
       <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
@@ -2673,7 +2714,7 @@
   </section>
 
   <!-- 참여하기 -->
-  <section id="forms" style="background: #EFEAE2;">
+  <section id="forms" style="background: #EBEBEA;">
     <div class="inner">
       <div class="section-tag animate">Participate</div>
       <h2 class="section-title animate">참여하기</h2>
@@ -3032,7 +3073,7 @@
           imgEl.alt = card.dataset.title;
           // macOS 파일시스템(NFD)과 HTML(NFC)의 한글 정규화가 달라 그냥 비교하면 어긋난다
           const imgKey = (card.dataset.img || '').normalize('NFC');
-          bookEl.style.setProperty('--book-spine', SPINE[imgKey] || '#55554E');
+          bookEl.style.setProperty('--book-spine', SPINE[imgKey] || '#545454');
           bookEl.style.display = 'block';
           noImgEl.style.display = 'none';
           // src 를 갈아끼우기 전에 크기를 비워야 이전 책 비율이 한 프레임 남지 않는다
