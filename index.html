@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <!-- 서체 2종: 고운바탕(제목·인용) + 프리텐다드(정보·본문). 전부 무료, 어도비 구독 불필요.
+  <!-- 서체 2종: 본명조 Noto Serif KR(제목·인용) + 프리텐다드(정보·본문). 전부 무료.
+       고운바탕에서 본명조로 옮겼다 — 고운바탕은 붓 느낌이 강하고 굵기가 400/700 두 종뿐이라
+       위계를 굵기로 만들 수 없었다. 본명조는 300~700 가변이라 크기를 늘리지 않고
+       굵기만으로 단을 나눌 수 있다. 부수가 많은 산서 제목에도 유리하다.
        Ma Shan Zheng(山 한자)은 제거했다 — .hero-kanji 가 CSS·마크업에서 이미 사라져
        로드만 되고 쓰이는 글자가 없었다(편집 모드 JS 에 죽은 참조만 남아 있음).
        unicode-range 로 쪼개져 있어 실제 다운로드는 0 이었지만, 선언 92개(3.56MB)와
        서체 목소리 하나를 코드에서 덜어낸다.
        Lora(영문 세리프)는 영어 모드에서만 필요하므로 applyLang 에서 지연 로드한다. -->
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,7 +23,7 @@
       /* ── 서체 시스템 (2서체 원칙) ──
          serif = 고운바탕: 제목·본문·인용 (400/700 두 굵기만 있음 — 600 지정 시 700으로 렌더)
          sans  = 프리텐다드: 버튼·라벨·폼·캡션 등 UI 전반 */
-      --font-serif: 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
+      --font-serif: 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
       --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
     }
 
@@ -61,7 +64,7 @@
 
     /* 영어 모드: 라틴 글리프는 Lora(웹 시대의 클래식 세리프)가 먼저 받고, 한글은 고운바탕으로 폴백 */
     html[lang="en"] {
-      --font-serif: 'Lora', 'Gowun Batang', 'Noto Serif KR', Georgia, serif;
+      --font-serif: 'Lora', 'Noto Serif KR', Georgia, serif;
     }
 
     body {
