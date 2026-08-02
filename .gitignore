@@ -5,5 +5,9 @@
 
 # 히어로 시안 — 로컬 작업용. 공개 사이트에 올리지 않는다
 # (haroojae.co.kr/_*.html 로 노출되고, hero-drafts 는 최종본과 중복)
+# 2026-08-03: 실물은 HRJ_아카이브/웹작업_원본/ 으로 이동했고, 규칙은 재발 방지용으로 남겨둠
 _*.html
 images/hero-drafts/
+
+# Superpowers 도구 작업 부산물
+.superpowers/
