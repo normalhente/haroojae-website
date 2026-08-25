@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>하루재클럽</title>
-  <!-- 서체 2종: 본명조 Noto Serif KR(제목·인용) + 프리텐다드(정보·본문). 전부 무료.
+  <!-- 서체 2종: 산돌명조네오1(제목·본문·인용) + 프리텐다드(UI). 명조는 어도비 폰트 킷으로 받고,
+       본명조 Noto Serif KR 은 로딩 중·실패 시 폴백으로 남겨 둔다(구글폰트, 무료).
        고운바탕에서 본명조로 옮겼다 — 고운바탕은 붓 느낌이 강하고 굵기가 400/700 두 종뿐이라
        위계를 굵기로 만들 수 없었다. 본명조는 300~700 가변이라 크기를 늘리지 않고
        굵기만으로 단을 나눌 수 있다. 부수가 많은 산서 제목에도 유리하다.
@@ -15,15 +16,38 @@
        Lora(영문 세리프)는 영어 모드에서만 필요하므로 applyLang 에서 지연 로드한다. -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <!-- 산돌명조네오1 — 어도비 폰트 웹 프로젝트(킷 dbx1ynp). 담당자 어도비 CC 구독에 포함, 추가 비용 없음.
+       킷이 "type":"dynamic"(CJK 동적 서브셋)이라 CSS 방식(.css)이 없다 — 어느 도메인으로 요청해도
+       HTTP 412 다. JS 로더가 유일한 방법이고 아래가 어도비가 발급한 코드 그대로다.
+       담긴 굵기는 300·400·500 세 종(패밀리에 700 은 애초에 없다).
+
+       ⚠️ 이 킷에 필요한 것만 담을 것. 타입킷은 킷에 든 패밀리를 전부 활성화해서 내려받는다.
+          앞선 킷(ral7dhj)은 12패밀리 50페이스가 들어 있어 전송량이 4,048KB 였다.
+       ⚠️ 킷 로더를 우회해 폰트 URL 로 @font-face 를 직접 쓰는 건 불가능하다 — 한글이 안 들어 있다.
+          (상세는 CONTEXT.md 「코드에서 걸러 쓰기는 불가능하다」 절)
+       ⚠️ 킷 캐시가 max-age=600 + stale-while-revalidate=604800 이다.
+          어도비에서 킷을 고쳐도 브라우저엔 최대 7일까지 옛 것이 남을 수 있다. -->
+  <script>
+    (function(d) {
+      var config = {
+        kitId: 'dbx1ynp',
+        scriptTimeout: 3000,
+        async: true
+      },
+      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: clip; }
 
     :root {
       /* ── 서체 시스템 (2서체 원칙) ──
-         serif = 고운바탕: 제목·본문·인용 (400/700 두 굵기만 있음 — 600 지정 시 700으로 렌더)
-         sans  = 프리텐다드: 버튼·라벨·폼·캡션 등 UI 전반 */
-      --font-serif: 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
+         serif = 산돌명조네오1: 제목·본문·인용 (300·400·500 — 700 은 패밀리에 없다)
+         sans  = 프리텐다드: 버튼·라벨·폼·캡션 등 UI 전반
+         세리프에 700 을 지정하지 말 것 — 가짜 굵기가 합성된다. 강조는 500 이 상한이다. */
+      --font-serif: 'sandoll-myeongjoneo1', 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
       --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
     }
 
@@ -67,7 +91,7 @@
 
     /* 영어 모드: 라틴 글리프는 Lora(웹 시대의 클래식 세리프)가 먼저 받고, 한글은 고운바탕으로 폴백 */
     html[lang="en"] {
-      --font-serif: 'Lora', 'Noto Serif KR', Georgia, serif;
+      --font-serif: 'Lora', 'sandoll-myeongjoneo1', 'Noto Serif KR', Georgia, serif;
     }
 
     body {
@@ -715,7 +739,7 @@
       align-items: center;
       justify-content: center;
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--muted);
       letter-spacing: -0.02em;
       overflow: hidden;
@@ -750,7 +774,7 @@
 
     .book-hover-title {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       color: #fff;
       line-height: 1.4;
       letter-spacing: -0.01em;
@@ -794,7 +818,7 @@
 
     .modal-cover-noimg .modal-cover-title {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
       color: #676767;   /* #EFEFEE 대비 4.91 */
       line-height: 1.5;
       letter-spacing: -0.01em;
@@ -1020,7 +1044,7 @@
       box-shadow:0 18px 38px rgba(0,0,0,.16);
     }
     .bd-info{ padding-top:8px; }
-    .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight:600; }
+    .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight:500; }
     @media (max-width:900px){
       .bd-inner{ padding:72px 20px 72px; }
       .bd-grid{ grid-template-columns:1fr; gap:32px; }
@@ -1097,7 +1121,7 @@
 
     .pick-title {
       font-size: 32px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: #fff;
@@ -1267,7 +1291,7 @@
 
     .form-section-title {
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.01em;
       margin-bottom: 28px;
       padding-bottom: 16px;
@@ -1436,7 +1460,7 @@
 
     .mem-reason-title {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.01em;
       margin-bottom: 10px;
       line-height: 1.4;
@@ -1690,7 +1714,7 @@
     .quiz-intro h3 {
       font-size: 26px;
       color: #fff;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
@@ -1709,7 +1733,9 @@
       border: none;
       padding: 14px 40px;
       font-size: 15px;
-      font-weight: 700;
+      /* 산돌명조네오1 은 500 이 최대다. 700 을 지정하면 브라우저가 가짜 굵기를
+         합성하는데, 명조에서는 획이 뭉개져 티가 난다. 500 으로 맞춘다. */
+      font-weight: 500;
       letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
@@ -1730,7 +1756,7 @@
     .quiz-question {
       font-size: 20px;
       color: #fff;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: -0.02em;
       line-height: 1.4;
       margin-bottom: 36px;
@@ -1769,7 +1795,7 @@
 
     .quiz-opt-main {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 500;
       color: #fff;
       letter-spacing: -0.01em;
       line-height: 1.4;
@@ -1799,7 +1825,7 @@
     .quiz-result-header h3 {
       font-size: 20px;
       color: #fff;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .quiz-result-card {
@@ -1858,7 +1884,7 @@
 
     .quiz-result-title {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 500;
       color: #fff;
       letter-spacing: -0.02em;
       margin-bottom: 6px;
@@ -1993,7 +2019,7 @@
 
     .quiz-companion-title {
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 500;
       color: #fff;
       margin-bottom: 3px;
       line-height: 1.3;
