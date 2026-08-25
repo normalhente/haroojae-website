@@ -82,6 +82,32 @@
       overflow-x: clip;
     }
 
+    /* ── 종이 결(그레인) — 시험 중, 기본 꺼짐 ──
+       인쇄물 질감을 화면에 얹어 본다. 이미지를 미리 가공하지 않고 SVG 노이즈를
+       그 자리에서 만들어 덮는 방식이라 새 에셋 0개이고, 끄면 흔적이 남지 않는다.
+
+       강도는 `?grain=0.6` 으로 켠다(0 이면 꺼짐 = 기본값). 0.6 은 실측으로 고른 값이다 —
+       종이색 #F5F5F4 기준 톤 이동 2.2단계(사실상 유지), 결의 진폭 11.5단계.
+       feTurbulence 는 알파까지 난수로 만들어 그냥 쓰면 실효 강도가 반토막 난다.
+       `feFuncA type='discrete' tableValues='1'` 로 불투명하게 고정한 뒤,
+       slope 0.9 / intercept 0.55 로 밝은 쪽을 흰색에 붙여(흰 픽셀 56%) 종이 위 티끌처럼 만든다.
+       z-index 400 = 본문·네비(200) 위, 책 상세 뷰(1000) 아래.
+       상세 뷰가 위에 있으니 **표지가 크게 나오는 화면에는 그레인이 닿지 않는다** —
+       표지는 상품 정보라 질감을 입히면 실제 책과 달라 보이기 때문이다. */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      pointer-events: none;
+      opacity: var(--grain-op, 0);
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,<svg xmlns='http%3A//www.w3.org/2000/svg' width='260' height='260'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncR type='linear' slope='0.9' intercept='0.55'/><feFuncG type='linear' slope='0.9' intercept='0.55'/><feFuncB type='linear' slope='0.9' intercept='0.55'/><feFuncA type='discrete' tableValues='1'/></feComponentTransfer></filter><rect width='260' height='260' filter='url%28%23g%29'/></svg>");
+      background-size: 260px 260px;
+    }
+    /* 그레인이 꺼져 있으면 합성 레이어를 아예 만들지 않는다 */
+    body:not(.grain-on)::after { display: none; }
+
     /* ── Scroll Animation ── */
     .animate {
       opacity: 0;
@@ -738,41 +764,7 @@
     }
 
 
-    /* ── Book Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(10,18,14,0.72);
-      z-index: 500;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-overlay.open { display: flex; animation: fadeOverlay 0.35s ease; }
-
-    @keyframes fadeOverlay {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    .modal-box {
-      background: var(--bg);
-      max-width: 940px;
-      width: 100%;
-      display: grid;
-      /* 표지 칼럼 260px → 360px. 3D 책이 maxW 에 막혀 178px 에서 멈추고
-         위아래로 빈 공간이 남았다. 360px 이면 책이 278px 까지 커진다. */
-      grid-template-columns: 360px 1fr;
-      gap: 0;
-      animation: slideUp 0.38s cubic-bezier(0.16,1,0.3,1);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
+    /* ── 책 상세 뷰 본문 ── */
     @keyframes slideUp {
       from { transform: translateY(28px); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
@@ -784,75 +776,6 @@
        가장 어두운 4장은 21~34. 어느 한쪽으로 가도 20%가 배경에 녹는다.
        그래서 밝은 바탕에 두고 표지 자체에 테두리와 그림자를 줘 경계를 만든다.
        페이지 바탕 #F5F5F4 보다 8 어둡게 잡아 패널로도 구분된다. */
-    .modal-cover {
-      background: #EFEFEE;
-      position: relative;
-      min-height: 400px;
-    }
-
-    /* ── CSS 3D 책 ──
-       안그라픽스는 책마다 .glb 모델을 만들어 model-viewer 로 띄운다. 49권이면
-       모델 49개 + 라이브러리 300KB 라 1인 체제와 용량 예산에 맞지 않는다.
-       같은 인상을 CSS 3D 로 낸다 — 새 에셋 0개, 기존 표지 JPG 를 앞면으로 쓴다.
-
-       책등 색은 표지 왼쪽 6% 열의 중앙값을 0.82 배 눌러 미리 뽑아뒀다
-       (tools/책등색추출.py → 아래 SPINE 맵). 평균이 아니라 중앙값을 쓴 건
-       로고·띠 같은 국소 요소에 색이 끌려가지 않게 하려는 것이다.
-
-       크기는 JS 가 표지의 naturalWidth/Height 로 정확히 잡는다. object-fit:contain
-       으로는 요소 박스와 그림 박스가 어긋나 책등이 표지 왼쪽 끝에 붙지 않는다. */
-    .modal-cover {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1800px;
-    }
-
-    .book3d {
-      position: relative;
-      transform-style: preserve-3d;
-      /* 양수여야 왼쪽 모서리가 가까워져 책등이 보인다(z' = +sinθ·w/2).
-         -24deg 는 왼쪽을 멀어지게 해 책등을 등지고 있었다. */
-      transform: rotateY(var(--book-rot, 24deg));
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    /* 마우스를 올리면 정면으로 펴서 표지를 온전히 보여준다 */
-    .modal-cover:hover .book3d { --book-rot: 8deg; }
-
-    .book3d-front {
-      display: block;
-      width: 100%; height: 100%;
-      border: 1px solid rgba(26,26,26,0.10);
-      backface-visibility: hidden;
-    }
-
-    /* 책등: 표지 왼쪽 끝에 경첩을 두고 뒤로 접는다 */
-    .book3d-spine {
-      position: absolute;
-      top: 0; left: 0;
-      height: 100%;
-      width: var(--book-thick, 26px);
-      background: var(--book-spine, #545454);
-      transform-origin: left center;
-      /* +90deg 여야 뒤로 접힌다. -90deg 는 책등 바깥 모서리를 z=+thick 으로
-         밀어 뷰어 쪽으로 튀어나오게 만들었다 — 표지가 벗겨지는 것처럼 보였다.
-         (경첩이 왼쪽이므로 z' = -x·sinθ, θ=-90 → z'=+thick, θ=+90 → z'=-thick) */
-      transform: rotateY(90deg);
-      /* 책등은 앞면보다 빛을 덜 받는다 — 앞쪽(표지에 붙는 쪽)이 밝고 안쪽이 어둡다 */
-      box-shadow: inset 14px 0 22px rgba(0,0,0,0.28);
-    }
-
-    /* 바닥 그림자 — 책이 종이 위에 놓인 무게를 만든다 */
-    .book3d::after {
-      content: '';
-      position: absolute;
-      left: 4%; right: -4%; bottom: -18px;
-      height: 22px;
-      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(26,26,26,0.26), transparent 72%);
-      transform: translateZ(calc(var(--book-thick, 26px) / -2));
-      pointer-events: none;
-    }
-
     .modal-cover-noimg {
       display: flex;
       flex-direction: column;
@@ -876,30 +799,6 @@
       line-height: 1.5;
       letter-spacing: -0.01em;
     }
-
-    .modal-body {
-      padding: 44px 44px 40px;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      max-height: 85vh;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 14px; right: 18px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      color: var(--muted);
-      cursor: pointer;
-      transition: color 0.2s;
-      z-index: 10;
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .modal-close:hover { color: var(--text); }
 
     /* ══ 타이포 스케일 (사이트 전역) ══
        재정립 전 실측: font-size 선언 97개에 서로 다른 값이 26종.
@@ -947,16 +846,6 @@
       color: var(--m-info);
       text-transform: uppercase;
       margin-bottom: 10px;
-    }
-
-    .modal-title {
-      font-family: var(--font-serif);
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      color: var(--m-ink);
-      line-height: 1.3;
-      margin-bottom: 8px;
     }
 
     .modal-author {
@@ -1110,16 +999,33 @@
     .bd-grid{ display:grid; grid-template-columns:44% 1fr; gap:56px; align-items:start; }
     .bd-cover{
       position:sticky; top:88px;
-      min-height:420px; display:flex; align-items:center; justify-content:center;
+      display:flex; align-items:center; justify-content:center;
+      /* 표지 높이가 책마다 달라도 칼럼이 흔들리지 않게 확정값을 준다.
+         실사 목업·평면 표지의 max-height:70vh 와 같은 기준이다. */
+      min-height:70vh;
     }
-    .bd-mockup{ max-width:100%; max-height:70vh; filter:drop-shadow(0 22px 40px rgba(0,0,0,.22)); }
+    /* 목업 원본은 흰 배경 RGB 라 종이색(#F5F5F4) 위에 흰 사각형으로 뜬다.
+       multiply 로 흰 바탕만 떨어뜨린다 — 알파 채널 재가공(25장) 없이 해결되고,
+       렌더에 이미 들어 있는 그림자는 그대로 살아난다. */
+    .bd-mockup{ max-width:100%; max-height:70vh; mix-blend-mode:multiply; }
+
+    /* 목업이 없는 책은 표지를 평면 그대로 크게 보여준다.
+       CSS 3D 책은 책등 색을 앞표지 왼쪽에서 추측했는데, 목업 24권으로 실측하니
+       중앙값 RGB 거리 86·최악 341 로 틀렸다(어두운 표지+밝은 책등 조합에서 뒤집힌다).
+       실물 책등 사진이 들어오면 그때 진짜 책등으로 입체를 되살린다.
+       옛 구현은 git 이력과 tools/책등색추출.py 에 남아 있다. */
+    .bd-flat{
+      max-width:100%; max-height:70vh;
+      border:1px solid rgba(26,26,26,0.10);
+      box-shadow:0 18px 38px rgba(0,0,0,.16);
+    }
     .bd-info{ padding-top:8px; }
     .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight:600; }
     @media (max-width:900px){
       .bd-inner{ padding:72px 20px 72px; }
       .bd-grid{ grid-template-columns:1fr; gap:32px; }
-      .bd-cover{ position:static; top:auto; min-height:0; }
-      .bd-mockup{ max-height:56vh; }
+      .bd-cover{ position:static; top:auto; min-height:56vh; }
+      .bd-mockup, .bd-flat{ max-height:56vh; }
       .bd-title{ font-size:26px; }
     }
 
@@ -1705,14 +1611,6 @@
       .books-filter::-webkit-scrollbar { display: none; }
       .filter-btn { flex-shrink: 0; font-size: 13px; padding: 8px 16px; }
       .books-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .modal-overlay { padding: 0; align-items: flex-start; overflow-y: auto; }
-      /* minmax(0,1fr): 1fr은 내용 최소폭 이하로 못 줄어들어 텍스트가 화면 밖으로 밀려남 */
-      /* overflow:visible: 기본 .modal-box의 overflow:hidden이 모바일에서 내용을 잘라 "좌측상단만" 보이게 하던 버그 해제 */
-      .modal-box { grid-template-columns: minmax(0, 1fr); width: 100%; max-height: none; overflow: visible; border-left: none; border-right: none; }
-      .modal-cover { min-width: 0; min-height: 0; height: 200px; }
-      .modal-body { padding: 28px 24px; max-height: none; min-width: 0; overflow-y: visible; }
-      /* 표지 바탕이 밝아졌으므로 흰색 닫기 버튼은 보이지 않는다 */
-      .modal-close { color: var(--text); }
       .philosophy-cols { grid-template-columns: 1fr; gap: 32px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
       .forms-grid { grid-template-columns: 1fr; }
@@ -2404,45 +2302,6 @@
   </section>
 
   <!-- Book Modal -->
-  <div class="modal-overlay" id="bookModal" onclick="closeModal(event)">
-    <div class="modal-box">
-      <div class="modal-cover" id="modalCover">
-        <div class="book3d" id="modalBook" style="display:none;">
-          <img class="book3d-front" id="modalImg" src="" alt="">
-          <div class="book3d-spine"></div>
-        </div>
-        <div class="modal-cover-noimg" id="modalCoverNoImg" style="display:none;">
-          <div class="modal-cover-title" id="modalCoverTitle"></div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <button class="modal-close" onclick="closeModalBtn()">×</button>
-        <div class="modal-lang" id="modalLang"></div>
-        <div class="modal-title" id="modalTitle"></div>
-        <div class="modal-author" id="modalAuthor"></div>
-        <div class="modal-awards" id="modalAwards" style="display:none;"></div>
-        <div class="modal-meta" id="modalYear"></div>
-        <hr class="modal-divider">
-        <p class="modal-desc" id="modalDesc"></p>
-        <div class="modal-quote" id="modalQuoteWrap" style="display:none;">
-          <p id="modalQuote"></p>
-        </div>
-        <div class="modal-author-bio" id="modalAuthorBio" style="display:none;">
-          <div class="modal-author-bio-label">저자 소개</div>
-          <div id="modalAuthorBioText"></div>
-        </div>
-        <div class="modal-tags" id="modalTags"></div>
-        <div class="modal-buy-wrap" id="modalBuy" style="display:none;">
-          <div class="modal-buy-label">구매처</div>
-          <div class="modal-buy">
-            <a id="modalBtnYes24" href="" target="_blank" rel="noopener noreferrer" class="modal-buy-btn">예스24</a>
-            <a id="modalBtnKyobo" href="" target="_blank" rel="noopener noreferrer" class="modal-buy-btn">교보문고</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- 책 상세 전체화면 뷰 (#book/N 해시로 열림) -->
   <div class="book-detail" id="bookDetail" aria-hidden="true">
     <div class="bd-inner">
@@ -2450,10 +2309,7 @@
       <div class="bd-grid">
         <div class="bd-cover" id="bdCover">
           <img class="bd-mockup" id="bdMockup" src="" alt="" style="display:none;">
-          <div class="book3d" id="bdBook" style="display:none;">
-            <img class="book3d-front" id="bdBookImg" src="" alt="">
-            <div class="book3d-spine"></div>
-          </div>
+          <img class="bd-flat" id="bdFlat" src="" alt="" style="display:none;">
           <div class="modal-cover-noimg" id="bdNoImg" style="display:none;">
             <div class="modal-cover-title" id="bdNoImgTitle"></div>
           </div>
@@ -3000,92 +2856,6 @@
   </footer>
 
   <script>
-  /* ── CSS 3D 책 ──
-     책등 색: tools/책등색추출.py 가 표지 왼쪽 6% 열의 중앙값을 0.82 배 눌러 뽑은 값.
-     표지를 교체·추가하면 그 스크립트를 다시 돌려 이 맵을 갱신할 것. */
-  const SPINE = {
-    'images/books/01-세로토레.jpg': '#020130',
-    'images/books/02-fallen-giants.jpg': '#747385',
-    'images/books/03-에베레스트.jpg': '#7B7B7B',
-    'images/books/04-무상의정복자.jpg': '#CDC8B5',
-    'images/books/05-꽃의계곡.jpg': '#D1D1D1',
-    'images/books/06-나의인생.jpg': '#000000',
-    'images/books/07-엘리자베스홀리.jpg': '#090505',
-    'images/books/08-freedom-climbers.jpg': '#826B69',
-    'images/books/09-리카르도캐신.jpg': '#52655A',
-    'images/books/10-캠프식스.jpg': '#022973',
-    'images/books/11-호랑이처럼.jpg': '#34677D',
-    'images/books/12-중국등산사.jpg': '#8B664D',
-    'images/books/13-일본여성등산사.jpg': '#110E5B',
-    'images/books/14-산책여행.jpg': '#D1D1D1',
-    'images/books/15-하늘에서추락하다.jpg': '#BD2B22',
-    'images/books/16-마터호른.jpg': '#4B6F99',
-    'images/books/17-ascent.jpg': '#050202',
-    'images/books/18-the-tower.jpg': '#31282A',
-    'images/books/19-free-solo.jpg': '#071C37',
-    'images/books/20-산의비밀.jpg': '#2F3951',
-    'images/books/21-산의전사들.jpg': '#452C36',
-    'images/books/22-태양의한조각.jpg': '#A6ADB6',
-    'images/books/23-카트린데스티벨.jpg': '#8A8E91',
-    'images/books/24-art-of-freedom.jpg': '#020202',
-    'images/books/25-아득한산들.jpg': '#D1D1D1',
-    'images/books/26-winter8000.jpg': '#034370',
-    'images/books/27-1001팁.jpg': '#D0B300',
-    'images/books/28-정당화할수없는위험.jpg': '#007A75',
-    'images/books/29-지옥은나를.jpg': '#3D0E39',
-    'images/books/30-다울라기리.jpg': '#C0C0C0',
-    'images/books/31-버티컬마인드.jpg': '#C2AB00',
-    'images/books/32-4차원세계.jpg': '#2E3F4C',
-    'images/books/33-산악계보.jpg': '#BDBDB8',
-    'images/books/34-캠프4.jpg': '#D1D1D1',
-    'images/books/35-성공률30.jpg': '#A8A7A8',
-    'images/books/36-북조선의산.jpg': '#949494',
-    'images/books/37-게리헤밍.jpg': '#1C2F33',
-    'images/books/38-수직의순례자.jpg': '#2A6295',
-    'images/books/39-whats-next.jpg': '#0B2444',
-    'images/books/40-떠오르는히말라야.jpg': '#B3B3B3',
-    'images/books/41-일러스트클라이밍.jpg': '#76A01A',
-    'images/books/42-클라이머즈.jpg': '#323234',
-    'images/books/ascent.jpg': '#D1D1D1',
-    'images/books/free-solo.jpg': '#D1D1D1',
-    'images/books/matterhorn.jpg': '#D1D1D1',
-    'images/books/san-bimil.jpg': '#D1D1D1',
-    'images/books/sancheck-yeohaeng.jpg': '#D1D1D1',
-    'images/books/sky-fall.jpg': '#D1D1D1',
-    'images/books/the-tower.jpg': '#D1D1D1',
-  };
-
-  /* 3D 책의 크기를 표지 비율에 정확히 맞춘다.
-     object-fit:contain 은 요소 박스와 그림 박스를 어긋나게 만들어 책등이
-     표지 왼쪽 끝에 붙지 않는다. 그래서 naturalWidth/Height 로 직접 계산한다. */
-  function sizeBook(tries) {
-    const img  = document.getElementById('modalImg');
-    const book = document.getElementById('modalBook');
-    const box  = document.getElementById('modalCover');
-    if (!img.naturalWidth || !img.naturalHeight) return;
-    // 표지가 캐시돼 있으면 complete 가 곧바로 true 라 모달이 배치되기 전에 불린다.
-    // 그 순간 clientWidth/Height 가 0 이어서 책이 최소값(40px)으로 쪼그라들었다.
-    if (!box.clientWidth || !box.clientHeight) {
-      if ((tries || 0) < 12) requestAnimationFrame(() => sizeBook((tries || 0) + 1));
-      return;
-    }
-    // 모바일 판정은 뷰포트로 해야 한다. 데스크톱 표지 칼럼은 260px 이라
-    // 패널 폭으로 재면(예전 < 360) 데스크톱에서도 모바일 분기를 탔다.
-    const narrow = window.innerWidth <= 768;
-    const pad   = narrow ? 20 : 28;
-    const thick = narrow ? 16 : 26;
-    book.style.setProperty('--book-thick', thick + 'px');
-    // 책등이 회전해 나오는 만큼 가로 여유를 더 둔다
-    const maxW = Math.max(40, box.clientWidth  - pad * 2 - thick);
-    const maxH = Math.max(40, box.clientHeight - pad * 2);
-    const sc = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
-    book.style.width  = Math.round(img.naturalWidth  * sc) + 'px';
-    book.style.height = Math.round(img.naturalHeight * sc) + 'px';
-  }
-  window.addEventListener('resize', () => {
-    if (document.getElementById('modalBook').style.display === 'block') sizeBook();
-  });
-
     // ── Scroll Animation ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -3135,112 +2905,176 @@
       mobileMenu.classList.remove('open');
     }
 
-    // ── Book Modal ──
-    document.querySelectorAll('.book-card').forEach(card => {
-      card.addEventListener('click', () => {
-        document.getElementById('modalTitle').textContent  = card.dataset.title;
-        document.getElementById('modalAuthor').textContent = card.dataset.author;
-        document.getElementById('modalDesc').textContent   = card.dataset.desc;
-        document.getElementById('modalYear').textContent   = card.dataset.year;
-        document.getElementById('modalLang').textContent   = card.dataset.lang;
+    // ── 종이 결(그레인) 시험 — `?grain=0.05` 로 켠다 ──
+    // 기본은 꺼짐이라 방문자에게는 아무 변화가 없다. 강도를 정하면 CSS 기본값으로
+    // 옮기고 이 블록을 지울 것.
+    (() => {
+      const v = parseFloat(new URLSearchParams(location.search).get('grain'));
+      if (!(v > 0)) return;
+      document.body.classList.add('grain-on');
+      document.body.style.setProperty('--grain-op', Math.min(v, 1));
+    })();
 
-        // 표지 — CSS 3D 책으로 세운다
-        const imgEl = document.getElementById('modalImg');
-        const bookEl = document.getElementById('modalBook');
-        const noImgEl = document.getElementById('modalCoverNoImg');
-        if (card.dataset.img) {
-          imgEl.alt = card.dataset.title;
-          // macOS 파일시스템(NFD)과 HTML(NFC)의 한글 정규화가 달라 그냥 비교하면 어긋난다
-          const imgKey = (card.dataset.img || '').normalize('NFC');
-          bookEl.style.setProperty('--book-spine', SPINE[imgKey] || '#545454');
-          bookEl.style.display = 'block';
-          noImgEl.style.display = 'none';
-          // src 를 갈아끼우기 전에 크기를 비워야 이전 책 비율이 한 프레임 남지 않는다
-          bookEl.style.width = bookEl.style.height = '';
-          imgEl.src = card.dataset.img;
-          if (imgEl.complete) requestAnimationFrame(() => sizeBook()); else imgEl.onload = () => sizeBook();
-        } else {
-          bookEl.style.display = 'none';
-          noImgEl.style.display = 'flex';
-          document.getElementById('modalCoverTitle').textContent = card.dataset.title;
-        }
+    // ── 책 상세 뷰 ──
+    // location.hash 가 단일 진실원이다. 클릭은 해시만 바꾸고, 실제 여닫기는
+    // hashchange 한 곳에서만 일어난다. 그래야 카드 클릭·뒤로가기·직접 링크·퀴즈가
+    // 전부 같은 경로를 탄다.
+    const HASH_PREFIX = '#book/';
+    const detailEl = document.getElementById('bookDetail');
+    let detailPushed = false;   // 우리가 해시를 밀어 넣었나 (직접 링크 진입과 구별)
 
-        // 수상 배지 (data-tags에서 자동 추출)
-        const awardsEl = document.getElementById('modalAwards');
-        // 상별 색 클래스(award-badge--banff 등)는 색 칩을 걷어내면서 규칙이 없어졌다 → 제거
-        const awardDefs = [
-          { key: 'BANFF',     label: 'BANFF 수상' },
-          { key: '세종도서',  label: '세종도서' },
-          { key: '황금피켈',  label: '황금피켈상' },
-          { key: '아카데미상', label: '아카데미상' },
-          { key: 'NOBA',      label: 'NOBA 수상' },
-        ];
-        const cardTags = card.dataset.tags || '';
-        const badgeHtml = awardDefs
-          .filter(a => cardTags.includes(a.key))
-          .map(a => `<span class="award-badge">${a.label}</span>`)
-          .join('');
-        awardsEl.innerHTML = badgeHtml;
-        awardsEl.style.display = badgeHtml ? 'flex' : 'none';
+    function bookSlug(title) {
+      // 파일명이 아니라 화면 문자열이지만, 한글 정규화는 여기서도 맞춰둔다
+      return (title || '').normalize('NFC').trim().replace(/\s+/g, '-');
+    }
 
-        // 저자 소개
-        const bioEl = document.getElementById('modalAuthorBio');
-        const bioText = card.dataset.authorBio || '';
-        document.getElementById('modalAuthorBioText').textContent = bioText;
-        bioEl.style.display = bioText ? 'block' : 'none';
+    function cardBySlug(slug) {
+      return [...document.querySelectorAll('#booksGrid .book-card')]
+        .find(c => bookSlug(c.dataset.title) === slug);
+    }
 
-        // 인상적인 한 줄
-        const quoteWrap = document.getElementById('modalQuoteWrap');
-        const quoteEl = document.getElementById('modalQuote');
-        if (card.dataset.quote) {
-          quoteEl.textContent = card.dataset.quote;
-          quoteWrap.style.display = 'block';
-        } else {
-          quoteWrap.style.display = 'none';
-        }
+    // 카드 클릭·퀴즈 결과 모두 이 한 곳으로 들어온다
+    function showBook(title) {
+      detailPushed = true;
+      location.hash = HASH_PREFIX + bookSlug(title);
+    }
 
-        // 태그
-        const tagsEl = document.getElementById('modalTags');
-        tagsEl.innerHTML = '';
-        if (card.dataset.tags) {
-          card.dataset.tags.split(',').forEach(tag => {
-            const span = document.createElement('span');
-            span.className = 'modal-tag-item';
-            span.textContent = tag.trim();
-            tagsEl.appendChild(span);
-          });
-        }
-
-        // 구입 링크
-        const buyEl = document.getElementById('modalBuy');
-        const yes24El = document.getElementById('modalBtnYes24');
-        const kyoboEl = document.getElementById('modalBtnKyobo');
-        if (card.dataset.yes24 || card.dataset.kyobo) {
-          buyEl.style.display = 'block';
-          yes24El.style.display = card.dataset.yes24 ? '' : 'none';
-          if (card.dataset.yes24) yes24El.href = card.dataset.yes24;
-          kyoboEl.style.display = card.dataset.kyobo ? '' : 'none';
-          if (card.dataset.kyobo) kyoboEl.href = card.dataset.kyobo;
-        } else {
-          buyEl.style.display = 'none';
-        }
-
-        document.getElementById('bookModal').classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
+    document.querySelectorAll('#booksGrid .book-card').forEach(card => {
+      card.addEventListener('click', () => showBook(card.dataset.title));
     });
 
-    function closeModal(e) {
-      if (e.target === document.getElementById('bookModal')) closeModalBtn();
+    function fillDetail(card) {
+      const d = card.dataset;
+      document.getElementById('bdTitle').textContent  = d.title;
+      document.getElementById('bdAuthor').textContent = d.author;
+      document.getElementById('bdDesc').textContent   = d.desc;
+      document.getElementById('bdYear').textContent   = d.year;
+      document.getElementById('bdLang').textContent   = d.lang;
+
+      // 표지 — 실사 목업(25권) > 평면 표지(17권) > 제목 박스
+      // 목업 없는 책을 CSS 3D 로 세우던 것을 걷어냈다. 책등 색을 앞표지 왼쪽에서
+      // 추측하는 방식이라 실측 결과 틀렸다(중앙값 RGB 거리 86, 최악 341).
+      // 실물 책등 사진이 들어오면 진짜 책등으로 입체를 되살린다.
+      const mockEl  = document.getElementById('bdMockup');
+      const flatEl  = document.getElementById('bdFlat');
+      const noImgEl = document.getElementById('bdNoImg');
+      const cover = d.mockup ? mockEl : (d.img ? flatEl : null);
+      [mockEl, flatEl].forEach(el => { if (el !== cover) el.style.display = 'none'; });
+      if (cover) {
+        cover.src = d.mockup || d.img;
+        cover.alt = d.title;
+        cover.style.display = 'block';
+        noImgEl.style.display = 'none';
+      } else {
+        noImgEl.style.display = 'flex';
+        document.getElementById('bdNoImgTitle').textContent = d.title;
+      }
+
+      // 수상 배지 (data-tags에서 자동 추출)
+      // 상별 색 클래스(award-badge--banff 등)는 색 칩을 걷어내면서 규칙이 없어졌다 → 제거
+      const awardDefs = [
+        { key: 'BANFF',      label: 'BANFF 수상' },
+        { key: '세종도서',   label: '세종도서' },
+        { key: '황금피켈',   label: '황금피켈상' },
+        { key: '아카데미상', label: '아카데미상' },
+        { key: 'NOBA',       label: 'NOBA 수상' },
+      ];
+      const cardTags = d.tags || '';
+      const badgeHtml = awardDefs
+        .filter(a => cardTags.includes(a.key))
+        .map(a => `<span class="award-badge">${a.label}</span>`)
+        .join('');
+      const awardsEl = document.getElementById('bdAwards');
+      awardsEl.innerHTML = badgeHtml;
+      awardsEl.style.display = badgeHtml ? 'flex' : 'none';
+
+      // 저자 소개
+      const bioText = d.authorBio || '';
+      document.getElementById('bdBioText').textContent = bioText;
+      document.getElementById('bdBioWrap').style.display = bioText ? 'block' : 'none';
+
+      // 인상적인 한 줄
+      const quoteWrap = document.getElementById('bdQuoteWrap');
+      if (d.quote) {
+        document.getElementById('bdQuote').textContent = d.quote;
+        quoteWrap.style.display = 'block';
+      } else {
+        quoteWrap.style.display = 'none';
+      }
+
+      // 태그
+      const tagsEl = document.getElementById('bdTags');
+      tagsEl.innerHTML = '';
+      if (d.tags) {
+        d.tags.split(',').forEach(tag => {
+          const span = document.createElement('span');
+          span.className = 'modal-tag-item';
+          span.textContent = tag.trim();
+          tagsEl.appendChild(span);
+        });
+      }
+
+      // 구입 링크
+      const buyEl   = document.getElementById('bdBuy');
+      const yes24El = document.getElementById('bdYes24');
+      const kyoboEl = document.getElementById('bdKyobo');
+      if (d.yes24 || d.kyobo) {
+        buyEl.style.display = 'block';
+        yes24El.style.display = d.yes24 ? '' : 'none';
+        if (d.yes24) yes24El.href = d.yes24;
+        kyoboEl.style.display = d.kyobo ? '' : 'none';
+        if (d.kyobo) kyoboEl.href = d.kyobo;
+      } else {
+        buyEl.style.display = 'none';
+      }
     }
 
-    function closeModalBtn() {
-      document.getElementById('bookModal').classList.remove('open');
-      document.body.style.overflow = '';
+    function openDetail(card) {
+      fillDetail(card);
+      detailEl.classList.add('open');
+      detailEl.setAttribute('aria-hidden', 'false');
+      // 목록은 뒤에 그대로 살아 있다(position:fixed) — 그래서 스크롤 복원이 공짜다
+      document.body.style.overflow = 'hidden';
+      detailEl.scrollTop = 0;
+      const back = detailEl.querySelector('.bd-back');
+      if (back) back.focus({ preventScroll: true });
     }
+
+    function hideDetail() {
+      if (!detailEl.classList.contains('open')) return;
+      detailEl.classList.remove('open');
+      detailEl.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      detailPushed = false;
+    }
+
+    // 닫기는 해시를 되돌리는 것으로 끝낸다. 직접 링크로 들어온 사람이 닫았을 때
+    // 사이트 밖으로 튕기지 않도록, 우리가 밀어 넣은 경우에만 back 을 쓴다.
+    function closeDetail() {
+      if (detailPushed) {
+        history.back();          // hashchange 가 hideDetail 을 부른다
+      } else {
+        history.replaceState(null, '', location.pathname + location.search);
+        hideDetail();
+      }
+    }
+
+    function routeFromHash() {
+      const h = location.hash;
+      if (h.startsWith(HASH_PREFIX)) {
+        const card = cardBySlug(decodeURIComponent(h.slice(HASH_PREFIX.length)));
+        if (card) { openDetail(card); return; }
+        // 없는 슬러그로 들어왔다 → 조용히 목록으로
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+      hideDetail();
+    }
+
+    window.addEventListener('hashchange', routeFromHash);
+    routeFromHash();   // 직접 링크·새로고침 진입
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModalBtn();
+      if (e.key === 'Escape' && detailEl.classList.contains('open')) closeDetail();
     });
 
     // ── FAQ Accordion ──
@@ -3421,15 +3255,15 @@
       }).sort((a, b) => b.score - a.score);
     }
 
-    // 결과 카드/동반책 클릭 → 도서 목록으로 이동 후 해당 책 모달 열기
+    // 결과 카드/동반책 클릭 → 해당 책 상세 뷰 열기
+    // 상세 뷰가 화면을 덮으므로 스크롤을 기다릴 이유가 없다. 다만 목록 위치로
+    // 미리 옮겨둬야 상세를 닫았을 때 도서 목록이 보인다.
     function quizOpenBook(title) {
       const card = quizCardByTitle(title);
       if (!card) return;
       quizReset();
-      setTimeout(() => {
-        document.getElementById('books').scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => card.click(), 600);
-      }, 200);
+      document.getElementById('books').scrollIntoView();
+      showBook(title);
     }
 
     function quizShowResult() {
