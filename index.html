@@ -13,7 +13,7 @@
        로드만 되고 쓰이는 글자가 없었다(편집 모드 JS 에 죽은 참조만 남아 있음).
        unicode-range 로 쪼개져 있어 실제 다운로드는 0 이었지만, 선언 92개(3.56MB)와
        서체 목소리 하나를 코드에서 덜어낸다.
-       Lora(영문 세리프)는 영어 모드에서만 필요하므로 applyLang 에서 지연 로드한다. -->
+       영문 세리프는 같은 킷의 어도비 개러몬드를 쓴다(Lora 대체 — 요청 하나가 줄었다). -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
@@ -46,9 +46,12 @@
       /* ── 서체 시스템 (2서체 원칙) ──
          serif = 산돌명조네오1: 제목·본문·인용 (300·400·500 — 700 은 패밀리에 없다)
          sans  = 프리텐다드: 버튼·라벨·폼·캡션 등 UI 전반
-         세리프에 700 을 지정하지 말 것 — 가짜 굵기가 합성된다. 강조는 500 이 상한이다. */
+         세리프 강조는 반드시 var(--serif-strong) 을 쓸 것. 숫자를 직접 박으면
+         한 서체에만 맞고 다른 서체에서 가짜 굵기가 합성된다.
+         한국어=산돌 500(상한) / 영어=개러몬드 600. */
       --font-serif: 'sandoll-myeongjoneo1', 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
       --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
+      --serif-strong: 500;   /* 산돌명조네오1 의 상한 */
     }
 
     :root {
@@ -89,9 +92,13 @@
       --mist-speed: 5.0;
     }
 
-    /* 영어 모드: 라틴 글리프는 Lora(웹 시대의 클래식 세리프)가 먼저 받고, 한글은 고운바탕으로 폴백 */
+    /* 영어 모드: 라틴은 어도비 개러몬드(킷에 함께 들어 있어 추가 로드가 없다),
+       한글이 남은 자리는 산돌명조네오1 로 떨어진다 — 개러몬드엔 한글 글리프가 없다.
+       Lora(구글폰트 지연 로드)를 대체했다. 요청 하나가 줄고 서체 목소리도 하나로 모인다. */
     html[lang="en"] {
-      --font-serif: 'Lora', 'sandoll-myeongjoneo1', 'Noto Serif KR', Georgia, serif;
+      --font-serif: 'adobe-garamond-pro', 'sandoll-myeongjoneo1', 'Noto Serif KR', Georgia, serif;
+      /* 개러몬드는 600 이 있다 — 산돌(500 상한) 때문에 내렸던 강조 굵기를 되돌린다 */
+      --serif-strong: 600;
     }
 
     body {
@@ -311,7 +318,7 @@
     .section-title {
       font-family: var(--font-serif);
       font-size: 32px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       /* 자일(대각 반복 스트라이프) 밑줄을 걷어냈다. 선이 사라진 만큼 제목과 본문이
          붙어 보이므로, 밑줄 자리로 쓰던 padding-bottom 24px 을 여백으로 넘긴다
@@ -603,7 +610,7 @@
       font-size: clamp(28px, 7.5vw, 52px);
       /* 본명조는 고운바탕보다 같은 굵기에서 진하다. 600 은 수묵화의 옅은 농담과
          부딪혀 글자가 그림 위에 붙은 스티커처럼 보였다 → 한 단 내린다. */
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.02em;
       line-height: 1.4;
       margin-bottom: 24px;
@@ -739,7 +746,7 @@
       align-items: center;
       justify-content: center;
       font-size: 26px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: var(--muted);
       letter-spacing: -0.02em;
       overflow: hidden;
@@ -774,7 +781,7 @@
 
     .book-hover-title {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: #fff;
       line-height: 1.4;
       letter-spacing: -0.01em;
@@ -818,7 +825,7 @@
 
     .modal-cover-noimg .modal-cover-title {
       font-size: 16px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: #676767;   /* #EFEFEE 대비 4.91 */
       line-height: 1.5;
       letter-spacing: -0.01em;
@@ -1044,7 +1051,7 @@
       box-shadow:0 18px 38px rgba(0,0,0,.16);
     }
     .bd-info{ padding-top:8px; }
-    .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight:500; }
+    .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight: var(--serif-strong); }
     @media (max-width:900px){
       .bd-inner{ padding:72px 20px 72px; }
       .bd-grid{ grid-template-columns:1fr; gap:32px; }
@@ -1121,7 +1128,7 @@
 
     .pick-title {
       font-size: 32px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: #fff;
@@ -1232,7 +1239,7 @@
     .phil-label {
       font-family: var(--font-serif);
       font-size: 17px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       color: rgba(255,255,255,0.95);
       margin-bottom: 14px;
@@ -1267,7 +1274,7 @@
     }
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .about-name { font-size: 26px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .about-name { font-size: 26px; font-weight: var(--serif-strong); letter-spacing: -0.01em; margin-bottom: 8px; }
     .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
     .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
 
@@ -1291,7 +1298,7 @@
 
     .form-section-title {
       font-size: 17px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       margin-bottom: 28px;
       padding-bottom: 16px;
@@ -1364,9 +1371,9 @@
       background: none;
       border: none;
       color: var(--bg);
-      font-family: inherit;
+      font-family: inherit;   /* = 세리프 상속 */
       font-size: 15px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       text-align: left;
       padding: 24px 0;
@@ -1460,7 +1467,7 @@
 
     .mem-reason-title {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       margin-bottom: 10px;
       line-height: 1.4;
@@ -1714,7 +1721,7 @@
     .quiz-intro h3 {
       font-size: 26px;
       color: #fff;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
@@ -1735,7 +1742,7 @@
       font-size: 15px;
       /* 산돌명조네오1 은 500 이 최대다. 700 을 지정하면 브라우저가 가짜 굵기를
          합성하는데, 명조에서는 획이 뭉개져 티가 난다. 500 으로 맞춘다. */
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
@@ -1756,7 +1763,7 @@
     .quiz-question {
       font-size: 20px;
       color: #fff;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       letter-spacing: -0.02em;
       line-height: 1.4;
       margin-bottom: 36px;
@@ -1795,7 +1802,7 @@
 
     .quiz-opt-main {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: #fff;
       letter-spacing: -0.01em;
       line-height: 1.4;
@@ -1825,7 +1832,7 @@
     .quiz-result-header h3 {
       font-size: 20px;
       color: #fff;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
     }
 
     .quiz-result-card {
@@ -1884,7 +1891,7 @@
 
     .quiz-result-title {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: #fff;
       letter-spacing: -0.02em;
       margin-bottom: 6px;
@@ -2019,7 +2026,7 @@
 
     .quiz-companion-title {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: var(--serif-strong);
       color: #fff;
       margin-bottom: 3px;
       line-height: 1.3;
@@ -3875,20 +3882,10 @@
     { sel: '.footer-tagline', en: 'What the world has written about mountains,<br>now in Korean.' }
   ];
 
-  // 영문 세리프(Lora)는 영어 모드에서만 쓴다. 기본 로드에서 빼고 여기서 한 번만 주입한다.
-  // 지우면 영문이 고운바탕의 라틴 글리프로 떨어져 읽는 질이 나빠지므로 유지한다.
-  function ensureLatinSerif() {
-    if (document.getElementById('font-lora')) return;
-    const l = document.createElement('link');
-    l.id = 'font-lora';
-    l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
-    document.head.appendChild(l);
-  }
-
   function applyLang(lang) {
+    // 영문 세리프는 어도비 개러몬드다. 킷이 페이지 로드 때 이미 받아오므로
+    // 예전 Lora 처럼 따로 주입할 것이 없다.
     document.documentElement.lang = (lang === 'en') ? 'en' : 'ko';
-    if (lang === 'en') ensureLatinSerif();
     I18N.forEach(item => {
       document.querySelectorAll(item.sel).forEach((el, i) => {
         const en = Array.isArray(item.en) ? item.en[i] : item.en;
