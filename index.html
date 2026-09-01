@@ -997,6 +997,9 @@
       position:fixed; inset:0; z-index:1000;
       background:#F5F5F4;
       overflow-y:auto; overflow-x:hidden;
+      /* 내용이 긴 책에서만 스크롤바가 생겨 책을 넘길 때 본문 칼럼이 8px 씩 밀렸다
+         (예: '산 그 4차원의 세계' scrollHeight 919 > 900). 자리를 늘 비워 고정한다. */
+      scrollbar-gutter:stable;
       opacity:0; visibility:hidden; transition:opacity .25s ease;
     }
     .book-detail.open{ opacity:1; visibility:visible; }
@@ -1011,18 +1014,15 @@
       position:sticky; top:88px;
       display:flex; align-items:center; justify-content:center;
       /* 표지 높이가 책마다 달라도 칼럼이 흔들리지 않게 확정값을 준다.
-         실사 목업·평면 표지의 max-height:70vh 와 같은 기준이다. */
+         .bd-flat 의 max-height:70vh 와 같은 기준이다. */
       min-height:70vh;
     }
-    /* 목업 원본은 흰 배경 RGB 라 종이색(#F5F5F4) 위에 흰 사각형으로 뜬다.
-       multiply 로 흰 바탕만 떨어뜨린다 — 알파 채널 재가공(25장) 없이 해결되고,
-       렌더에 이미 들어 있는 그림자는 그대로 살아난다. */
-    .bd-mockup{ max-width:100%; max-height:70vh; mix-blend-mode:multiply; }
-
-    /* 목업이 없는 책은 표지를 평면 그대로 크게 보여준다.
-       CSS 3D 책은 책등 색을 앞표지 왼쪽에서 추측했는데, 목업 24권으로 실측하니
-       중앙값 RGB 거리 86·최악 341 로 틀렸다(어두운 표지+밝은 책등 조합에서 뒤집힌다).
-       실물 책등 사진이 들어오면 그때 진짜 책등으로 입체를 되살린다.
+    /* 42권 전부 평면 표지. 실사 목업과 CSS 3D 책을 둘 다 걷어낸 결과다.
+       - CSS 3D: 책등 색을 앞표지 왼쪽에서 추측 → 목업 24권으로 실측하니
+         중앙값 RGB 거리 86·최악 341 로 틀렸다(어두운 표지+밝은 책등에서 뒤집힌다)
+       - 실사 목업: 25장끼리 프레임이 제각각이라 같은 칸에서 책 크기가 1.58배까지
+         달라 보였다(세로 점유율 0.536~0.846)
+       평면은 표지 가장자리가 곧 이미지 가장자리라 두 문제가 다 없다.
        옛 구현은 git 이력과 tools/책등색추출.py 에 남아 있다. */
     .bd-flat{
       max-width:100%; max-height:70vh;
@@ -1035,7 +1035,7 @@
       .bd-inner{ padding:72px 20px 72px; }
       .bd-grid{ grid-template-columns:1fr; gap:32px; }
       .bd-cover{ position:static; top:auto; min-height:56vh; }
-      .bd-mockup, .bd-flat{ max-height:56vh; }
+      .bd-flat{ max-height:56vh; }
       .bd-title{ font-size:26px; }
     }
 
@@ -2328,7 +2328,6 @@
       <button class="bd-back" onclick="closeDetail()" aria-label="목록으로">← 목록으로</button>
       <div class="bd-grid">
         <div class="bd-cover" id="bdCover">
-          <img class="bd-mockup" id="bdMockup" src="" alt="" style="display:none;">
           <img class="bd-flat" id="bdFlat" src="" alt="" style="display:none;">
           <div class="modal-cover-noimg" id="bdNoImg" style="display:none;">
             <div class="modal-cover-title" id="bdNoImgTitle"></div>
@@ -2961,21 +2960,27 @@
       document.getElementById('bdYear').textContent   = d.year;
       document.getElementById('bdLang').textContent   = d.lang;
 
-      // 표지 — 실사 목업(25권) > 평면 표지(17권) > 제목 박스
-      // 목업 없는 책을 CSS 3D 로 세우던 것을 걷어냈다. 책등 색을 앞표지 왼쪽에서
-      // 추측하는 방식이라 실측 결과 틀렸다(중앙값 RGB 거리 86, 최악 341).
-      // 실물 책등 사진이 들어오면 진짜 책등으로 입체를 되살린다.
-      const mockEl  = document.getElementById('bdMockup');
+      // 표지 — 42권 전부 평면 표지 하나로 통일한다.
+      //
+      // 실사 목업 25장을 함께 쓰다가 걷어냈다. 목업끼리 프레임이 제각각이라
+      // 같은 칸에 넣으면 책 크기가 달라 보였다 — 프레임 안에서 책이 차지하는
+      // 세로 비율이 0.536(일본 여성 등산사) ~ 0.846(CAMP SiX), 편차 0.310.
+      // 가로는 0.412 ~ 0.827 로 2배까지 벌어진다. 서로 다른 배치에서 만들어진
+      // 탓이라 원본을 정규화하지 않는 한 균일해지지 않는다.
+      // 평면 표지는 표지 가장자리가 곧 이미지 가장자리라 이 편차가 원천적으로 없고,
+      // 실제 책과 같아 보인다(표지는 상품 정보다).
+      //
+      // data-mockup 속성과 images/books/mockups/ 25장(2.8MB)은 남겨 뒀다.
+      // 목업을 살리려면 책 영역을 잘라 같은 배율로 다시 뽑는 정규화가 먼저다.
       const flatEl  = document.getElementById('bdFlat');
       const noImgEl = document.getElementById('bdNoImg');
-      const cover = d.mockup ? mockEl : (d.img ? flatEl : null);
-      [mockEl, flatEl].forEach(el => { if (el !== cover) el.style.display = 'none'; });
-      if (cover) {
-        cover.src = d.mockup || d.img;
-        cover.alt = d.title;
-        cover.style.display = 'block';
+      if (d.img) {
+        flatEl.src = d.img;
+        flatEl.alt = d.title;
+        flatEl.style.display = 'block';
         noImgEl.style.display = 'none';
       } else {
+        flatEl.style.display = 'none';
         noImgEl.style.display = 'flex';
         document.getElementById('bdNoImgTitle').textContent = d.title;
       }
