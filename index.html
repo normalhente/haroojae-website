@@ -51,6 +51,19 @@
          한국어=산돌 500(상한) / 영어=개러몬드 600. */
       --font-serif: 'sandoll-myeongjoneo1', 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
       --font-sans: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', sans-serif;
+
+      /* ── 타이포 토큰 (2026-09-02) ──
+         책을 보여주는 다섯 화면(추천·카드·퀴즈 질문·퀴즈 결과·책 상세)이 서로 다른 규칙으로
+         짜여 있어 고유 조합이 21가지였다. 크기 7단(11~44)·행간 6종·Arial 혼입 3곳.
+         아래 4단으로 통일한다. 3단으로 시작했으나 퀴즈 결과 화면에 '페르소나 이름'과
+         '추천된 책 제목'이 함께 놓여 그 사이 한 단이 실제로 필요했다.
+         아이콘·따옴표 같은 장식 글리프(24·40·44·48·56)는 예외로 둔다. */
+      --fs-title: 26px;   /* 화면의 주인공 — 책 제목, 퀴즈 질문, 페르소나 이름 */
+      --fs-sub:   20px;   /* 부제 — 결과 카드의 책 제목, 폼 섹션 제목 */
+      --fs-body:  15px;   /* 본문 */
+      --fs-meta:  13px;   /* 라벨·서지·버튼·태그·보조 (11px 은 전부 여기로 올렸다) */
+      --lh-tight: 1.4;    /* 제목·카드 */
+      --lh-body:  1.85;   /* 본문 */
       --serif-strong: 500;   /* 산돌명조네오1 의 상한 */
     }
 
@@ -105,7 +118,7 @@
       font-family: var(--font-serif);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
+      line-height: var(--lh-body);
       word-break: keep-all;
       overflow-wrap: break-word;
       /* 슬라이더 등에서 생기는 자잘한 가로 넘침 차단.
@@ -724,13 +737,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 26px;
+      font-size: var(--fs-title);
       font-weight: var(--serif-strong);
       color: var(--muted);
       letter-spacing: -0.02em;
       overflow: hidden;
       box-shadow: 0 4px 16px rgba(26,40,32,0.1);
       transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+      font-family: var(--font-serif);
+
+      line-height: var(--lh-tight);
+
     }
 
     .book-card:hover .book-cover {
@@ -759,18 +777,24 @@
     .book-card:hover .book-hover-info { opacity: 1; }
 
     .book-hover-title {
-      font-size: 13px;
+      font-size: var(--fs-meta);
       font-weight: var(--serif-strong);
       color: #fff;
-      line-height: 1.4;
+      line-height: var(--lh-tight);
       letter-spacing: -0.01em;
+
+      font-family: var(--font-serif);
+
     }
 
     .book-hover-sub {
-      font-size: 11px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.72);
       margin-top: 3px;
-      line-height: 1.4;
+      line-height: var(--lh-tight);
+
+      font-family: var(--font-sans);
+
     }
 
 
@@ -803,11 +827,14 @@
     }
 
     .modal-cover-noimg .modal-cover-title {
-      font-size: 16px;
+      font-size: var(--fs-body);
       font-weight: var(--serif-strong);
       color: #676767;   /* #EFEFEE 대비 4.91 */
-      line-height: 1.5;
+      line-height: var(--lh-tight);
       letter-spacing: -0.01em;
+
+      font-family: var(--font-serif);
+
     }
 
     /* ══ 타이포 스케일 (사이트 전역) ══
@@ -850,7 +877,7 @@
     .modal-author-bio-label,
     .modal-buy-label {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       font-weight: 600;
       letter-spacing: 0.09em;
       color: var(--m-info);
@@ -860,10 +887,10 @@
 
     .modal-author {
       font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: var(--fs-meta);
+      font-weight: 400;
       color: var(--m-info);
-      line-height: 1.7;
+      line-height: var(--lh-tight);
       margin-bottom: 10px;
     }
 
@@ -889,10 +916,10 @@
 
     .modal-meta {
       font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: var(--fs-meta);
+      font-weight: 400;
       color: var(--m-info);
-      line-height: 1.7;
+      line-height: var(--lh-tight);
       margin-bottom: 0;
     }
 
@@ -905,9 +932,9 @@
     }
 
     .modal-desc {
-      font-size: 15px;
+      font-size: var(--fs-body);
       color: var(--m-ink);
-      line-height: 1.85;
+      line-height: var(--lh-body);
       margin-bottom: 28px;
       font-family: var(--font-sans);
     }
@@ -932,16 +959,16 @@
     .modal-quote p {
       font-family: var(--font-serif);
       font-style: italic;
-      font-size: 15px;
-      line-height: 1.85;
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
       color: var(--m-body);
       margin: 0;
     }
 
     .modal-author-bio {
       font-family: var(--font-sans);
-      font-size: 13px;
-      line-height: 1.85;
+      font-size: var(--fs-meta);
+      line-height: var(--lh-body);
       color: var(--m-body);
       margin-bottom: 28px;
     }
@@ -957,8 +984,8 @@
        클릭 어포던스(테두리)가 필요 없었다. gap 은 .modal-tags 에서 12px 로 벌린다. */
     .modal-tag-item {
       font-family: var(--font-sans);
-      font-size: 13px;
-      font-weight: 600;
+      font-size: var(--fs-meta);
+      font-weight: 400;
       color: var(--m-info);
     }
 
@@ -976,7 +1003,7 @@
       flex: 1;
       padding: 13px 16px;
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.05em;
       text-align: center;
       text-decoration: none;
@@ -1004,9 +1031,10 @@
     }
     .book-detail.open{ opacity:1; visibility:visible; }
     .bd-inner{ max-width:1080px; margin:0 auto; padding:88px 32px 96px; }
-    .bd-back{
+    .bd-back {
       background:none; border:none; cursor:pointer;
-      font-size:15px; color:#585858; padding:6px 0; margin-bottom:28px;
+      font-size: var(--fs-meta); color:#585858; padding:6px 0; margin-bottom:28px;
+      font-family: var(--font-sans);
     }
     .bd-back:hover{ color:#1A1A1A; }
     .bd-grid{ display:grid; grid-template-columns:44% 1fr; gap:56px; align-items:start; }
@@ -1030,13 +1058,16 @@
       box-shadow:0 18px 38px rgba(0,0,0,.16);
     }
     .bd-info{ padding-top:8px; }
-    .bd-title{ font-size:32px; line-height:1.3; margin:6px 0 10px; font-weight: var(--serif-strong); }
+    .bd-title { font-size: var(--fs-title); line-height:1.3; margin:6px 0 10px; font-weight: var(--serif-strong);
+      font-family: var(--font-serif);
+      line-height: var(--lh-tight);
+    }
     @media (max-width:900px){
       .bd-inner{ padding:72px 20px 72px; }
       .bd-grid{ grid-template-columns:1fr; gap:32px; }
       .bd-cover{ position:static; top:auto; min-height:56vh; }
       .bd-flat{ max-height:56vh; }
-      .bd-title{ font-size:26px; }
+      .bd-title { font-size: var(--fs-title); }
     }
 
     /* ── Editor's Picks ── */
@@ -1098,24 +1129,31 @@
     .pick-badge {
       display: inline-block;
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       font-weight: 600;
       letter-spacing: 0.06em;
-      color: var(--text);
+      /* 슬라이더 배경이 짙은 초록(#0C1410)이라 먹색 var(--text) 로는 대비 1.07 —
+         사실상 안 보였다(2026-09-02 실측). 7월에 배지를 '색 칩 → 먹색 텍스트'로 바꿀 때
+         밝은 바탕만 보고 바꾼 자리다. 어두운 바탕에서의 같은 처리는 흰색 계열이다.
+         .72 는 제목(1.0)보다 낮고 인용(.82)·저자(.45) 사이 — 대비 9.6:1. */
+      color: rgba(255, 255, 255, 0.72);
       width: fit-content;
     }
 
     .pick-title {
-      font-size: 32px;
+      font-size: var(--fs-title);
       font-weight: var(--serif-strong);
       letter-spacing: -0.03em;
-      line-height: 1.2;
+      line-height: var(--lh-tight);
       color: #fff;
+
+      font-family: var(--font-serif);
+
     }
 
     .pick-author {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.45);
       letter-spacing: 0.01em;
     }
@@ -1129,18 +1167,21 @@
 
     .pick-quote {
       font-style: italic;
-      font-size: 15px;
-      line-height: 1.85;
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
       color: rgba(255,255,255,0.82);
       margin: 0;
       max-width: 480px;
+
+      font-family: var(--font-serif);
+
     }
 
     .pick-note {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.42);
-      line-height: 1.8;
+      line-height: var(--lh-body);
       max-width: 440px;
     }
 
@@ -1154,12 +1195,17 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.12);
       color: rgba(255,255,255,0.7);
-      font-size: 20px;
+      font-size: var(--fs-sub);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.2s, color 0.2s;
+
+      font-family: var(--font-sans);
+
+      line-height: 1;
+
     }
 
     .picks-arrow:hover { background: rgba(255,255,255,0.14); color: #fff; }
@@ -1189,7 +1235,7 @@
       .picks-slider { height: auto; min-height: 400px; }
       .pick-slide { flex-direction: column-reverse; padding: 32px 24px; gap: 28px; justify-content: flex-end; }
       .pick-slide-cover { width: 120px; height: 180px; align-self: flex-start; }
-      .pick-title { font-size: 20px; }
+      .pick-title { font-size: var(--fs-sub); }
       .picks-dots { left: 24px; bottom: 16px; }
       .picks-prev { left: 8px; }
       .picks-next { right: 8px; }
@@ -1276,19 +1322,26 @@
     .form-box { background: #fff; padding: 36px; border: 1px solid var(--border); }
 
     .form-section-title {
-      font-size: 17px;
+      font-size: var(--fs-sub);
       font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       margin-bottom: 28px;
       padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
+
+      font-family: var(--font-serif);
+
+      line-height: var(--lh-tight);
+
     }
 
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-full { grid-column: 1 / -1; }
 
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-family: var(--font-sans); font-size: 13px; color: var(--muted); letter-spacing: 0.05em; }
+    .form-group label { font-family: var(--font-sans); font-size: 13px; color: var(--muted); letter-spacing: 0.05em;
+      font-size: var(--fs-meta);
+    }
 
     .form-group input,
     .form-group select,
@@ -1297,7 +1350,7 @@
       background: var(--bg);
       border: 1px solid var(--border);
       padding: 12px 16px;
-      font-size: 15px;
+      font-size: var(--fs-body);
       color: var(--text);
       outline: none;
       transition: border-color 0.2s;
@@ -1317,7 +1370,7 @@
       color: #fff;
       border: none;
       padding: 14px 32px;
-      font-size: 15px;
+      font-size: var(--fs-body);
       letter-spacing: 0.01em;
       cursor: pointer;
       transition: background 0.2s, transform 0.2s;
@@ -1331,9 +1384,12 @@
       background: #EBEBEA;
       border: 1px solid var(--border);
       padding: 14px 18px;
-      font-size: 15px;
+      font-size: var(--fs-body);
       color: var(--text);
       margin-top: 16px;
+
+      font-family: var(--font-sans);
+
     }
 
     /* ── FAQ ── */
@@ -1675,7 +1731,7 @@
       position: absolute;
       right: 0; top: 8px;
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.09em;
       color: rgba(255,255,255,0.3);
     }
@@ -1703,21 +1759,29 @@
       margin-bottom: 24px;
       display: block;
       opacity: 0.7;
+
+      font-family: var(--font-sans);
+
     }
 
     .quiz-intro h3 {
-      font-size: 26px;
+      font-size: var(--fs-title);
       color: #fff;
       font-weight: var(--serif-strong);
       letter-spacing: -0.02em;
       margin-bottom: 16px;
+
+      font-family: var(--font-serif);
+
+      line-height: var(--lh-tight);
+
     }
 
     .quiz-intro p {
       font-family: var(--font-sans);
-      font-size: 15px;
+      font-size: var(--fs-body);
       color: rgba(255,255,255,0.5);
-      line-height: 1.8;
+      line-height: var(--lh-body);
       margin-bottom: 40px;
     }
 
@@ -1726,14 +1790,14 @@
       color: var(--dark);
       border: none;
       padding: 14px 40px;
-      font-size: 15px;
+      font-size: var(--fs-body);
       /* 산돌명조네오1 은 500 이 최대다. 700 을 지정하면 브라우저가 가짜 굵기를
          합성하는데, 명조에서는 획이 뭉개져 티가 난다. 500 으로 맞춘다. */
       font-weight: var(--serif-strong);
       letter-spacing: 0.05em;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.2s;
-      font-family: var(--font-serif);
+      font-family: var(--font-sans);
     }
 
     .quiz-start-btn:hover { opacity: 0.88; transform: translateY(-2px); }
@@ -1741,19 +1805,22 @@
     /* 질문 */
     .quiz-q-num {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.14em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 16px;
     }
 
     .quiz-question {
-      font-size: 20px;
+      font-size: var(--fs-title);
       color: #fff;
       font-weight: var(--serif-strong);
       letter-spacing: -0.02em;
-      line-height: 1.4;
+      line-height: var(--lh-tight);
       margin-bottom: 36px;
+
+      font-family: var(--font-serif);
+
     }
 
     .quiz-options {
@@ -1785,21 +1852,28 @@
       border-color: rgba(255,255,255,0.7);
     }
 
-    .quiz-opt-icon { font-size: 24px; line-height: 1; }
+    .quiz-opt-icon { font-size: 24px; line-height: 1;
+
+      font-family: var(--font-sans);
+
+    }
 
     .quiz-opt-main {
-      font-size: 15px;
+      font-size: var(--fs-body);
       font-weight: var(--serif-strong);
       color: #fff;
       letter-spacing: -0.01em;
-      line-height: 1.4;
+      line-height: var(--lh-tight);
+
+      font-family: var(--font-sans);
+
     }
 
     .quiz-opt-sub {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.4);
-      line-height: 1.5;
+      line-height: var(--lh-tight);
     }
 
     /* 결과 */
@@ -1810,16 +1884,21 @@
 
     .quiz-result-header p {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.09em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 8px;
     }
 
     .quiz-result-header h3 {
-      font-size: 20px;
+      font-size: var(--fs-title);
       color: #fff;
       font-weight: var(--serif-strong);
+
+      font-family: var(--font-serif);
+
+      line-height: var(--lh-tight);
+
     }
 
     .quiz-result-card {
@@ -1860,7 +1939,7 @@
 
     .quiz-result-lang {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.14em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 12px;
@@ -1877,16 +1956,21 @@
     }
 
     .quiz-result-title {
-      font-size: 20px;
+      font-size: var(--fs-sub);
       font-weight: var(--serif-strong);
       color: #fff;
       letter-spacing: -0.02em;
       margin-bottom: 6px;
+
+      font-family: var(--font-serif);
+
+      line-height: var(--lh-tight);
+
     }
 
     .quiz-result-author {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.4);
       margin-bottom: 20px;
     }
@@ -1897,17 +1981,20 @@
       background: rgba(255,255,255,0.04);
       margin-bottom: 20px;
       font-style: italic;
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.75);
-      line-height: 1.8;
+      line-height: var(--lh-body);
+
+      font-family: var(--font-serif);
+
     }
 
     .quiz-result-reason {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.35);
       margin-bottom: 24px;
-      line-height: 1.7;
+      line-height: var(--lh-body);
     }
 
     .quiz-result-btn {
@@ -1916,10 +2003,10 @@
       border: 1px solid rgba(255,255,255,0.25);
       color: rgba(255,255,255,0.7);
       padding: 10px 22px;
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.05em;
       cursor: pointer;
-      font-family: var(--font-serif);
+      font-family: var(--font-sans);
       transition: border-color 0.2s, color 0.2s;
     }
 
@@ -1931,7 +2018,7 @@
       background: none;
       border: none;
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.3);
       cursor: pointer;
       letter-spacing: 0.05em;
@@ -1960,7 +2047,7 @@
     .quiz-pick-label {
       text-align: center;
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.62);
       margin-bottom: 14px;
@@ -1971,7 +2058,7 @@
 
     .quiz-companions-label {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.45);
       text-align: center;
@@ -2012,16 +2099,19 @@
     .quiz-companion-info { min-width: 0; }
 
     .quiz-companion-title {
-      font-size: 13px;
+      font-size: var(--fs-meta);
       font-weight: var(--serif-strong);
       color: #fff;
       margin-bottom: 3px;
-      line-height: 1.3;
+      line-height: var(--lh-tight);
+
+      font-family: var(--font-serif);
+
     }
 
     .quiz-companion-author {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       color: rgba(255,255,255,0.4);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -2710,22 +2800,23 @@
               </div>
               <div class="form-group">
                 <label>읽은 책</label>
-                <select>
+                <!-- 옵션은 booksGrid 의 카드에서 자동 생성한다(아래 fillReviewBooks).
+                     예전엔 5권만 하드코딩돼 있어 나머지 37권을 읽은 사람은 '기타'밖에 못 골랐다. -->
+                <select id="reviewBook" required>
                   <option value="">책 선택</option>
-                  <option>폴른 자이언츠</option>
-                  <option>에베레스트 정복</option>
-                  <option>리카르도 캐신</option>
-                  <option>일본 여성 등산사</option>
-                  <option>중국 등산 운동사</option>
-                  <option>기타</option>
+                  <option value="기타">기타</option>
                 </select>
               </div>
               <div class="form-group form-full">
                 <label>별점</label>
-                <select>
-                  <option>★★★★★ (5점)</option>
-                  <option>★★★★☆ (4점)</option>
-                  <option>★★★☆☆ (3점)</option>
+                <!-- 1·2점이 없어 낮은 평가를 아예 남길 수 없었다. 5~1 전부 연다. -->
+                <select id="reviewRating" required>
+                  <option value="">별점 선택</option>
+                  <option value="5">★★★★★ (5점)</option>
+                  <option value="4">★★★★☆ (4점)</option>
+                  <option value="3">★★★☆☆ (3점)</option>
+                  <option value="2">★★☆☆☆ (2점)</option>
+                  <option value="1">★☆☆☆☆ (1점)</option>
                 </select>
               </div>
               <div class="form-group form-full">
@@ -3131,6 +3222,21 @@
 
     // ── Forms ──
     // 폼이 없는 페이지에서도 안전하도록 null 체크(옵셔널 체이닝) 사용
+    // 후기 폼의 '읽은 책' 목록을 도서 카드에서 만든다. 책이 늘면 여기 손댈 필요가 없다.
+    // '기타'는 항상 맨 끝에 둔다.
+    (function fillReviewBooks() {
+      const sel = document.getElementById('reviewBook');
+      if (!sel) return;
+      const etc = sel.querySelector('option[value="기타"]');
+      const titles = [...document.querySelectorAll('#booksGrid .book-card')]
+        .map(c => (c.dataset.title || '').trim()).filter(Boolean);
+      titles.forEach(t => {
+        const o = document.createElement('option');
+        o.value = t; o.textContent = t;
+        sel.insertBefore(o, etc);
+      });
+    })();
+
     document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
       const s = document.getElementById('reviewSuccess');
