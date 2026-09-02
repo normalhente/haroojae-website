@@ -2728,7 +2728,7 @@
         <div class="animate animate-delay-1">
           <div class="about-name">변기태</div>
           <div class="about-role">하루재클럽 대표 · 한국산악회 회장</div>
-          <p class="about-body">2015년부터 하루재클럽을 이끌며 총 42권의 산서를 출간했습니다. 고등학교 시절부터 50여 년간 산서를 수집해온 애서가로, 해외 원서를 포함해 5,000여 권의 산서를 소장하고 있습니다. 한국산서회 창립 멤버이며, 현재 한국산악회 회장을 역임하고 있습니다.</p>
+          <p class="about-body" data-books>2015년부터 하루재클럽을 이끌며 총 <span class="book-n"></span>권의 산서를 출간했습니다. 고등학교 시절부터 50여 년간 산서를 수집해온 애서가로, 해외 원서를 포함해 5,000여 권의 산서를 소장하고 있습니다. 한국산서회 창립 멤버이며, 현재 한국산악회 회장을 역임하고 있습니다.</p>
           <div class="about-quote">
             <p>"다른 분야에서는 좋은 책이 많이 나오는데 유독 산서는 찾아보기 힘든 현실이 안타까웠습니다. 산서 읽기 붐을 일으켜 출판사들이 산서 출간에 의욕을 갖게 만드는 환경을 만들고 싶습니다."</p>
           </div>
@@ -2755,7 +2755,7 @@
           <div class="quiz-intro">
             <span class="quiz-intro-icon">⛰️</span>
             <h3>어떤 산서가 나에게 맞을까?</h3>
-            <p>42권 중에서 고르기 어렵다면,<br>이 테스트가 시작점이 되어드립니다.</p>
+            <p data-books><span class="book-n"></span>권 중에서 고르기 어렵다면,<br>이 테스트가 시작점이 되어드립니다.</p>
             <button class="quiz-start-btn" onclick="quizStart()">테스트 시작하기</button>
           </div>
         </div>
@@ -3003,7 +3003,7 @@
             <div class="mem-reason-num">01</div>
             <div class="mem-reason-body">
               <div class="mem-reason-title">하루재가 없었다면 없었을 책들입니다</div>
-              <div class="mem-reason-desc">하루재의 42권은 모두 국내 최초 번역서입니다. 세계 산악 문화의 정수를 담은 책들이 한국어로 존재할 수 있었던 건, 하루재가 먼저 읽고 가치를 판단했기 때문입니다.</div>
+              <div class="mem-reason-desc" data-books>하루재의 <span class="book-n"></span>권은 모두 국내 최초 번역서입니다. 세계 산악 문화의 정수를 담은 책들이 한국어로 존재할 수 있었던 건, 하루재가 먼저 읽고 가치를 판단했기 때문입니다.</div>
             </div>
           </div>
           <div class="mem-reason">
@@ -4024,13 +4024,13 @@
     // 대표 소개
     { sel: '.about-name', en: 'Byun Ki-tae' },
     { sel: '.about-role', en: 'Publisher of Haroojae Club · President of the Corean Alpine Club' },
-    { sel: '.about-body', en: 'Since 2015, he has led Haroojae Club and published 42 mountain books. A lifelong bibliophile who has collected mountain literature for over fifty years — from his high-school days on — he keeps a library of some 5,000 titles, foreign originals included. He is a founding member of the Korean Mountain Book Society and currently serves as President of the Corean Alpine Club.' },
+    { sel: '.about-body', en: 'Since 2015, he has led Haroojae Club and published <span class="book-n"></span> mountain books. A lifelong bibliophile who has collected mountain literature for over fifty years — from his high-school days on — he keeps a library of some 5,000 titles, foreign originals included. He is a founding member of the Korean Mountain Book Society and currently serves as President of the Corean Alpine Club.' },
     { sel: '.about-quote p', en: '&ldquo;It always saddened me that so many good books existed in other fields, yet mountain literature was so hard to find. I want to spark a mountain-book reading culture — so that publishers, too, find the will to publish them.&rdquo;' },
 
     // 책 추천 퀴즈
     { sel: '#quiz .section-sub', en: 'Five questions to find the mountain book that fits you' },
     { sel: '#quiz-intro h3', en: 'Which mountain book is right for me?' },
-    { sel: '#quiz-intro .quiz-intro p', en: 'Hard to choose among 42 titles?<br>This test is a place to start.' },
+    { sel: '#quiz-intro .quiz-intro p', en: 'Hard to choose among <span class="book-n"></span> titles?<br>This test is a place to start.' },
     { sel: '.quiz-start-btn', en: 'Start the Test' },
     { sel: '#quiz-q1 .quiz-question', en: 'What draws you most to the mountains?' },
     { sel: '#quiz-q1 .quiz-opt-main', en: ['Conquering 8000 meters', 'Pure technique', 'Exploration and nature', 'Life and philosophy'] },
@@ -4072,7 +4072,7 @@
     { sel: '.membership-intro', en: 'Mountain books you can find nowhere else in Korea —<br>translated by Haroojae and delivered to your door.' },
     { sel: '.mem-reason-title', en: ['Books that wouldn&rsquo;t exist without Haroojae', 'Chosen by the President of the Corean Alpine Club', 'The mountain changes after you read'] },
     { sel: '.mem-reason-desc', en: [
-      'All 42 of our titles are first-ever Korean translations. They exist in Korean because Haroojae read them first and judged them worth it.',
+      'All <span class="book-n"></span> of our titles are first-ever Korean translations. They exist in Korean because Haroojae read them first and judged them worth it.',
       'Our publisher — a climber of forty years — reads and selects the world&rsquo;s mountain books himself, by the essence of climbing culture rather than by trend.',
       'One Haroojae book subtly changes your next climb. There is a moment you learn the difference between climbing a mountain and reading one.'
     ] },
@@ -4088,6 +4088,20 @@
     { sel: '.footer-contact > span', en: '801, Shinsa 2nd Bldg., 6 Naruteo-ro 15-gil, Seocho-gu, Seoul, Korea' },
     { sel: '.footer-tagline', en: 'What the world has written about mountains,<br>now in Korean.' }
   ];
+
+  // 책 권수를 카드에서 센다. 예전엔 '42권'이 한글 3곳·영문 3곳에 박혀 있어
+  // 신간이 나올 때마다 여섯 군데를 손으로 고쳐야 했고, 실제로 놓치기 쉬웠다.
+  //
+  // 처음엔 {{BOOKS}} 플레이스홀더를 문장에 넣고 치환했는데, applyLang 이 innerHTML 을
+  // 갈아끼우며 dataset.koHtml 에 '이미 채워진' 문장을 보관해 버려 숫자가 굳었다
+  // (책을 한 권 더 넣어도 42 로 남았다 — 2026-09-02 실측).
+  // 그래서 숫자를 담는 전용 요소를 둔다. innerHTML 이 통째로 바뀌어도 빈 span 이 다시
+  // 생기고, 아래 함수가 다시 채운다. 여러 번 불려도 안전하다.
+  function fillBookCount() {
+    const n = document.querySelectorAll('#booksGrid .book-card').length;
+    if (!n) return;
+    document.querySelectorAll('.book-n').forEach(el => { el.textContent = n; });
+  }
 
   function applyLang(lang) {
     // 영문 세리프는 어도비 개러몬드다. 킷이 페이지 로드 때 이미 받아오므로
@@ -4111,6 +4125,7 @@
         }
       });
     });
+    fillBookCount();   // 언어를 갈아끼운 뒤에 숫자를 채운다 (순서 중요 — 아래 주석)
     try { localStorage.setItem('hj-lang', lang); } catch (e) {}
     const nav = document.getElementById('langToggle');
     if (nav) nav.textContent = lang === 'en' ? 'KO' : 'EN';
@@ -4122,6 +4137,9 @@
   }
 
   // 저장된 언어 복원
+  // 저장된 언어가 en 일 때만 applyLang 이 돈다. 한국어 방문자에게도 숫자를 채워야 하므로
+  // 여기서 한 번 부른다 — 안 그러면 숫자 자리가 빈 채로 보인다.
+  fillBookCount();
   try { if (localStorage.getItem('hj-lang') === 'en') applyLang('en'); } catch (e) {}
 </script>
 </body>
