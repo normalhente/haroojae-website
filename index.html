@@ -1322,6 +1322,30 @@
     .form-box { background: #fff; padding: 36px; border: 1px solid var(--border); }
 
     /* 폼을 걷어내고 남긴 안내 (2026-09-02). 토큰만 쓴다. */
+    .contact-box { max-width: 640px; }
+    .contact-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .contact-addr {
+      font-family: var(--font-sans);
+      font-size: var(--fs-sub);
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text);
+      padding-bottom: 2px;
+      word-break: break-all;
+    }
+    .contact-addr:hover { opacity: 0.7; }
+    .contact-guide {
+      margin: 28px 0 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--line, #DEDEDC);
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: var(--lh-body);
+    }
+    .contact-guide > div { display: flex; gap: 14px; }
+    .contact-guide dt { color: var(--text-muted); min-width: 5.5em; }
+    .contact-guide dd { margin: 0; color: var(--text-mid); }
+
     .form-lead {
       font-family: var(--font-sans);
       font-size: var(--fs-meta);
@@ -2816,23 +2840,24 @@
     <div class="inner">
       <div class="section-tag animate">Participate</div>
       <h2 class="section-title animate">참여하기</h2>
-      <div class="forms-grid">
-        <div class="form-box animate">
-          <div class="form-section-title">독자 후기 남기기</div>
-          <p class="form-lead">읽으신 책의 감상을 들려주세요. 메일 서식에 항목이 채워져 있습니다.</p>
-          <div class="form-contact">
-            <a class="form-cta" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%EB%8F%85%EC%9E%90%20%ED%9B%84%EA%B8%B0&body=%EC%9D%BD%EC%9D%80%20%EC%B1%85%20%3A%0A%EB%B3%84%EC%A0%90%20%3A%20%285%EC%A0%90%20%EB%A7%8C%EC%A0%90%29%0A%0A%ED%9B%84%EA%B8%B0%20%3A%0A%0A%0A%20%E2%80%94%20%EB%B3%B4%EB%82%B4%EC%A3%BC%EC%8B%A0%20%ED%9B%84%EA%B8%B0%EB%8A%94%20%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%EC%97%90%EC%84%9C%20%EC%86%8C%EC%A4%91%ED%9E%88%20%EC%9D%BD%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4.">메일로 후기 보내기</a>
-            <a class="form-cta form-cta--sub" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM</a>
-          </div>
+      <div class="contact-box animate">
+        <p class="form-lead">독자 후기와 번역 원서 요청을 받습니다. 아래로 보내주세요.</p>
+
+        <div class="contact-mail">
+          <!-- mailto 는 기본 메일 앱이 지정된 사람에게만 열린다. 네이버 메일을 웹으로 쓰면
+               아무 일도 안 일어나므로, 주소를 눈에 보이게 두고 복사 버튼을 함께 준다. -->
+          <a class="contact-addr" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%ED%9B%84%EA%B8%B0%20%C2%B7%20%EB%B2%88%EC%97%AD%20%EC%9A%94%EC%B2%AD&body=%5B%ED%9B%84%EA%B8%B0%5D%20%EC%9D%BD%EC%9D%80%20%EC%B1%85%20%C2%B7%20%EB%B3%84%EC%A0%90%285%EC%A0%90%20%EB%A7%8C%EC%A0%90%29%20%C2%B7%20%EA%B0%90%EC%83%81%0A%5B%EB%B2%88%EC%97%AD%20%EC%9A%94%EC%B2%AD%5D%20%EC%9B%90%EC%84%9C%20%EC%A0%9C%EB%AA%A9%20%C2%B7%20%EC%A0%80%EC%9E%90%20%C2%B7%20%EC%B6%9C%ED%8C%90%EC%82%AC%20%C2%B7%20%EC%96%B8%EC%96%B4%20%C2%B7%20%EC%9A%94%EC%B2%AD%20%EC%9D%B4%EC%9C%A0%0A%0A%0A">haroojaeclub@naver.com</a>
+          <button type="button" class="form-cta form-cta--sub" id="copyMail">주소 복사</button>
         </div>
-        <div class="form-box animate animate-delay-1">
-          <div class="form-section-title">번역 원서 요청하기</div>
-          <p class="form-lead">한국어로 보고 싶은 산서가 있다면 알려주세요. 다음 책을 고르는 데 참고합니다.</p>
-          <div class="form-contact">
-            <a class="form-cta" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%EB%B2%88%EC%97%AD%20%EC%9B%90%EC%84%9C%20%EC%9A%94%EC%B2%AD&body=%EC%9B%90%EC%84%9C%20%EC%A0%9C%EB%AA%A9%20%3A%0A%EC%A0%80%EC%9E%90%20%3A%0A%EC%B6%9C%ED%8C%90%EC%82%AC%20%3A%0A%EC%9B%90%EC%84%9C%20%EC%96%B8%EC%96%B4%20%3A%0A%0A%EC%9D%B4%20%EC%B1%85%EC%9D%84%20%EB%B2%88%EC%97%AD%ED%96%88%EC%9C%BC%EB%A9%B4%20%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%20%3A%0A%0A%0A%EC%97%B0%EB%9D%BD%EC%B2%98%28%EC%84%A0%ED%83%9D%29%20%3A">메일로 요청 보내기</a>
-            <a class="form-cta form-cta--sub" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM</a>
-          </div>
+
+        <div class="form-contact">
+          <a class="form-cta" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM 보내기</a>
         </div>
+
+        <dl class="contact-guide">
+          <div><dt>후기</dt><dd>읽은 책 · 별점 · 감상</dd></div>
+          <div><dt>번역 요청</dt><dd>원서 제목 · 저자 · 출판사 · 언어 · 요청 이유</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -3181,6 +3206,25 @@
       });
     });
 
+
+    // 메일 주소 복사 — mailto 는 기본 메일 앱이 지정된 사람에게만 열린다.
+    // 네이버 메일을 웹으로 쓰면 mailto 가 아무 반응이 없으므로 복사 경로를 따로 둔다.
+    document.getElementById('copyMail')?.addEventListener('click', async function () {
+      const btn = this;
+      const label = btn.dataset.label || (btn.dataset.label = btn.textContent);
+      const flash = (msg) => { btn.textContent = msg; setTimeout(() => { btn.textContent = label; }, 2000); };
+      try {
+        await navigator.clipboard.writeText('haroojaeclub@naver.com');
+        flash('복사했습니다');
+      } catch (e) {
+        // 권한이 없거나 옛 브라우저 — 주소를 선택해 주고 직접 복사하도록 안내한다.
+        // 아무 표시도 없으면 '눌러도 반응이 없다'로 읽히므로 반드시 알린다.
+        const el = document.querySelector('.contact-addr');
+        const r = document.createRange(); r.selectNodeContents(el);
+        const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        flash('주소를 선택했습니다 — ⌘C');
+      }
+    });
 
     // ── 나침반 ──
     const compass = document.querySelector('.compass');
@@ -3912,10 +3956,12 @@
     { sel: '.quiz-retry-btn', en: '↺ Take the test again' },
 
     // 참여하기 (폼 → 메일·인스타 안내. 폼 마크업은 docs/보관_참여하기_폼_2026-09-02.md)
-    { sel: '.form-section-title', en: ['Leave a Review', 'Request a Translation'] },
-    { sel: '.form-lead', en: ['Tell us what you thought of the book. The email opens with a ready template.',
-                              'Is there a mountain book you\u2019d like to read in Korean? It helps us choose what to publish next.'] },
-    { sel: '.form-cta', en: ['Send a review by email', 'Instagram DM', 'Send a request by email', 'Instagram DM'] },
+    { sel: '.form-lead', en: 'We welcome reader reviews and translation requests. Reach us here.' },
+    { sel: '#copyMail', en: 'Copy address' },
+    { sel: '.form-cta:not(#copyMail)', en: 'Send an Instagram DM' },
+    { sel: '.contact-guide dt', en: ['Review', 'Request'] },
+    { sel: '.contact-guide dd', en: ['Book you read \u00b7 rating \u00b7 your thoughts',
+                                     'Original title \u00b7 author \u00b7 publisher \u00b7 language \u00b7 why'] },
 
     // FAQ
     { sel: '.faq-question', text: true, en: ['How do I join the membership? ', 'When will I receive the books? ', 'How are the books selected? ', 'Can I cancel anytime? ', 'Can I buy earlier titles separately? '] },
