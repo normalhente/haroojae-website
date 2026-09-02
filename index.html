@@ -1323,17 +1323,60 @@
 
     /* 폼을 걷어내고 남긴 안내 (2026-09-02). 토큰만 쓴다. */
     .contact-box { max-width: 640px; }
-    .contact-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 12px; }
+
+    /* 메일 주소는 제목이 아니라 '값'이다. 밑줄 친 큰 링크 옆에 작은 테두리 버튼을
+       붙였더니 시각 문법이 충돌했다(링크 20px + 버튼 13px, 바닥선 3px 어긋남).
+       값을 담는 한 상자로 짜고, 안에서 주소와 복사 버튼이 높이를 공유한다. */
+    .contact-mail {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--text);
+      max-width: 420px;
+      margin-bottom: 14px;
+    }
     .contact-addr {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      padding: 0 16px;
       font-family: var(--font-sans);
-      font-size: var(--fs-sub);
+      font-size: var(--fs-body);
+      line-height: 1;
       color: var(--text);
       text-decoration: none;
-      border-bottom: 1px solid var(--text);
-      padding-bottom: 2px;
-      word-break: break-all;
+      letter-spacing: 0.01em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .contact-addr:hover { opacity: 0.7; }
+    .contact-addr:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .contact-copy {
+      flex: 0 0 auto;
+      border: 0;
+      border-left: 1px solid var(--text);
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: 1;
+      color: var(--text);
+      /* 13(글자) + 16*2 = 45px — 권장 탭 타겟 44 를 넘긴다 */
+      padding: 16px 18px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .contact-copy:hover { background: var(--text); color: var(--paper, #F5F5F4); }
+
+    .contact-hint {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: var(--lh-body);
+      color: var(--text-mid);
+      min-height: 1.85em;   /* 문구가 떴다 사라져도 아래가 들썩이지 않게 자리를 비워 둔다 */
+      margin: 0 0 8px;
+    }
+
     .contact-guide {
       margin: 28px 0 0;
       padding-top: 20px;
@@ -2847,8 +2890,9 @@
           <!-- mailto 는 기본 메일 앱이 지정된 사람에게만 열린다. 네이버 메일을 웹으로 쓰면
                아무 일도 안 일어나므로, 주소를 눈에 보이게 두고 복사 버튼을 함께 준다. -->
           <a class="contact-addr" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%ED%9B%84%EA%B8%B0%20%C2%B7%20%EB%B2%88%EC%97%AD%20%EC%9A%94%EC%B2%AD&body=%5B%ED%9B%84%EA%B8%B0%5D%20%EC%9D%BD%EC%9D%80%20%EC%B1%85%20%C2%B7%20%EB%B3%84%EC%A0%90%285%EC%A0%90%20%EB%A7%8C%EC%A0%90%29%20%C2%B7%20%EA%B0%90%EC%83%81%0A%5B%EB%B2%88%EC%97%AD%20%EC%9A%94%EC%B2%AD%5D%20%EC%9B%90%EC%84%9C%20%EC%A0%9C%EB%AA%A9%20%C2%B7%20%EC%A0%80%EC%9E%90%20%C2%B7%20%EC%B6%9C%ED%8C%90%EC%82%AC%20%C2%B7%20%EC%96%B8%EC%96%B4%20%C2%B7%20%EC%9A%94%EC%B2%AD%20%EC%9D%B4%EC%9C%A0%0A%0A%0A">haroojaeclub@naver.com</a>
-          <button type="button" class="form-cta form-cta--sub" id="copyMail">주소 복사</button>
+          <button type="button" class="contact-copy" id="copyMail">복사</button>
         </div>
+        <p class="contact-hint" id="copyHint" role="status" aria-live="polite"></p>
 
         <div class="form-contact">
           <a class="form-cta" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM 보내기</a>
@@ -3210,19 +3254,19 @@
     // 메일 주소 복사 — mailto 는 기본 메일 앱이 지정된 사람에게만 열린다.
     // 네이버 메일을 웹으로 쓰면 mailto 가 아무 반응이 없으므로 복사 경로를 따로 둔다.
     document.getElementById('copyMail')?.addEventListener('click', async function () {
-      const btn = this;
-      const label = btn.dataset.label || (btn.dataset.label = btn.textContent);
-      const flash = (msg) => { btn.textContent = msg; setTimeout(() => { btn.textContent = label; }, 2000); };
+      // 안내를 버튼 라벨에 넣으면 버튼이 늘어나 상자를 밀어낸다. 아래 줄에 띄운다.
+      const hint = document.getElementById('copyHint');
+      const flash = (msg) => { hint.textContent = msg; setTimeout(() => { hint.textContent = ''; }, 2600); };
       try {
         await navigator.clipboard.writeText('haroojaeclub@naver.com');
-        flash('복사했습니다');
+        flash('복사했습니다.');
       } catch (e) {
         // 권한이 없거나 옛 브라우저 — 주소를 선택해 주고 직접 복사하도록 안내한다.
         // 아무 표시도 없으면 '눌러도 반응이 없다'로 읽히므로 반드시 알린다.
         const el = document.querySelector('.contact-addr');
         const r = document.createRange(); r.selectNodeContents(el);
         const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
-        flash('주소를 선택했습니다 — ⌘C');
+        flash('주소를 선택했습니다. ⌘C 로 복사하세요.');
       }
     });
 
@@ -3957,8 +4001,8 @@
 
     // 참여하기 (폼 → 메일·인스타 안내. 폼 마크업은 docs/보관_참여하기_폼_2026-09-02.md)
     { sel: '.form-lead', en: 'We welcome reader reviews and translation requests. Reach us here.' },
-    { sel: '#copyMail', en: 'Copy address' },
-    { sel: '.form-cta:not(#copyMail)', en: 'Send an Instagram DM' },
+    { sel: '#copyMail', en: 'Copy' },
+    { sel: '.form-cta', en: 'Send an Instagram DM' },
     { sel: '.contact-guide dt', en: ['Review', 'Request'] },
     { sel: '.contact-guide dd', en: ['Book you read \u00b7 rating \u00b7 your thoughts',
                                      'Original title \u00b7 author \u00b7 publisher \u00b7 language \u00b7 why'] },
