@@ -58,10 +58,20 @@
          아래 4단으로 통일한다. 3단으로 시작했으나 퀴즈 결과 화면에 '페르소나 이름'과
          '추천된 책 제목'이 함께 놓여 그 사이 한 단이 실제로 필요했다.
          아이콘·따옴표 같은 장식 글리프(24·40·44·48·56)는 예외로 둔다. */
+      /* 히어로 제목 — 이 크기를 쓰는 곳은 여기 하나뿐이다.
+         화면 폭에 따라 매끄럽게 줄어야 한다. 토큰으로 옮기면서 clamp 를 고정 52px 로
+         바꿨다가 375px 에서도 52px 이 되는 회귀를 냈다(2026-09-02) — clamp 를 토큰에 담는다. */
+      --fs-hero:    clamp(28px, 7.5vw, 52px);
+      --fs-display: 32px; /* 섹션 제목 — 화면을 여는 글자 */
       --fs-title: 26px;   /* 화면의 주인공 — 책 제목, 퀴즈 질문, 페르소나 이름 */
       --fs-sub:   20px;   /* 부제 — 결과 카드의 책 제목, 폼 섹션 제목 */
       --fs-body:  15px;   /* 본문 */
       --fs-meta:  13px;   /* 라벨·서지·버튼·태그·보조 (11px 은 전부 여기로 올렸다) */
+
+      /* 서체 규칙 — 한 문장으로 말할 수 있어야 한다.
+         산돌명조네오1 = 제목 · 책 이름 · 인용 · 철학. 그 밖은 전부 프리텐다드.
+         2026-09-02 실측에서 산돌이 내비·FAQ·멤버십·푸터까지 105곳에 퍼져 있었다.
+         '목소리'와 '정보'가 섞이면 두 서체를 쓰는 이유가 사라진다. */
       --lh-tight: 1.4;    /* 제목·카드 */
       --lh-body:  1.85;   /* 본문 */
       --serif-strong: 500;   /* 산돌명조네오1 의 상한 */
@@ -150,13 +160,14 @@
       color: var(--bg);
       text-align: center;
       padding: 11px 48px;
-      font-size: 13px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.01em;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 16px;
+      font-family: var(--font-sans);
     }
 
     #banner a {
@@ -172,10 +183,13 @@
       border: none;
       color: #7A8A7E;
       cursor: pointer;
-      font-size: 18px;
+      font-size: var(--fs-meta);
       line-height: 1;
       padding: 4px;
       transition: color 0.2s;
+
+      font-family: var(--font-sans);
+
     }
 
     .banner-close:hover { color: var(--bg); }
@@ -230,7 +244,9 @@
     /* 능선 지그재그 밑줄(hover 시 stroke-dashoffset 으로 그려지던 SVG)을 걷어냈다.
        자일 구분선과 같은 계열의 장식이라 그것만 남으면 오히려 튄다.
        hover 표시는 색 변화(.nav-links a:hover, 187줄)로 충분하다. */
-    .nav-link { position: relative; padding-bottom: 4px; }
+    .nav-link { position: relative; padding-bottom: 4px;
+      font-family: var(--font-sans);
+    }
 
     .nav-cta { font-family: var(--font-sans); background: var(--accent); color: var(--bg) !important; padding: 9px 20px; border-radius: 2px; letter-spacing: 0.03em; }
     .nav-cta:hover { background: var(--accent-light) !important; }
@@ -294,7 +310,7 @@
     ── */
     .section-tag {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       letter-spacing: 0.16em;
       color: var(--muted);
       text-transform: uppercase;
@@ -304,7 +320,7 @@
 
     .section-title {
       font-family: var(--font-serif);
-      font-size: 32px;
+      font-size: var(--fs-display);
       font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       /* 자일(대각 반복 스트라이프) 밑줄을 걷어냈다. 선이 사라진 만큼 제목과 본문이
@@ -594,7 +610,7 @@
 
     .hero-title {
       /* clamp(최소, 화면폭비례, 최대): 데스크톱 52px, 모바일에서 매끄럽게 축소 */
-      font-size: clamp(28px, 7.5vw, 52px);
+      font-size: var(--fs-hero);
       /* 본명조는 고운바탕보다 같은 굵기에서 진하다. 600 은 수묵화의 옅은 농담과
          부딪혀 글자가 그림 위에 붙은 스티커처럼 보였다 → 한 단 내린다. */
       font-weight: var(--serif-strong);
@@ -634,6 +650,9 @@
       text-shadow: 0 1px 12px rgba(245,245,244,0.9);
       opacity: 0;
       animation: fadeUp 0.9s ease 1.5s forwards;
+
+      font-family: var(--font-sans);
+
     }
 
     .hero-cta {
@@ -709,7 +728,7 @@
     }
 
     .filter-btn .filter-count {
-      font-size: 11px;
+      font-size: var(--fs-meta);
       opacity: 0.7;
       margin-left: 4px;
     }
@@ -1249,7 +1268,7 @@
     #philosophy .inner { position: relative; z-index: 1; }
 
     .philosophy-lead {
-      font-size: 20px;
+      font-size: var(--fs-sub);
       font-weight: 400;
       letter-spacing: -0.01em;
       line-height: 1.7;
@@ -1257,13 +1276,16 @@
       margin-bottom: 64px;
       word-break: keep-all;
       color: rgba(255,255,255,0.92);
+
+      font-family: var(--font-serif);
+
     }
 
     .philosophy-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 
     .phil-label {
-      font-family: var(--font-serif);
-      font-size: 17px;
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
       font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
       color: rgba(255,255,255,0.95);
@@ -1299,9 +1321,13 @@
     }
 
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .about-name { font-size: 26px; font-weight: var(--serif-strong); letter-spacing: -0.01em; margin-bottom: 8px; }
+    .about-name { font-size: var(--fs-title); font-weight: var(--serif-strong); letter-spacing: -0.01em; margin-bottom: 8px;
+      font-family: var(--font-serif);
+    }
     .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
-    .about-body { font-size: 15px; color: var(--text); line-height: 2.1; }
+    .about-body { font-size: 15px; color: var(--text); line-height: 2.1;
+      font-family: var(--font-sans);
+    }
 
     .about-quote {
       margin-top: 32px;
@@ -1500,7 +1526,7 @@
       background: none;
       border: none;
       color: var(--bg);
-      font-family: inherit;   /* = 세리프 상속 */
+      font-family: var(--font-sans);   /* = 세리프 상속 */
       font-size: 15px;
       font-weight: var(--serif-strong);
       letter-spacing: -0.01em;
@@ -1522,6 +1548,9 @@
       flex-shrink: 0;
       transition: transform 0.3s, color 0.2s;
       line-height: 1;
+
+      font-family: var(--font-sans);
+
     }
 
     .faq-item.open .faq-icon { transform: rotate(45deg); color: #fff; }
@@ -1534,7 +1563,11 @@
 
     .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
 
-    .faq-answer p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 2; }
+    .faq-answer p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 2;
+
+      font-family: var(--font-sans);
+
+    }
 
     /* ── Membership ── */
     #membership { background: var(--bg); }
@@ -1550,7 +1583,7 @@
 
     .mem-guarantee span {
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: var(--fs-meta);
       color: var(--muted);
     }
 
@@ -1561,6 +1594,9 @@
       line-height: 1.7;
       margin-bottom: 52px;
       margin-top: -24px;
+
+      font-family: var(--font-sans);
+
     }
 
 
@@ -1585,7 +1621,7 @@
     }
 
     .mem-reason-num {
-      font-size: 11px;
+      font-size: var(--fs-meta);
       font-weight: 700;
       letter-spacing: 0.05em;
       color: var(--muted);
@@ -1600,6 +1636,9 @@
       letter-spacing: -0.01em;
       margin-bottom: 10px;
       line-height: 1.4;
+
+      font-family: var(--font-sans);
+
     }
 
     .mem-reason-desc {
@@ -1640,12 +1679,22 @@
       box-shadow: 0 4px 12px rgba(26,40,32,0.18);
     }
 
-    .mem-type { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em; }
+    .mem-type { font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; margin-left: 0.075em;
+
+      font-size: var(--fs-meta);
+
+    }
 
     .mem-price { font-family: var(--font-sans); font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; margin-left: -0.04em; }
-    .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .mem-period { font-size: 13px; color: var(--muted); margin-bottom: 28px;
+      font-family: var(--font-sans);
+    }
 
-    .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border); }
+    .mem-list { list-style: none; margin-bottom: 40px; border-top: 1px solid var(--border);
+
+      font-family: var(--font-sans);
+
+    }
 
     .mem-list li {
       font-size: 15px;
@@ -1716,7 +1765,9 @@
     }
     .footer-contact a:hover { color: #fff; }
     .footer-sns { display: flex; align-items: center; gap: 6px; }
-    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.7; text-align: right; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.7; text-align: right;
+      font-family: var(--font-sans);
+    }
     .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
     .compass:hover { opacity: 1; }
     .compass-needle { transform-origin: 16px 16px; transition: transform 0.15s ease-out; }
