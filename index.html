@@ -1321,6 +1321,33 @@
 
     .form-box { background: #fff; padding: 36px; border: 1px solid var(--border); }
 
+    /* 폼을 걷어내고 남긴 안내 (2026-09-02). 토큰만 쓴다. */
+    .form-lead {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: var(--lh-body);
+      color: var(--text-mid);
+      margin-bottom: 20px;
+    }
+    .form-contact { display: flex; flex-wrap: wrap; gap: 10px; }
+    .form-cta {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--paper, #F5F5F4);
+      background: var(--text);
+      border: 1px solid var(--text);
+      /* 13(글자) + 15*2(여백) + 1*2(테두리) = 45px — 권장 탭 타겟 44px 를 넘긴다.
+         13px 여백일 때 41px 이라 모자랐다(2026-09-02 375px 실측). */
+      padding: 15px 20px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .form-cta:hover { opacity: 0.85; }
+    .form-cta--sub { color: var(--text); background: transparent; }
+    .form-cta--sub:hover { background: var(--text); color: var(--paper, #F5F5F4); }
+
     .form-section-title {
       font-size: var(--fs-sub);
       font-weight: var(--serif-strong);
@@ -2792,85 +2819,19 @@
       <div class="forms-grid">
         <div class="form-box animate">
           <div class="form-section-title">독자 후기 남기기</div>
-          <form id="reviewForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>이름</label>
-                <input type="text" placeholder="이름" required>
-              </div>
-              <div class="form-group">
-                <label>읽은 책</label>
-                <!-- 옵션은 booksGrid 의 카드에서 자동 생성한다(아래 fillReviewBooks).
-                     예전엔 5권만 하드코딩돼 있어 나머지 37권을 읽은 사람은 '기타'밖에 못 골랐다. -->
-                <select id="reviewBook" required>
-                  <option value="">책 선택</option>
-                  <option value="기타">기타</option>
-                </select>
-              </div>
-              <div class="form-group form-full">
-                <label>별점</label>
-                <!-- 1·2점이 없어 낮은 평가를 아예 남길 수 없었다. 5~1 전부 연다. -->
-                <select id="reviewRating" required>
-                  <option value="">별점 선택</option>
-                  <option value="5">★★★★★ (5점)</option>
-                  <option value="4">★★★★☆ (4점)</option>
-                  <option value="3">★★★☆☆ (3점)</option>
-                  <option value="2">★★☆☆☆ (2점)</option>
-                  <option value="1">★☆☆☆☆ (1점)</option>
-                </select>
-              </div>
-              <div class="form-group form-full">
-                <label>후기</label>
-                <textarea placeholder="책을 읽은 소감을 자유롭게 남겨주세요." required></textarea>
-              </div>
-            </div>
-            <button type="submit" class="form-submit">후기 제출하기</button>
-            <div class="form-success" id="reviewSuccess">후기가 접수되었습니다. 감사합니다.</div>
-          </form>
+          <p class="form-lead">읽으신 책의 감상을 들려주세요. 메일 서식에 항목이 채워져 있습니다.</p>
+          <div class="form-contact">
+            <a class="form-cta" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%EB%8F%85%EC%9E%90%20%ED%9B%84%EA%B8%B0&body=%EC%9D%BD%EC%9D%80%20%EC%B1%85%20%3A%0A%EB%B3%84%EC%A0%90%20%3A%20%285%EC%A0%90%20%EB%A7%8C%EC%A0%90%29%0A%0A%ED%9B%84%EA%B8%B0%20%3A%0A%0A%0A%20%E2%80%94%20%EB%B3%B4%EB%82%B4%EC%A3%BC%EC%8B%A0%20%ED%9B%84%EA%B8%B0%EB%8A%94%20%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%EC%97%90%EC%84%9C%20%EC%86%8C%EC%A4%91%ED%9E%88%20%EC%9D%BD%EA%B2%A0%EC%8A%B5%EB%8B%88%EB%8B%A4.">메일로 후기 보내기</a>
+            <a class="form-cta form-cta--sub" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM</a>
+          </div>
         </div>
         <div class="form-box animate animate-delay-1">
           <div class="form-section-title">번역 원서 요청하기</div>
-          <form id="requestForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>원서 제목</label>
-                <input type="text" placeholder="원서 제목" required>
-              </div>
-              <div class="form-group">
-                <label>저자</label>
-                <input type="text" placeholder="저자명">
-              </div>
-              <div class="form-group">
-                <label>출판사</label>
-                <input type="text" placeholder="출판사명">
-              </div>
-              <div class="form-group">
-                <label>원서 언어</label>
-                <select>
-                  <option value="">언어 선택</option>
-                  <option>영어</option>
-                  <option>일본어</option>
-                  <option>독일어</option>
-                  <option>프랑스어</option>
-                  <option>기타</option>
-                </select>
-              </div>
-              <div class="form-group form-full">
-                <label>요청 이유</label>
-                <textarea placeholder="이 책을 번역해주셨으면 하는 이유를 알려주세요." required></textarea>
-              </div>
-              <div class="form-group">
-                <label>이름 (선택)</label>
-                <input type="text" placeholder="이름">
-              </div>
-              <div class="form-group">
-                <label>이메일 (선택)</label>
-                <input type="email" placeholder="이메일">
-              </div>
-            </div>
-            <button type="submit" class="form-submit">요청 제출하기</button>
-            <div class="form-success" id="requestSuccess">요청이 접수되었습니다. 검토 후 반영하겠습니다.</div>
-          </form>
+          <p class="form-lead">한국어로 보고 싶은 산서가 있다면 알려주세요. 다음 책을 고르는 데 참고합니다.</p>
+          <div class="form-contact">
+            <a class="form-cta" href="mailto:haroojaeclub@naver.com?subject=%5B%ED%95%98%EB%A3%A8%EC%9E%AC%ED%81%B4%EB%9F%BD%5D%20%EB%B2%88%EC%97%AD%20%EC%9B%90%EC%84%9C%20%EC%9A%94%EC%B2%AD&body=%EC%9B%90%EC%84%9C%20%EC%A0%9C%EB%AA%A9%20%3A%0A%EC%A0%80%EC%9E%90%20%3A%0A%EC%B6%9C%ED%8C%90%EC%82%AC%20%3A%0A%EC%9B%90%EC%84%9C%20%EC%96%B8%EC%96%B4%20%3A%0A%0A%EC%9D%B4%20%EC%B1%85%EC%9D%84%20%EB%B2%88%EC%97%AD%ED%96%88%EC%9C%BC%EB%A9%B4%20%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%20%3A%0A%0A%0A%EC%97%B0%EB%9D%BD%EC%B2%98%28%EC%84%A0%ED%83%9D%29%20%3A">메일로 요청 보내기</a>
+            <a class="form-cta form-cta--sub" href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">인스타그램 DM</a>
+          </div>
         </div>
       </div>
     </div>
@@ -3218,37 +3179,6 @@
         document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
         if (!isOpen) item.classList.add('open');
       });
-    });
-
-    // ── Forms ──
-    // 폼이 없는 페이지에서도 안전하도록 null 체크(옵셔널 체이닝) 사용
-    // 후기 폼의 '읽은 책' 목록을 도서 카드에서 만든다. 책이 늘면 여기 손댈 필요가 없다.
-    // '기타'는 항상 맨 끝에 둔다.
-    (function fillReviewBooks() {
-      const sel = document.getElementById('reviewBook');
-      if (!sel) return;
-      const etc = sel.querySelector('option[value="기타"]');
-      const titles = [...document.querySelectorAll('#booksGrid .book-card')]
-        .map(c => (c.dataset.title || '').trim()).filter(Boolean);
-      titles.forEach(t => {
-        const o = document.createElement('option');
-        o.value = t; o.textContent = t;
-        sel.insertBefore(o, etc);
-      });
-    })();
-
-    document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const s = document.getElementById('reviewSuccess');
-      if (s) s.style.display = 'block';
-      this.reset();
-    });
-
-    document.getElementById('requestForm')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const s = document.getElementById('requestSuccess');
-      if (s) s.style.display = 'block';
-      this.reset();
     });
 
 
@@ -3981,21 +3911,11 @@
     { sel: '.quiz-companions-label', en: 'Also worth reading' },
     { sel: '.quiz-retry-btn', en: '↺ Take the test again' },
 
-    // 참여하기 폼
+    // 참여하기 (폼 → 메일·인스타 안내. 폼 마크업은 docs/보관_참여하기_폼_2026-09-02.md)
     { sel: '.form-section-title', en: ['Leave a Review', 'Request a Translation'] },
-    { sel: '#reviewForm label', en: ['Name', 'Book you read', 'Rating', 'Review'] },
-    { sel: '#reviewForm input[type="text"]', attr: 'placeholder', en: ['Your name'] },
-    { sel: '#reviewForm textarea', attr: 'placeholder', en: ['Share your thoughts on the book.'] },
-    { sel: '#reviewForm option', en: ['Select a book', null, null, null, null, null, 'Other', null, null, null] },
-    { sel: '#reviewForm .form-submit', en: 'Submit Review' },
-    { sel: '#reviewSuccess', en: 'Thank you — your review has been received.' },
-    { sel: '#requestForm label', en: ['Original title', 'Author', 'Publisher', 'Language', 'Why this book?', 'Name (optional)', 'Email (optional)'] },
-    { sel: '#requestForm input[type="text"]', attr: 'placeholder', en: ['Original title', 'Author name', 'Publisher name', 'Your name'] },
-    { sel: '#requestForm input[type="email"]', attr: 'placeholder', en: ['Your email'] },
-    { sel: '#requestForm textarea', attr: 'placeholder', en: ['Tell us why you&rsquo;d like this book translated.'] },
-    { sel: '#requestForm option', en: ['Select a language', 'English', 'Japanese', 'German', 'French', 'Other'] },
-    { sel: '#requestForm .form-submit', en: 'Submit Request' },
-    { sel: '#requestSuccess', en: 'Request received. We&rsquo;ll review it carefully.' },
+    { sel: '.form-lead', en: ['Tell us what you thought of the book. The email opens with a ready template.',
+                              'Is there a mountain book you\u2019d like to read in Korean? It helps us choose what to publish next.'] },
+    { sel: '.form-cta', en: ['Send a review by email', 'Instagram DM', 'Send a request by email', 'Instagram DM'] },
 
     // FAQ
     { sel: '.faq-question', text: true, en: ['How do I join the membership? ', 'When will I receive the books? ', 'How are the books selected? ', 'Can I cancel anytime? ', 'Can I buy earlier titles separately? '] },
