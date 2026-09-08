@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>하루재클럽</title>
+  <title>하루재클럽 — 산악·등반 원서 번역 출판사</title>
+  <!-- 검색 결과와 링크 미리보기에 뜨는 글. 없으면 구글이 본문에서 아무 문장이나 골라 쓴다. -->
+  <meta name="description" content="산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사. 국내 유일의 산서 전문 출판사로, 세계 산악 문화가 쌓아온 책들을 한국어로 옮깁니다.">
+  <link rel="canonical" href="https://haroojae.co.kr/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="하루재클럽">
+  <meta property="og:title" content="하루재클럽 — 산악·등반 원서 번역 출판사">
+  <meta property="og:description" content="세계가 산에 대해 쌓아온 것들, 이제 한국어로.">
+  <meta property="og:url" content="https://haroojae.co.kr/">
+  <meta property="og:image" content="https://haroojae.co.kr/images/hero-ink.jpg">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- 서체 2종: 산돌명조네오1(제목·본문·인용) + 프리텐다드(UI). 명조는 어도비 폰트 킷으로 받고,
        본명조 Noto Serif KR 은 로딩 중·실패 시 폴백으로 남겨 둔다(구글폰트, 무료).
        고운바탕에서 본명조로 옮겼다 — 고운바탕은 붓 느낌이 강하고 굵기가 400/700 두 종뿐이라
@@ -4142,5 +4153,11 @@
   fillBookCount();
   try { if (localStorage.getItem('hj-lang') === 'en') applyLang('en'); } catch (e) {}
 </script>
+
+<!-- Cloudflare Web Analytics — 쿠키를 쓰지 않아 동의 배너가 필요 없다.
+     JS 방식이라 광고 차단기를 쓰는 방문자는 집계에서 빠진다(보통 10~30% 적게 나온다).
+     절대값보다 추세를 보는 용도다. DNS 가 Cloudflare 를 거치지 않아 이 방식뿐이다. -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "6fc9310fbb12412881aeaf2a508da7c3"}'></script>
 </body>
 </html>
