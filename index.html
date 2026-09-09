@@ -364,8 +364,8 @@
 
     .news-feature {
       display: grid;
-      grid-template-columns: 264px 1fr;
-      gap: 52px;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
       align-items: start;
       background: #fff;
       border: 1px solid var(--border);
@@ -413,7 +413,7 @@
       margin: 26px 0 0;
       border-top: 1px solid var(--border);
     }
-    .news-when dl { display: grid; grid-template-columns: 84px 1fr; margin: 0; }
+    .news-when dl { display: grid; grid-template-columns: 104px 1fr; margin: 0; }
     .news-when dt,
     .news-when dd {
       font-family: var(--font-sans);
@@ -430,6 +430,17 @@
       font-size: var(--fs-meta);
       color: var(--muted);
       margin-top: 3px;
+    }
+
+    .news-quote {
+      font-family: var(--font-serif);
+      font-size: var(--fs-body);
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--text);
+      margin: 20px 0 0;
+      padding-left: 16px;
+      border-left: 2px solid var(--border);
     }
 
     .news-note {
@@ -452,11 +463,44 @@
     }
     .news-link:hover { border-bottom-color: var(--accent); }
 
+    .news-feature + .news-feature { margin-top: 24px; }
+    .news-feature--wide { grid-template-columns: 1fr; }
+
+    /* 맥도널드 6권 — 한 줄. 표지 비율이 0.62~0.66 로 조금씩 다르라
+       book-cover 와 같은 2/3 틀에 object-fit 으로 맞춘다. */
+    .news-books {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-top: 26px;
+    }
+    .news-books a { display: block; text-decoration: none; }
+    .news-books .cv {
+      display: block;   /* span 이라 인라인이면 aspect-ratio 가 안 먹는다 */
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      background: #F3F3F2;
+      box-shadow: 0 3px 12px rgba(26,40,32,0.10);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .news-books img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .news-books a:hover .cv { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26,40,32,0.16); }
+
+    .news-titles {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: 1.8;
+      color: var(--muted);
+      margin: 14px 0 0;
+    }
+
     @media (max-width: 768px) {
       #news { padding-top: 72px; padding-bottom: 72px; }
       .news-feature { grid-template-columns: 1fr; gap: 30px; padding: 28px; }
       .news-cover { max-width: 190px; }
-      .news-when dl { grid-template-columns: 72px 1fr; }
+      .news-when dl { grid-template-columns: 76px 1fr; }
+      .news-books { grid-template-columns: repeat(3, 1fr); gap: 10px; }
     }
 
     /* ── Hero ── */
@@ -2466,23 +2510,49 @@
         </a>
 
         <div class="news-body">
-          <div class="news-label">신간 · 행사</div>
+          <div class="news-label">신간 · 2026. 9. 14.</div>
           <h3 class="news-title">신간이 나오고, 저자가 옵니다</h3>
           <p class="news-text">실보 카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로 토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
+          <p class="news-quote">“나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다.”</p>
+          <p class="news-note">『바람과 바위의 노래』 · 실보 카로 지음 · 김동수 옮김 · 등반가 시리즈 17</p>
+          <div class="news-links">
+            <a class="news-link" href="#book/바람과-바위의-노래">책 자세히 보기 →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-feature news-feature--wide animate animate-delay-2">
+        <div class="news-body">
+          <div class="news-label">특집 · 2026. 9. 19.–20.</div>
+          <h3 class="news-title">산악문화상 수상자의 책, 여섯 권 모두 하루재클럽입니다</h3>
+          <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트 맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과 바위의 노래』의 저자 실보 카로도 9월 20일 토크에 함께 오릅니다.</p>
+
+          <div class="news-books">
+            <a href="#book/엘리자베스-홀리" title="엘리자베스 홀리"><span class="cv"><img loading="lazy" decoding="async" src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"></span></a>
+            <a href="#book/Freedom-Climbers" title="Freedom Climbers"><span class="cv"><img loading="lazy" decoding="async" src="images/books/08-freedom-climbers.jpg" alt="Freedom Climbers"></span></a>
+            <a href="#book/산의-전사들" title="산의 전사들"><span class="cv"><img loading="lazy" decoding="async" src="images/books/21-산의전사들.jpg" alt="산의 전사들"></span></a>
+            <a href="#book/Art-of-Freedom" title="Art of Freedom"><span class="cv"><img loading="lazy" decoding="async" src="images/books/24-art-of-freedom.jpg" alt="Art of Freedom"></span></a>
+            <a href="#book/WINTER-8000" title="WINTER 8000"><span class="cv"><img loading="lazy" decoding="async" src="images/books/26-winter8000.jpg" alt="WINTER 8000"></span></a>
+            <a href="#book/떠오르는-히말라야의-영웅들" title="떠오르는 히말라야의 영웅들"><span class="cv"><img loading="lazy" decoding="async" src="images/books/40-떠오르는히말라야.jpg" alt="떠오르는 히말라야의 영웅들"></span></a>
+          </div>
+          <p class="news-titles">엘리자베스 홀리 · Freedom Climbers · 산의 전사들 · Art of Freedom · WINTER 8000 · 떠오르는 히말라야의 영웅들</p>
 
           <div class="news-when">
             <dl>
-              <dt>9. 14.</dt>
-              <dd>『바람과 바위의 노래』 출간<span><small>실보 카로 지음 · 김동수 옮김 · 등반가 시리즈 17</small></span></dd>
-              <dt>9. 20.</dt>
-              <dd>울산울주세계산악영화제 UMCA 토크2<span><small>「슬로베니아 산악 역사: 〈산의 전사들〉」 · 10:00 알프스 시네마 2관</small></span></dd>
+              <dt>9. 19. 토</dt>
+              <dd>토크1 「첫 문장의 용기: 산악전기작가가 말하는 AI시대 글쓰기의 시작과 완성」<span><small>10:00 · 알프스 시네마 2관 — 버나데트 맥도널드</small></span></dd>
+              <dt>9. 19. 토</dt>
+              <dd>「산악문학 포럼: 글과 경험의 변주」<span><small>14:00 · 세미나실 — 버나데트 맥도널드, 진행 오영훈</small></span></dd>
+              <dt>9. 20. 일</dt>
+              <dd>토크2 「슬로베니아 산악 역사: 〈산의 전사들〉」<span><small>10:00 · 알프스 시네마 2관 — 버나데트 맥도널드, 실보 카로, 서현우</small></span></dd>
+              <dt>9. 20. 일</dt>
+              <dd>토크3 「『떠오르는 히말라야의 영웅들』 북토크」<span><small>14:00 · UMCA전시장(등억꽃향) 외부 — 진행 김동수(하루재 편집장)</small></span></dd>
+              <dt>9. 1.–9. 22.</dt>
+              <dd>UMCA 전시<span><small>11:00~18:00 · 코아갤러리(등억꽃향 2층)</small></span></dd>
             </dl>
           </div>
 
-          <p class="news-note">〈산의 전사들〉을 비롯한 버나데트 맥도널드의 한국어판 여섯 권은 모두 하루재클럽에서 냈습니다.</p>
-
           <div class="news-links">
-            <a class="news-link" href="#book/바람과-바위의-노래">책 자세히 보기 →</a>
             <a class="news-link" href="https://umff.kr/" target="_blank" rel="noopener noreferrer">영화제 공식 사이트 ↗</a>
           </div>
         </div>
@@ -4179,12 +4249,19 @@
     { sel: '#about .section-title', en: 'The Publisher' },
     { sel: '#news .section-title', en: 'News' },
 
-    // 소식 — 기간 한정. 섹션을 지울 때 이 다섯 줄도 같이 지운다.
-    { sel: '.news-label', en: 'New book &middot; Event' },
-    { sel: '.news-title', en: 'The book arrives, and so does its author' },
-    { sel: '.news-text', en: 'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.' },
-    { sel: '.news-when', en: '<dl><dt>14 Sep</dt><dd><em>Rock &lsquo;n&rsquo; Roll on the Wall</em> published<span><small>Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17</small></span></dd><dt>20 Sep</dt><dd>Ulsan Ulju Mountain Film Festival, UMCA Talk 2<span><small>&lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo; &middot; 10:00, Alps Cinema 2</small></span></dd></dl>' },
-    { sel: '.news-note', en: 'All six Korean editions of Bernadette McDonald, <em>Alpine Warriors</em> among them, are published by Haroojae Club.' },
+    // 소식 — 기간 한정. 섹션을 지울 때 이 블록도 같이 지운다.
+    // 블록이 둘이라 .news-label/.news-title/.news-text/.news-link 는 배열이다(문서 순서).
+    { sel: '.news-label', en: ['New book &middot; 14 Sep 2026', 'Feature &middot; 19&ndash;20 Sep 2026'] },
+    { sel: '.news-title', en: [
+        'The book arrives, and so does its author',
+        'All six Korean editions by this year&rsquo;s award winner are ours'] },
+    { sel: '.news-text', en: [
+        'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
+        'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim Dong-soo. Silvo Karo, author of the new <em>Rock &lsquo;n&rsquo; Roll on the Wall</em>, joins the 20 September talk.'] },
+    { sel: '.news-quote', en: '&ldquo;Why did I take this path? Simply because I could see a way that led to the mountains. I set off along it without knowing how long or how steep it would be.&rdquo;' },
+    { sel: '.news-note', en: '<em>Rock &lsquo;n&rsquo; Roll on the Wall</em> &middot; Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17' },
+    { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine Rising' },
+    { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald, Silvo Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
     { sel: '.news-link', en: ['About the book &rarr;', 'Festival website &nearr;'] },
     // attr 분기는 &rsquo; 만 치환한다(applyLang) — 속성값엔 엔티티 말고 글자를 직접 쓸 것
     { sel: '.news-cover img', attr: 'alt', en: 'Cover of Rock ‘n’ Roll on the Wall — Silvo Karo' },
