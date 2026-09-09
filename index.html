@@ -466,25 +466,27 @@
     .news-feature + .news-feature { margin-top: 24px; }
     .news-feature--wide { grid-template-columns: 1fr; }
 
-    /* 맥도널드 6권 — 한 줄. 표지 비율이 0.62~0.66 로 조금씩 다르라
-       book-cover 와 같은 2/3 틀에 object-fit 으로 맞춘다. */
+    /* 맥도널드 6권 — 한 줄.
+       표지는 자르지 않는다. 판형이 0.62~0.66 으로 제각각인데 2/3 틀에
+       object-fit:cover 로 맞췄더니 498×800 두 권이 세로로 14.8px(7%) 잘렸다.
+       책 표지를 깎는 건 출판사 사이트가 할 일이 아니다(2026-09-09 실측·정정).
+       대신 아랫단을 맞춰 서가에 꽂힌 것처럼 세운다 — 윗단이 들쭉날쭉한 게 정상이다. */
     .news-books {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 14px;
+      align-items: end;
       margin-top: 26px;
     }
     .news-books a { display: block; text-decoration: none; }
     .news-books .cv {
-      display: block;   /* span 이라 인라인이면 aspect-ratio 가 안 먹는다 */
-      aspect-ratio: 2/3;
-      overflow: hidden;
+      display: block;   /* span 이라 인라인이면 크기 지정이 안 먹는다 */
       background: #F3F3F2;
       box-shadow: 0 3px 12px rgba(26,40,32,0.10);
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .news-books img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .news-books img { width: 100%; height: auto; display: block; }
     .news-books a:hover .cv { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26,40,32,0.16); }
 
     .news-titles {
