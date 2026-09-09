@@ -349,6 +349,101 @@
       font-size: 106%;
     }
 
+
+    /* ── 소식 (기간 한정) ──
+       신간·행사처럼 지나가면 없어지는 알림만 담는다. 2026-09-22 영화제가 끝나면
+       이 CSS 블록과 <section id="news"> 를 통째로 지우면 된다 — 다른 섹션 스타일을
+       건드리지 않도록 news- 접두 클래스 안에서만 닫아 뒀다. */
+    #news { background: var(--bg); padding-top: 96px; padding-bottom: 96px; }
+    #news .section-title { margin-bottom: 44px; }
+
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+    .news-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .news-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .news-label {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .news-title {
+      font-family: var(--font-serif);
+      font-size: var(--fs-title);
+      font-weight: var(--serif-strong);
+      line-height: var(--lh-tight);
+      letter-spacing: -0.01em;
+      margin: 0 0 14px;
+    }
+
+    .news-text {
+      font-family: var(--font-sans);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+      color: var(--text);
+      margin: 0;
+    }
+
+    .news-note {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: 1.75;
+      color: var(--muted);
+      margin: 12px 0 0;
+    }
+
+    .news-quote {
+      font-family: var(--font-serif);
+      font-size: var(--fs-body);
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--text);
+      margin: 18px 0 0;
+      padding-left: 16px;
+      border-left: 2px solid var(--border);
+    }
+
+    .news-when {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      line-height: 1.9;
+      color: var(--text);
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .news-link {
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      align-self: flex-start;
+      margin-top: auto;
+      padding-top: 24px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .news-link:hover { border-bottom-color: var(--accent); }
+
+    @media (max-width: 768px) {
+      #news { padding-top: 72px; padding-bottom: 72px; }
+      .news-grid { grid-template-columns: 1fr; gap: 16px; }
+      .news-card { padding: 26px; }
+    }
+
     /* ── Hero ── */
     #hero {
       min-height: calc(100vh - 64px);
@@ -2340,6 +2435,37 @@
       <h1 class="hero-title"><span class="title-line">세계가 산에 대해</span><span class="title-line">쌓아온 것들,</span><span class="title-line">이제 한국어로.</span></h1>
       <p class="hero-desc">산을 오르는 것만으로는 채워지지 않는 사람들을 위한 출판사.<br>국내 유일의 산서 전문 출판사입니다.</p>
       <a href="#membership" class="hero-cta">멤버십 알아보기</a>
+    </div>
+  </section>
+
+
+  <!-- 소식 — 기간 한정. 2026-09-22 영화제가 끝나면 이 섹션과 news- CSS 블록을 지운다. -->
+  <section id="news">
+    <div class="inner">
+      <div class="section-tag animate">News</div>
+      <h2 class="section-title animate">소식</h2>
+      <div class="news-grid">
+
+        <div class="news-card animate animate-delay-1">
+          <div class="news-label">신간 · 2026. 9. 14.</div>
+          <h3 class="news-title">바람과 바위의 노래</h3>
+          <p class="news-text">1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보 카로의 자서전. 등반가 시리즈 열일곱 번째 책입니다.</p>
+          <p class="news-note">실보 카로 지음 · 김동수 옮김</p>
+          <p class="news-quote">“나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다.”</p>
+          <div class="news-when">ROCK ‘N’ ROLL ON THE WALL<br>등반가 시리즈 17</div>
+          <a class="news-link" href="#book/바람과-바위의-노래">책 자세히 보기 →</a>
+        </div>
+
+        <div class="news-card animate animate-delay-2">
+          <div class="news-label">행사 · 2026. 9. 20.</div>
+          <h3 class="news-title">실보 카로가 한국에 옵니다</h3>
+          <p class="news-text">제11회 울산울주세계산악영화제 UMCA 토크2 「슬로베니아 산악 역사: 〈산의 전사들〉」에 실보 카로(알피니스트)가 버나데트 맥도널드, 서현우 월간 「산」 기자와 함께 오릅니다.</p>
+          <p class="news-note">〈산의 전사들〉을 비롯한 버나데트 맥도널드의 한국어판 여섯 권은 모두 하루재클럽에서 냈습니다.</p>
+          <div class="news-when">9월 20일(일) 10:00<br>알프스 시네마 2관</div>
+          <a class="news-link" href="https://umff.kr/" target="_blank" rel="noopener noreferrer">영화제 공식 사이트 ↗</a>
+        </div>
+
+      </div>
     </div>
   </section>
 
