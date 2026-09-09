@@ -2467,8 +2467,8 @@
 
         <div class="news-body">
           <div class="news-label">신간 · 행사</div>
-          <h3 class="news-title">실보 카로의 책이 나오고, 엿새 뒤 그가 옵니다</h3>
-          <p class="news-text">1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가. 1988년 그가 오른 세로 토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
+          <h3 class="news-title">신간이 나오고, 저자가 옵니다</h3>
+          <p class="news-text">실보 카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로 토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
 
           <div class="news-when">
             <dl>
@@ -4161,7 +4161,7 @@
   // 한국어 원문은 첫 전환 때 data-ko*에 캐시 → KO 복귀 시 복원. 번역 수정은 아래 사전만 고치면 됨.
   const I18N = [
     // 배너 · 내비게이션
-    { sel: '#banner > span', en: 'New release · <em>Pilgrims of the Vertical</em> (May 2026) — <a href="#books">View the books</a>' },
+    { sel: '#banner > span', en: 'Forthcoming · <em>Rock &lsquo;n&rsquo; Roll on the Wall</em> (14 September 2026) — <a href="#books">View the books</a>' },
     { sel: '.nav-links .nav-link', text: true, en: ['Books', 'Philosophy', 'About', 'FAQ'] },
     { sel: '.nav-cta', en: 'Join Membership' },
     { sel: '#mobileMenu a', en: ['Books', 'Philosophy', 'About', 'Participate', 'FAQ', 'Membership'] },
@@ -4177,6 +4177,17 @@
     { sel: '#philosophy .section-title', en: 'Our Philosophy' },
     { sel: '#picks .section-title', en: 'Start With These' },
     { sel: '#about .section-title', en: 'The Publisher' },
+    { sel: '#news .section-title', en: 'News' },
+
+    // 소식 — 기간 한정. 섹션을 지울 때 이 다섯 줄도 같이 지운다.
+    { sel: '.news-label', en: 'New book &middot; Event' },
+    { sel: '.news-title', en: 'The book arrives, and so does its author' },
+    { sel: '.news-text', en: 'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.' },
+    { sel: '.news-when', en: '<dl><dt>14 Sep</dt><dd><em>Rock &lsquo;n&rsquo; Roll on the Wall</em> published<span><small>Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17</small></span></dd><dt>20 Sep</dt><dd>Ulsan Ulju Mountain Film Festival, UMCA Talk 2<span><small>&lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo; &middot; 10:00, Alps Cinema 2</small></span></dd></dl>' },
+    { sel: '.news-note', en: 'All six Korean editions of Bernadette McDonald, <em>Alpine Warriors</em> among them, are published by Haroojae Club.' },
+    { sel: '.news-link', en: ['About the book &rarr;', 'Festival website &nearr;'] },
+    // attr 분기는 &rsquo; 만 치환한다(applyLang) — 속성값엔 엔티티 말고 글자를 직접 쓸 것
+    { sel: '.news-cover img', attr: 'alt', en: 'Cover of Rock ‘n’ Roll on the Wall — Silvo Karo' },
     { sel: '.pick-badge', en: ['Banff Award', 'Academy Award', 'Banff Award', 'Autobiography', 'Solo Climbing', 'Sejong Book 2022'] },
     { sel: '.pick-title', en: ['One Day as a Tiger', 'Free Solo', 'Art of Freedom', 'Catherine Destivelle', 'A 30% Success Rate', 'Hell Did Not Want Me'] },
     { sel: '.pick-author', en: [
