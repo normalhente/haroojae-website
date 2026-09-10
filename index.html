@@ -88,6 +88,8 @@
          '목소리'와 '정보'가 섞이면 두 서체를 쓰는 이유가 사라진다. */
       --lh-tight: 1.4;    /* 제목·카드 */
       --lh-body:  1.85;   /* 본문 */
+      --lh-lead:  1.65;   /* 20px 리드문 — 큰 글자는 행간을 좁혀야 덩어리로 읽힌다.
+                             1.85 를 그대로 주면 줄이 따로 논다(2026-09-09 실측·추가) */
       --serif-strong: 500;   /* 산돌명조네오1 의 상한 */
     }
 
@@ -315,6 +317,17 @@
 
     .inner { max-width: 1000px; margin: 0 auto; }
 
+    /* ── 문장 끊김 (2026-09-09) ──
+       '세로|토레', '롤란도|가리보티', '(ROCK 'N' ROLL ON|THE WALL)' 처럼 고유명사·원제가
+       줄 사이에서 갈라지고 마지막 줄에 8자만 남는 게 실측됐다.
+       pretty 는 문단 끝 몇 줄의 끊김을 다듬고, balance 는 제목을 고르게 나눈다.
+       미지원 브라우저는 그냥 무시한다. 고유명사는 원고에서 &nbsp; 로 묶는다. */
+    p { text-wrap: pretty; }
+    .section-title, .news-title, .bd-title, .pick-title { text-wrap: balance; }
+
+    /* <button> 은 서체를 상속하지 않는다 — 퀴즈 선택지 20개가 Arial 로 그려지고 있었다 */
+    button { font-family: var(--font-sans); }
+
     /* ── 타이포 위계 ──
        Tag   : 10px uppercase tracking  → 분류 레이블
        Title : 30px serif 600           → 섹션 제목
@@ -400,6 +413,7 @@
       margin: 0 0 16px;
     }
 
+    .news-feature--wide .news-text { max-width: 640px; }  /* 83자/줄이었다 */
     .news-text {
       font-family: var(--font-sans);
       font-size: var(--fs-body);
@@ -436,7 +450,7 @@
       font-family: var(--font-serif);
       font-size: var(--fs-body);
       font-weight: 400;
-      line-height: 1.9;
+      line-height: var(--lh-body);
       color: var(--text);
       margin: 20px 0 0;
       padding-left: 16px;
@@ -492,7 +506,7 @@
     .news-titles {
       font-family: var(--font-sans);
       font-size: var(--fs-meta);
-      line-height: 1.8;
+      line-height: var(--lh-body);
       color: var(--muted);
       margin: 14px 0 0;
     }
@@ -815,7 +829,7 @@
          #302F2F 는 같은 조건에서 최악 4.97:1. 제목(#1A1A1A)보다 밝아 위계도 남는다. */
       color: #302F2F;
       max-width: 480px;
-      line-height: 1.7;
+      line-height: var(--lh-body);
       margin-bottom: 52px;
       text-shadow: 0 1px 12px rgba(245,245,244,0.9);
       opacity: 0;
@@ -1441,7 +1455,7 @@
       font-size: var(--fs-sub);
       font-weight: 400;
       letter-spacing: -0.01em;
-      line-height: 1.7;
+      line-height: var(--lh-lead);
       max-width: 680px;
       margin-bottom: 64px;
       word-break: keep-all;
@@ -1464,7 +1478,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
-    .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.8; }
+    .phil-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: var(--lh-body); }
 
     /* ── About ── */
     #about { background: #EBEBEA; }
@@ -1494,8 +1508,8 @@
     .about-name { font-size: var(--fs-title); font-weight: var(--serif-strong); letter-spacing: -0.01em; margin-bottom: 8px;
       font-family: var(--font-serif);
     }
-    .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: 1.8; margin-bottom: 36px; letter-spacing: 0.01em; }
-    .about-body { font-size: 15px; color: var(--text); line-height: 2.1;
+    .about-role { font-family: var(--font-sans); font-size: 13px; color: var(--accent); line-height: var(--lh-body); margin-bottom: 36px; letter-spacing: 0.01em; }
+    .about-body { font-size: 15px; color: var(--text); line-height: var(--lh-body);
       font-family: var(--font-sans);
     }
 
@@ -1506,7 +1520,7 @@
       background: #E0E0DF;
     }
 
-    .about-quote p { font-size: 15px; color: #585858; line-height: 1.9; }
+    .about-quote p { font-size: 15px; color: #585858; line-height: var(--lh-body); }
 
     /* ── Reviews ── */
 
@@ -1733,7 +1747,7 @@
 
     .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 24px; }
 
-    .faq-answer p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 2;
+    .faq-answer p { font-size: 15px; color: rgba(255,255,255,0.65); line-height: var(--lh-body); max-width: 640px; /* 71자/줄 → 40자대. 눈이 줄 끝에서 돌아올 수 있는 길이 */
 
       font-family: var(--font-sans);
 
@@ -1761,7 +1775,7 @@
       font-size: 15px;
       color: var(--text);
       max-width: 560px;
-      line-height: 1.7;
+      line-height: var(--lh-body);
       margin-bottom: 52px;
       margin-top: -24px;
 
@@ -1815,7 +1829,7 @@
       font-family: var(--font-sans);
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: var(--lh-body);
     }
 
     .mem-card-wrap { position: relative; }
@@ -1935,7 +1949,7 @@
     }
     .footer-contact a:hover { color: #fff; }
     .footer-sns { display: flex; align-items: center; gap: 6px; }
-    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.7; text-align: right;
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.3); line-height: var(--lh-body); text-align: right;
       font-family: var(--font-sans);
     }
     .compass { width: 28px; height: 28px; opacity: 0.55; transition: opacity 0.3s; }
@@ -1951,7 +1965,7 @@
       .hamburger { display: flex; }
 
       /* .hero-title 크기는 위 clamp()가 담당 (모바일 하드코딩 제거) */
-      .hero-desc { font-size: 13px; line-height: 1.7; margin-bottom: 36px; }
+      .hero-desc { font-size: 13px; line-height: var(--lh-body); margin-bottom: 36px; }
       /* 모바일은 세로 수묵 이미지로 교체 → cover 로 화면을 꽉 채운다 */
       #hero { background-image: url('images/hero-ink-mobile.jpg'); background-size: cover; background-position: center center; }
       /* 모바일은 그림도 크롭도 다르다 → 마스크와 골짜기도 따로.
@@ -2446,7 +2460,7 @@
 
   <!-- Announcement Banner -->
   <div id="banner">
-    <span>신간 · 바람과 바위의 노래 (2026년 9월 14일 출간 예정) — <a href="#books">도서 목록 보기</a></span>
+    <span>신간 · 바람과&nbsp;바위의&nbsp;노래 (2026년 9월 14일 출간 예정) — <a href="#books">도서 목록 보기</a></span>
     <button class="banner-close" onclick="closeBanner()">×</button>
   </div>
 
@@ -2514,7 +2528,7 @@
         <div class="news-body">
           <div class="news-label">신간 · 2026. 9. 14.</div>
           <h3 class="news-title">신간이 나오고, 저자가 옵니다</h3>
-          <p class="news-text">실보 카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로 토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
+          <p class="news-text">실보&nbsp;카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로&nbsp;토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
           <p class="news-quote">“나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다.”</p>
           <p class="news-note">『바람과 바위의 노래』 · 실보 카로 지음 · 김동수 옮김 · 등반가 시리즈 17</p>
           <div class="news-links">
@@ -2527,7 +2541,7 @@
         <div class="news-body">
           <div class="news-label">특집 · 2026. 9. 19.–20.</div>
           <h3 class="news-title">산악문화상 수상자의 책, 여섯 권 모두 하루재클럽입니다</h3>
-          <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트 맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과 바위의 노래』의 저자 실보 카로도 9월 20일 토크에 함께 오릅니다.</p>
+          <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트&nbsp;맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과&nbsp;바위의&nbsp;노래』의 저자 실보&nbsp;카로도 9월 20일 토크에 함께 오릅니다.</p>
 
           <div class="news-books">
             <a href="#book/엘리자베스-홀리" title="엘리자베스 홀리"><span class="cv"><img loading="lazy" decoding="async" src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"></span></a>
@@ -2786,7 +2800,7 @@
           <div class="book-cover">
             <img loading="lazy" decoding="async" src="images/books/38-수직의순례자.jpg" alt="수직의 순례자들"><div class="book-hover-info"><div class="book-hover-title">수직의 순례자들</div><div class="book-hover-sub">미국 등반 150년의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보 카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보 카로의 자서전. 프란체크 크네즈·야네즈 예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로 토레·토레 에거에 신루트를 열었고, 1988년에 오른 세로 토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도 가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK 'N' ROLL ON THE WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보 카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크 크네즈, 야네즈 예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로 토레 동벽 초등과 토레 에거 남동벽 신루트에 이어 1988년 세로 토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
+        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보&nbsp;카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보&nbsp;카로의 자서전. 프란체크&nbsp;크네즈·야네즈&nbsp;예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로&nbsp;토레·토레&nbsp;에거에 신루트를 열었고, 1988년에 오른 세로&nbsp;토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도&nbsp;가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK&nbsp;'N'&nbsp;ROLL&nbsp;ON&nbsp;THE&nbsp;WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보&nbsp;카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크&nbsp;크네즈, 야네즈&nbsp;예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로&nbsp;토레 동벽 초등과 토레&nbsp;에거 남동벽 신루트에 이어 1988년 세로&nbsp;토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
           <div class="book-cover">
             <img loading="lazy" decoding="async" src="images/books/43-바람과바위의노래.jpg" alt="바람과 바위의 노래"><div class="book-hover-info"><div class="book-hover-title">바람과 바위의 노래</div><div class="book-hover-sub">거벽 등반가 실보 카로의 자서전</div></div></div>
         </div>
@@ -4258,12 +4272,12 @@
         'The book arrives, and so does its author',
         'All six Korean editions by this year&rsquo;s award winner are ours'] },
     { sel: '.news-text', en: [
-        'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
-        'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim Dong-soo. Silvo Karo, author of the new <em>Rock &lsquo;n&rsquo; Roll on the Wall</em>, joins the 20 September talk.'] },
+        'Silvo&nbsp;Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro&nbsp;Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
+        'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette&nbsp;McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim&nbsp;Dong-soo. Silvo&nbsp;Karo, author of the new <em>Rock&nbsp;&lsquo;n&rsquo;&nbsp;Roll&nbsp;on&nbsp;the&nbsp;Wall</em>, joins the 20 September talk.'] },
     { sel: '.news-quote', en: '&ldquo;Why did I take this path? Simply because I could see a way that led to the mountains. I set off along it without knowing how long or how steep it would be.&rdquo;' },
-    { sel: '.news-note', en: '<em>Rock &lsquo;n&rsquo; Roll on the Wall</em> &middot; Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17' },
-    { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine Rising' },
-    { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald, Silvo Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
+    { sel: '.news-note', en: '<em>Rock&nbsp;&lsquo;n&rsquo;&nbsp;Roll&nbsp;on&nbsp;the&nbsp;Wall</em> &middot; Silvo&nbsp;Karo &middot; translated by Kim&nbsp;Dong-soo &middot; Climbers Series 17' },
+    { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine&nbsp;Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine&nbsp;Rising' },
+    { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps&nbsp;Cinema 2 &mdash; Bernadette&nbsp;McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette&nbsp;McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine&nbsp;Warriors</em>&rsquo;<span><small>10:00 &middot; Alps&nbsp;Cinema 2 &mdash; Bernadette&nbsp;McDonald, Silvo&nbsp;Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine&nbsp;Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim&nbsp;Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
     { sel: '.news-link', en: ['About the book &rarr;', 'Festival website &nearr;'] },
     // attr 분기는 &rsquo; 만 치환한다(applyLang) — 속성값엔 엔티티 말고 글자를 직접 쓸 것
     { sel: '.news-cover img', attr: 'alt', en: 'Cover of Rock ‘n’ Roll on the Wall — Silvo Karo' },
