@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://haroojae.co.kr/images/books/05-%EA%BD%83%EC%9D%98%EA%B3%84%EA%B3%A1.jpg">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "꽃의 계곡", "url": "https://haroojae.co.kr/books/%EA%BD%83%EC%9D%98-%EA%B3%84%EA%B3%A1/", "image": "https://haroojae.co.kr/images/books/05-%EA%BD%83%EC%9D%98%EA%B3%84%EA%B3%A1.jpg", "description": "세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)", "inLanguage": "ko", "publisher": {"@type": "Organization", "name": "하루재클럽", "url": "https://haroojae.co.kr/"}, "author": {"@type": "Person", "name": "프랭크 스마이드"}, "translator": {"@type": "Person", "name": "김무제"}, "isbn": "9788996745549", "datePublished": "2016-06-21", "offers": {"@type": "Offer", "price": "43000", "priceCurrency": "KRW"}}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Book", "name": "꽃의 계곡", "url": "https://haroojae.co.kr/books/%EA%BD%83%EC%9D%98-%EA%B3%84%EA%B3%A1/", "image": "https://haroojae.co.kr/images/books/05-%EA%BD%83%EC%9D%98%EA%B3%84%EA%B3%A1.jpg", "description": "세상에서 가장 아름다운 난다데비 산군에서의 등산과 식물 탐사의 기록. 히말라야의 자연과 꽃을 담은 고전적 탐험 기록. (The Valley of Flowers)", "inLanguage": "ko", "publisher": {"@type": "Organization", "name": "하루재클럽", "url": "https://haroojae.co.kr/"}, "author": {"@type": "Person", "name": "프랭크 스마이드", "alternateName": "Frank S. Smythe"}, "translator": {"@type": "Person", "name": "김무제"}, "isbn": "9788996745549", "datePublished": "2016-06-21", "offers": {"@type": "Offer", "price": "43000", "priceCurrency": "KRW"}}</script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script>
@@ -72,6 +72,29 @@
     .prevnext a{text-decoration:none;color:var(--m-info);max-width:45%}
     .prevnext a:hover{color:var(--text)}
     .prevnext .t{display:block;font-family:var(--font-serif);font-size:15px;color:var(--text);margin-top:4px}
+    .author a{color:inherit;text-decoration:none;border-bottom:1px solid var(--border)}
+    .author a:hover{border-color:var(--text)}
+    .more{margin:0 0 56px}
+    .more-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:16px}
+    .more-row a{text-decoration:none;color:var(--m-body);font-size:var(--fs-meta);line-height:1.4}
+    .more-row img{display:block;width:100%;height:auto;border:1px solid rgba(26,26,26,.10);margin-bottom:8px}
+    .a-head{margin-bottom:40px}
+    .a-latin{font-family:var(--font-serif);font-size:17px;color:var(--m-info);margin-top:4px}
+    .a-bio{max-width:640px;color:var(--m-body);margin:20px 0 0}
+    .a-books{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:40px 32px;margin-top:40px}
+    .a-books a{text-decoration:none;color:inherit}
+    .a-books img{display:block;width:100%;height:auto;border:1px solid rgba(26,26,26,.10);box-shadow:0 12px 28px rgba(0,0,0,.12);margin-bottom:14px}
+    .a-books .t{font-family:var(--font-serif);font-size:17px;font-weight:var(--serif-strong);line-height:var(--lh-tight)}
+    .a-books .s{font-size:var(--fs-meta);color:var(--m-info);margin-top:4px}
+    .idx{list-style:none;max-width:760px}
+    .idx li{padding:22px 0;border-bottom:1px solid var(--border)}
+    .idx .n{font-family:var(--font-serif);font-size:17px;font-weight:var(--serif-strong)}
+    .idx .n a{text-decoration:none;color:inherit;border-bottom:1px solid var(--border)}
+    .idx .l{font-family:var(--font-serif);color:var(--m-info);margin-left:8px;font-size:15px}
+    .idx .b{color:var(--m-body);margin:6px 0 8px}
+    .idx .k{font-size:var(--fs-meta)}
+    .idx .k a{color:var(--m-info);text-decoration:none;margin-right:14px}
+    .idx .k a:hover{color:var(--text)}
     footer{background:var(--dark);color:rgba(255,255,255,.72);font-size:var(--fs-meta);padding:40px}
     .fi{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 32px;line-height:1.9}
     footer a{color:inherit;text-decoration:none}
@@ -88,6 +111,7 @@
     <a href="/" class="nav-logo"><img src="/images/logo-sm.png" alt="하루재클럽"></a>
     <div class="nav-links">
       <a href="/#books">전체 도서</a>
+      <a href="/authors/">저자</a>
       <a href="/#membership">북클럽</a>
       <a href="/#about">출판사</a>
     </div>
@@ -100,7 +124,7 @@
         <div class="lang">영어 번역</div>
         <h1>꽃의 계곡</h1>
         <div class="sub">난다데비 산군의 식물 탐사 기록</div>
-        <div class="author">프랭크 스마이드 (Frank S. Smythe)</div>
+        <div class="author"><a href="/authors/%ED%94%84%EB%9E%AD%ED%81%AC-%EC%8A%A4%EB%A7%88%EC%9D%B4%EB%93%9C/">프랭크 스마이드</a> (Frank S. Smythe)</div>
         
         <div class="series">등반기記 시리즈-02</div>
         <hr>
@@ -111,6 +135,7 @@
         <dl><dt>원제</dt><dd>The Valley of Flowers</dd><dt>옮긴이</dt><dd>김무제</dd><dt>발행</dt><dd>2016.6.21</dd><dt>정가</dt><dd>43,000원</dd><dt>ISBN</dt><dd>978-89-96745-54-9</dd><dt>발행처</dt><dd>하루재클럽</dd></dl>
         <div class="tags"><span>난다데비</span><span>히말라야</span><span>식물 탐사</span><span>자연</span><span>영국 등반사</span></div>
         <div class="label">구매처</div><div class="buy"><a href="https://www.yes24.com/product/goods/29189187" target="_blank" rel="noopener noreferrer">예스24</a><a href="https://product.kyobobook.co.kr/detail/S000001602833" target="_blank" rel="noopener noreferrer">교보문고</a></div>
+        <div class="more"><div class="label"><a href="/authors/%ED%94%84%EB%9E%AD%ED%81%AC-%EC%8A%A4%EB%A7%88%EC%9D%B4%EB%93%9C/" style="color:inherit;text-decoration:none">프랭크 스마이드</a>의 다른 책</div><div class="more-row"><a href="/books/CAMP-SiX/"><img src="/images/books/10-%EC%BA%A0%ED%94%84%EC%8B%9D%EC%8A%A4.jpg" alt="CAMP SiX" loading="lazy">CAMP SiX</a></div></div>
         <div class="club">
           <div class="label">하루재북클럽</div>
           <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 이 책을 포함한 기발간 도서 네 권을 먼저 보내드립니다.</p>

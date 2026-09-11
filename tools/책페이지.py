@@ -21,7 +21,15 @@
     `정당화할 수 없는 위험?` 의 `?` 가 경로에서 쿼리 구분자가 되기 때문. 두 슬러그는 같지 않다
   * 페이지 CSS 는 index.html 의 토큰(:root 변수·상세뷰 규칙)을 옮겨 적은 것이다. 본체가 바뀌면 여기도 맞출 것
 
+저자 페이지 (2026-09-12 추가)
+  * tools/저자.json 이 이름 정본. 카드의 data-author(`저자 (원어명) · 공저자 / 역자`)를 갈라 이 키에 맞춘다.
+    '/' 뒤는 역자, '·'·'&' 는 공저 구분, 괄호는 원어명 또는 역할((사진)·(글)). 성만 적힌 것(메스너)은 별칭으로 잇는다
+  * 책이 2권 이상인 저자만 개별 페이지 `authors/<슬러그>/` — 1권 저자 31명은 페이지가 얇아 구글이 안 올릴 수 있어
+    `authors/` 색인 한 장에 전원(이름·원어명·소개·책 링크)을 싣는다. 책이 늘면 자동으로 개별 페이지가 생긴다
+  * 책 페이지의 저자 이름은 저자 페이지(또는 색인의 앵커)로 링크하고, 「이 저자의 다른 책」을 단다
+
 검증(--확인 없이 돌리면 끝에 자동): 41장 전부 <title>·og:image·canonical 이 있고, 표지 파일이 실제로 있는지.
+저자.json 에 없는 이름이 카드에서 나오면 경고를 찍는다 — 그때 저자.json 에 한 줄 추가할 것.
 """
 from __future__ import annotations
 
@@ -38,7 +46,9 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
 서지 = ROOT / "tools" / "책_서지.json"
+저자파일 = ROOT / "tools" / "저자.json"
 OUT = ROOT / "books"
+AOUT = ROOT / "authors"
 SITE = "https://haroojae.co.kr"
 
 AWARDS = [("BANFF", "BANFF 수상"), ("세종도서", "세종도서"), ("황금피켈", "황금피켈상"), ("아카데미상", "아카데미상"), ("NOBA", "NOBA 수상")]
@@ -69,6 +79,42 @@ def cards() -> list[dict]:
 
 def esc(s: str) -> str:
     return html.escape(s or "", quote=True)
+
+
+def 저자표() -> tuple[dict, dict]:
+    """(정본 dict, 별칭→정본 이름)"""
+    reg = json.loads(저자파일.read_text(encoding="utf-8"))["저자"]
+    alias = {}
+    for name, v in reg.items():
+        alias[name] = name
+        for a in v.get("별칭", []):
+            alias[a] = name
+    return reg, alias
+
+
+def parse_authors(author_str: str, alias: dict, unknown: set) -> list[str]:
+    """'짐 헤링턴 (사진) · 그렉 차일드 (글) / 김동수' → ['짐 헤링턴', '그렉 차일드']  (역자는 버린다)"""
+    head = re.split(r"\s*/\s*", author_str or "", maxsplit=1)[0]
+    out = []
+    for part in re.split(r"\s*[·&]\s*", head):
+        name = re.sub(r"\s*\(.*?\)\s*", " ", part).strip()
+        if not name:
+            continue
+        key = alias.get(name)
+        if not key:
+            unknown.add(name)
+            key = name
+        out.append(key)
+    return out
+
+
+def author_slug(name: str) -> str:
+    return page_slug(name)
+
+
+def author_href(name: str, multi: set) -> str:
+    """책이 2권 이상이면 개별 페이지, 아니면 색인의 앵커"""
+    return f"/authors/{quote(author_slug(name))}/" if name in multi else f"/authors/#{quote(author_slug(name))}"
 
 
 CSS = """
@@ -120,6 +166,29 @@ CSS = """
     .prevnext a{text-decoration:none;color:var(--m-info);max-width:45%}
     .prevnext a:hover{color:var(--text)}
     .prevnext .t{display:block;font-family:var(--font-serif);font-size:15px;color:var(--text);margin-top:4px}
+    .author a{color:inherit;text-decoration:none;border-bottom:1px solid var(--border)}
+    .author a:hover{border-color:var(--text)}
+    .more{margin:0 0 56px}
+    .more-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:16px}
+    .more-row a{text-decoration:none;color:var(--m-body);font-size:var(--fs-meta);line-height:1.4}
+    .more-row img{display:block;width:100%;height:auto;border:1px solid rgba(26,26,26,.10);margin-bottom:8px}
+    .a-head{margin-bottom:40px}
+    .a-latin{font-family:var(--font-serif);font-size:17px;color:var(--m-info);margin-top:4px}
+    .a-bio{max-width:640px;color:var(--m-body);margin:20px 0 0}
+    .a-books{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:40px 32px;margin-top:40px}
+    .a-books a{text-decoration:none;color:inherit}
+    .a-books img{display:block;width:100%;height:auto;border:1px solid rgba(26,26,26,.10);box-shadow:0 12px 28px rgba(0,0,0,.12);margin-bottom:14px}
+    .a-books .t{font-family:var(--font-serif);font-size:17px;font-weight:var(--serif-strong);line-height:var(--lh-tight)}
+    .a-books .s{font-size:var(--fs-meta);color:var(--m-info);margin-top:4px}
+    .idx{list-style:none;max-width:760px}
+    .idx li{padding:22px 0;border-bottom:1px solid var(--border)}
+    .idx .n{font-family:var(--font-serif);font-size:17px;font-weight:var(--serif-strong)}
+    .idx .n a{text-decoration:none;color:inherit;border-bottom:1px solid var(--border)}
+    .idx .l{font-family:var(--font-serif);color:var(--m-info);margin-left:8px;font-size:15px}
+    .idx .b{color:var(--m-body);margin:6px 0 8px}
+    .idx .k{font-size:var(--fs-meta)}
+    .idx .k a{color:var(--m-info);text-decoration:none;margin-right:14px}
+    .idx .k a:hover{color:var(--text)}
     footer{background:var(--dark);color:rgba(255,255,255,.72);font-size:var(--fs-meta);padding:40px}
     .fi{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 32px;line-height:1.9}
     footer a{color:inherit;text-decoration:none}
@@ -141,7 +210,140 @@ FONT_HEAD = """  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif
   </script>"""
 
 
-def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
+def author_html(author: str, names: list[str], ctx: dict) -> str:
+    """저자 문자열을 그대로 보여주되, 정본 이름(과 별칭)이 나오는 자리만 링크로 감싼다."""
+    out = esc(author)
+    for n in names:
+        for shown in [n] + ctx["reg"].get(n, {}).get("별칭", []):
+            if esc(shown) in out:
+                out = out.replace(esc(shown), f'<a href="{author_href(n, ctx["multi"])}">{esc(shown)}</a>', 1)
+                break
+    return out
+
+
+def others_html(title: str, names: list[str], ctx: dict) -> str:
+    blocks = []
+    for n in names:
+        others = [b for b in ctx["by_author"].get(n, []) if b["title"] != title]
+        if not others:
+            continue
+        items = "".join(
+            f'<a href="/books/{quote(page_slug(b["title"]))}/">'
+            + (f'<img src="/{quote(b["img"])}" alt="{esc(b["title"])}" loading="lazy">' if b.get("img") else "")
+            + f'{esc(b["title"])}</a>' for b in others)
+        blocks.append(f'<div class="more"><div class="label"><a href="{author_href(n, ctx["multi"])}" style="color:inherit;text-decoration:none">{esc(n)}</a>의 다른 책</div><div class="more-row">{items}</div></div>')
+    return "".join(blocks)
+
+
+def page_shell(title: str, desc: str, url: str, body: str, ld: dict | None = None, og_image: str = "") -> str:
+    """저자 페이지·색인용 공통 껍데기 (책 페이지는 render() 가 자체 템플릿을 쓴다)"""
+    return f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{esc(title)} — 하루재클럽</title>
+  <meta name="description" content="{esc(desc)}">
+  <link rel="canonical" href="{url}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="하루재클럽">
+  <meta property="og:title" content="{esc(title)} — 하루재클럽">
+  <meta property="og:description" content="{esc(desc[:117] + '…' if len(desc) > 120 else desc)}">
+  <meta property="og:url" content="{url}">
+  <meta property="og:image" content="{og_image or SITE + '/images/hero-ink.jpg'}">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary">
+{f'  <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' if ld else ''}
+{FONT_HEAD}
+  <style>{CSS}  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/images/logo-sm.png" alt="하루재클럽"></a>
+    <div class="nav-links">
+      <a href="/#books">전체 도서</a>
+      <a href="/authors/">저자</a>
+      <a href="/#membership">북클럽</a>
+      <a href="/#about">출판사</a>
+    </div>
+  </nav>
+  <main>
+{body}
+  </main>
+  <footer>
+    <div class="fi">
+      <span>© {date.today().year} 하루재클럽</span>
+      <span>서울특별시 서초구 나루터로 15길 6 신사 제2빌딩 801호</span>
+      <a href="tel:02-521-0067">02-521-0067</a>
+      <a href="mailto:haroojaeclub@naver.com">haroojaeclub@naver.com</a>
+      <a href="https://www.instagram.com/haroojaeclub/" target="_blank" rel="noopener noreferrer">@haroojaeclub</a>
+    </div>
+  </footer>
+</body>
+</html>
+"""
+
+
+def best_bio(books: list[dict]) -> str:
+    """저자 소개는 책마다 따로 적혀 있다 — 가장 긴 것을 대표로 쓴다"""
+    return max((b.get("author-bio", "") for b in books), key=len, default="")
+
+
+def render_author(name: str, books: list[dict], ctx: dict) -> str:
+    latin = ctx["reg"].get(name, {}).get("원어명", "")
+    url = f"{SITE}/authors/{quote(author_slug(name))}/"
+    bio = best_bio(books)
+    desc = f"{name}{f' ({latin})' if latin else ''}의 하루재클럽 한국어판 {len(books)}권. " + (bio[:90] if bio else "")
+    ld = {"@context": "https://schema.org", "@type": "Person", "name": name, "url": url,
+          **({"alternateName": latin} if latin else {}),
+          **({"description": bio} if bio else {}),
+          "mainEntityOfPage": {"@type": "ItemList", "itemListElement": [
+              {"@type": "ListItem", "position": i + 1, "url": f"{SITE}/books/{quote(page_slug(b['title']))}/", "name": b["title"]} for i, b in enumerate(books)]}}
+    cards_html = "".join(
+        f'<a href="/books/{quote(page_slug(b["title"]))}/">'
+        + (f'<img src="/{quote(b["img"])}" alt="{esc(b["title"])} 표지" loading="lazy">' if b.get("img") else "")
+        + f'<div class="t">{esc(b["title"])}</div><div class="s">{esc(b.get("year", ""))}</div></a>' for b in books)
+    body = f"""    <div class="crumb"><a href="/">하루재클럽</a> › <a href="/authors/">저자</a> › {esc(name)}</div>
+    <div class="a-head">
+      <div class="label">저자</div>
+      <h1>{esc(name)}</h1>
+      {f'<div class="a-latin">{esc(latin)}</div>' if latin else ''}
+      {f'<p class="a-bio">{esc(bio)}</p>' if bio else ''}
+    </div>
+    <div class="label">하루재클럽에서 낸 책 {len(books)}권</div>
+    <div class="a-books">{cards_html}</div>"""
+    og = f"{SITE}/{quote(books[0]['img'])}" if books and books[0].get("img") else ""
+    return page_shell(name, desc, url, body, ld, og)
+
+
+def render_authors_index(ctx: dict) -> str:
+    url = f"{SITE}/authors/"
+    reg, by = ctx["reg"], ctx["by_author"]
+    names = sorted(by, key=lambda n: (-len(by[n]), n))
+    items = []
+    for n in names:
+        latin = reg.get(n, {}).get("원어명", "")
+        bio = best_bio(by[n])
+        first = re.split(r"(?<=다)\.\s", bio, maxsplit=1)[0] if bio else ""
+        if first and not first.endswith("."):
+            first += "."
+        title_html = f'<a href="/authors/{quote(author_slug(n))}/">{esc(n)}</a>' if n in ctx["multi"] else esc(n)
+        links = "".join(f'<a href="/books/{quote(page_slug(b["title"]))}/">{esc(b["title"])}</a>' for b in by[n])
+        items.append(f'<li id="{esc(author_slug(n))}"><div class="n">{title_html}{f"<span class=l>{esc(latin)}</span>" if latin else ""}</div>'
+                     + (f'<p class="b">{esc(first)}</p>' if first else "") + f'<div class="k">{links}</div></li>')
+    desc = f"하루재클럽이 한국어로 옮긴 산서의 저자 {len(names)}명 — 라인홀드 메스너, 버나데트 맥도널드, 프랭크 스마이드, 크리스 보닝턴, 알렉스 호놀드…"
+    body = f"""    <div class="crumb"><a href="/">하루재클럽</a> › 저자</div>
+    <div class="a-head">
+      <div class="label">Authors</div>
+      <h1>저자</h1>
+      <p class="a-bio">하루재클럽이 한국어로 옮긴 산서를 쓴 사람들입니다. 책이 여러 권인 저자는 이름을 누르면 따로 모아 볼 수 있습니다.</p>
+    </div>
+    <ul class="idx">{''.join(items)}</ul>"""
+    return page_shell("저자", desc, url, body)
+
+
+def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) -> str:
+    """ctx: {'reg','alias','multi','by_author','unknown'} — 저자 링크·다른 책 묶음에 쓴다"""
     title = c["title"]
     slug = page_slug(title)
     url = f"{SITE}/books/{quote(slug)}/"          # 한글 경로는 퍼센트 인코딩 — 미리보기 수집기 중 IRI 를 못 읽는 것이 있다
@@ -161,8 +363,11 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
         "inLanguage": "ko",
         "publisher": {"@type": "Organization", "name": "하루재클럽", "url": SITE + "/"},
     }
-    if author:
-        ld["author"] = {"@type": "Person", "name": re.sub(r"\s*\(.*?\)\s*", "", author).split(" / ")[0]}
+    names = parse_authors(author, ctx["alias"], ctx["unknown"])
+    if names:
+        ld["author"] = [{"@type": "Person", "name": n, **({"alternateName": ctx["reg"][n]["원어명"]} if ctx["reg"].get(n, {}).get("원어명") else {})} for n in names]
+        if len(ld["author"]) == 1:
+            ld["author"] = ld["author"][0]
     if translator:
         ld["translator"] = {"@type": "Person", "name": translator}
     if isbn:
@@ -225,6 +430,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
     <a href="/" class="nav-logo"><img src="/images/logo-sm.png" alt="하루재클럽"></a>
     <div class="nav-links">
       <a href="/#books">전체 도서</a>
+      <a href="/authors/">저자</a>
       <a href="/#membership">북클럽</a>
       <a href="/#about">출판사</a>
     </div>
@@ -237,7 +443,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
         {f'<div class="lang">{esc(c.get("lang", ""))}</div>' if c.get("lang") else ''}
         <h1>{esc(title)}</h1>
         {f'<div class="sub">{esc(c["sub"])}</div>' if c.get("sub") and c["sub"] != title else ''}
-        {f'<div class="author">{esc(author)}</div>' if author else ''}
+        {f'<div class="author">{author_html(author, names, ctx)}</div>' if author else ''}
         {('<div class="awards">' + ''.join(f'<span>{a}</span>' for a in awards) + '</div>') if awards else ''}
         {f'<div class="series">{esc(c.get("year", ""))}</div>' if c.get("year") else ''}
         <hr>
@@ -248,6 +454,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
         <dl>{''.join(f'<dt>{k}</dt><dd>{esc(v)}</dd>' for k, v in dl)}</dl>
         {('<div class="tags">' + ''.join(f'<span>{esc(t)}</span>' for t in tags) + '</div>') if tags else ''}
         {('<div class="label">구매처</div><div class="buy">' + ''.join(buy) + '</div>') if buy else ''}
+        {others_html(title, names, ctx)}
         <div class="club">
           <div class="label">하루재북클럽</div>
           <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 이 책을 포함한 기발간 도서 네 권을 먼저 보내드립니다.</p>
@@ -271,11 +478,14 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
 """
 
 
-def sitemap(cs: list[dict]) -> str:
+def sitemap(cs: list[dict], author_slugs: list[str] = ()) -> str:
     today = date.today().isoformat()
     urls = [f"  <url>\n    <loc>{SITE}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>"]
     for c in cs:
         urls.append(f"  <url>\n    <loc>{SITE}/books/{quote(page_slug(c['title']))}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>")
+    urls.append(f"  <url>\n    <loc>{SITE}/authors/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
+    for a in author_slugs:
+        urls.append(f"  <url>\n    <loc>{SITE}/authors/{quote(a)}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n"
 
 
@@ -299,6 +509,17 @@ def 카드링크(cs: list[dict]) -> int:
     return n
 
 
+def build_ctx(cs: list[dict]) -> dict:
+    reg, alias = 저자표()
+    unknown: set = set()
+    by_author: dict[str, list[dict]] = {}
+    for c in cs:
+        for n in parse_authors(c.get("author", ""), alias, unknown):
+            by_author.setdefault(n, []).append(c)
+    multi = {n for n, bs in by_author.items() if len(bs) >= 2 and not reg.get(n, {}).get("출판사")}
+    return {"reg": reg, "alias": alias, "multi": multi, "by_author": by_author, "unknown": unknown}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--확인", action="store_true", help="쓰지 않고 점검만")
@@ -316,20 +537,35 @@ def main() -> int:
     if a.확인:
         for c in cs:
             print(f"  /books/{page_slug(c['title'])}/   ←  #book/{hash_slug(c['title'])}")
+        ctx = build_ctx(cs)
+        for n, bs in sorted(ctx["by_author"].items(), key=lambda kv: -len(kv[1])):
+            print(f"  저자 {len(bs)}권 {'★' if n in ctx['multi'] else ' '} {n} ({ctx['reg'].get(n, {}).get('원어명', '?')}): " + " / ".join(b["title"] for b in bs))
+        if ctx["unknown"]:
+            print("⚠ 저자.json 에 없는 이름:", sorted(ctx["unknown"]))
         return 0
     if dup:
         print("슬러그가 겹친다 — 제목을 확인할 것")
         return 1
 
+    ctx = build_ctx(cs)
+    if ctx["unknown"]:
+        print("⚠ 저자.json 에 없는 이름 — 추가할 것:", sorted(ctx["unknown"]))
     OUT.mkdir(exist_ok=True)
     for i, c in enumerate(cs):
         d = OUT / page_slug(c["title"])
         d.mkdir(exist_ok=True)
-        (d / "index.html").write_text(render(c, metas.get(c["title"], {}), cs[i - 1] if i else None, cs[i + 1] if i + 1 < len(cs) else None), encoding="utf-8")
-    (ROOT / "sitemap.xml").write_text(sitemap(cs), encoding="utf-8")
+        (d / "index.html").write_text(render(c, metas.get(c["title"], {}), cs[i - 1] if i else None, cs[i + 1] if i + 1 < len(cs) else None, ctx), encoding="utf-8")
+    AOUT.mkdir(exist_ok=True)
+    (AOUT / "index.html").write_text(render_authors_index(ctx), encoding="utf-8")
+    for n in sorted(ctx["multi"]):
+        d = AOUT / author_slug(n)
+        d.mkdir(exist_ok=True)
+        (d / "index.html").write_text(render_author(n, ctx["by_author"][n], ctx), encoding="utf-8")
+    (ROOT / "sitemap.xml").write_text(sitemap(cs, [author_slug(n) for n in sorted(ctx["multi"])]), encoding="utf-8")
+    print(f"authors/ 색인 1장 + 개별 {len(ctx['multi'])}장 ({', '.join(sorted(ctx['multi']))}) · 저자 {len(ctx['by_author'])}명")
     n = 카드링크(cs)
     stale = [p.name for p in OUT.iterdir() if p.is_dir() and p.name not in slugs]
-    print(f"books/ {len(cs)}장 · sitemap {len(cs) + 1}개 · 카드 링크 새로 삽입 {n}곳" + (f" · ⚠ 카드에 없는 폴더 {stale} (직접 지울 것)" if stale else ""))
+    print(f"books/ {len(cs)}장 · sitemap {len(cs) + 2 + len(ctx['multi'])}개 · 카드 링크 새로 삽입 {n}곳" + (f" · ⚠ 카드에 없는 폴더 {stale} (직접 지울 것)" if stale else ""))
 
     # 검증
     bad = []
