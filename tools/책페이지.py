@@ -33,6 +33,7 @@ import sys
 import unicodedata
 from datetime import date
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
@@ -143,9 +144,9 @@ FONT_HEAD = """  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif
 def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
     title = c["title"]
     slug = page_slug(title)
-    url = f"{SITE}/books/{slug}/"
+    url = f"{SITE}/books/{quote(slug)}/"          # 한글 경로는 퍼센트 인코딩 — 미리보기 수집기 중 IRI 를 못 읽는 것이 있다
     img = c.get("img", "")
-    img_url = f"{SITE}/{img}" if img else f"{SITE}/images/hero-ink.jpg"
+    img_url = f"{SITE}/{quote(img)}" if img else f"{SITE}/images/hero-ink.jpg"
     desc = c.get("desc", "")
     author = c.get("author", "")
     awards = [label for key, label in AWARDS if key in (c.get("tags") or "")]
@@ -195,7 +196,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
     def pn(b, arrow_left):
         if not b:
             return "<span></span>"
-        return (f'<a href="/books/{page_slug(b["title"])}/">{"← 이전 책" if arrow_left else "다음 책 →"}'
+        return (f'<a href="/books/{quote(page_slug(b["title"]))}/">{"← 이전 책" if arrow_left else "다음 책 →"}'
                 f'<span class="t">{esc(b["title"])}</span></a>')
 
     og_desc = desc if len(desc) <= 120 else desc[:117].rstrip() + "…"
@@ -231,7 +232,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None) -> str:
   <main>
     <div class="crumb"><a href="/">하루재클럽</a> › <a href="/#books">도서</a> › {esc(title)}</div>
     <div class="grid">
-      <div class="cover">{f'<img src="/{esc(img)}" alt="{esc(title)} 표지" width="600">' if img else ''}</div>
+      <div class="cover">{f'<img src="/{quote(img)}" alt="{esc(title)} 표지" width="600">' if img else ''}</div>
       <article>
         {f'<div class="lang">{esc(c.get("lang", ""))}</div>' if c.get("lang") else ''}
         <h1>{esc(title)}</h1>
@@ -274,7 +275,7 @@ def sitemap(cs: list[dict]) -> str:
     today = date.today().isoformat()
     urls = [f"  <url>\n    <loc>{SITE}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>"]
     for c in cs:
-        urls.append(f"  <url>\n    <loc>{SITE}/books/{page_slug(c['title'])}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>")
+        urls.append(f"  <url>\n    <loc>{SITE}/books/{quote(page_slug(c['title']))}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>")
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(urls) + "\n</urlset>\n"
 
 
