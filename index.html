@@ -423,7 +423,8 @@
       margin: 0 0 16px;
     }
 
-    .news-feature--wide .news-text { max-width: 640px; }  /* 83자/줄이었다 */
+    .news-feature--wide .news-text,
+    .news-feature--wide .news-quote { max-width: 640px; }  /* 83자/줄·65자/줄이었다 → 40자대 */
     .news-text {
       font-family: var(--font-sans);
       font-size: var(--fs-body);
@@ -465,6 +466,13 @@
       margin: 20px 0 0;
       padding-left: 16px;
       border-left: 2px solid var(--border);
+    }
+    .news-quote-by {            /* 추천사 출처 — 인용문보다 한 단계 내려 붙인다 */
+      display: block;
+      margin-top: 8px;
+      font-family: var(--font-sans);
+      font-size: var(--fs-meta);
+      color: var(--muted);
     }
 
     .news-note {
@@ -2559,6 +2567,8 @@
           <div class="news-label">특집 · 2026. 9. 19.–20.</div>
           <h3 class="news-title">산악문화상 수상자의 책, 여섯 권 모두 하루재클럽입니다</h3>
           <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트 맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과 바위의 노래』의 저자 실보 카로도 9월 20일 토크에 함께 오릅니다.</p>
+          <!-- 수상자가 이번 신간에 붙인 추천사 — 두 카드(신간·영화제)를 잇는 문장. 보도자료(2026-09-12) 추천인 서평 전문 -->
+          <p class="news-quote">“오랫동안 기다려온 실보 카로의 회고록은 슬로베니아 산악문학의 풍부한 전통을 이어받은 작품이다. 수직의 세계에서 타협하지 않고 이루어낸 그의 훌륭한 성취는 산뜻할 정도로 겸손한 인품과 가벼운 스타일로 아름다운 균형을 이루고 있다.”<span class="news-quote-by">— 버나데트 맥도널드, 『바람과 바위의 노래』 추천사</span></p>
 
           <div class="news-books">
             <a href="#book/엘리자베스-홀리" title="엘리자베스 홀리"><span class="cv"><img loading="lazy" decoding="async" src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"></span></a>
@@ -2807,7 +2817,7 @@
           <div class="book-cover">
             <a class="book-link" href="books/수직의-순례자들/" aria-label="수직의 순례자들 페이지"><img loading="lazy" decoding="async" src="images/books/38-수직의순례자.jpg" alt="수직의 순례자들"></a><div class="book-hover-info"><div class="book-hover-title">수직의 순례자들</div><div class="book-hover-sub">미국 등반 150년의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보 카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보 카로의 자서전. 프란체크 크네즈·야네즈 예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로 토레·토레 에거에 신루트를 열었고, 1988년에 오른 세로 토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도 가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK 'N' ROLL ON THE WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보 카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크 크네즈, 야네즈 예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로 토레 동벽 초등과 토레 에거 남동벽 신루트에 이어 1988년 세로 토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
+        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보 카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보 카로의 자서전. 프란체크 크네즈·야네즈 예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로 토레·토레 에거에 신루트를 열었고, 1988년에 오른 세로 토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도 가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK 'N' ROLL ON THE WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보 카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크 크네즈, 야네즈 예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로 토레 동벽 초등과 토레 에거 남동벽 신루트에 이어 1988년 세로 토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 영화 「세로 토레 남벽」은 1989년 트렌토산악영화제에서 최우수상을 받았고, 2007년부터는 산악영화제를 이끌고 있다. 1991년 프랑스 고산회 회원, 2010년 영국산악회 명예회원이 되었으며 슬로베니아 대통령 공로훈장을 받았다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
           <div class="book-cover">
             <a class="book-link" href="books/바람과-바위의-노래/" aria-label="바람과 바위의 노래 페이지"><img loading="lazy" decoding="async" src="images/books/43-바람과바위의노래.jpg" alt="바람과 바위의 노래"></a><div class="book-hover-info"><div class="book-hover-title">바람과 바위의 노래</div><div class="book-hover-sub">거벽 등반가 실보 카로의 자서전</div></div></div>
         </div>
@@ -4390,7 +4400,11 @@
     { sel: '.news-text', en: [
         'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
         'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim Dong-soo. Silvo Karo, author of the new <em>Rock &lsquo;n&rsquo; Roll on the Wall</em>, joins the 20 September talk.'] },
-    { sel: '.news-quote', en: '&ldquo;Why did I take this path? Simply because I could see a way that led to the mountains. I set off along it without knowing how long or how steep it would be.&rdquo;' },
+    { sel: '.news-quote', en: [
+        '&ldquo;Why did I take this path? Simply because I could see a way that led to the mountains. I set off along it without knowing how long or how steep it would be.&rdquo;',
+        // 간접화법 — 원문 영어 추천사를 아직 확보하지 못했다. 되번역을 따옴표에 넣어 그의 말로 귀속시키지 않는다.
+        //          원문(영어판 blurb)을 받으면 따옴표 직접 인용으로 바꿀 것
+        'Bernadette McDonald, this year&rsquo;s award winner, calls the long-awaited memoir an heir to the rich tradition of Slovenian mountain literature &mdash; uncompromising achievements in the vertical world, balanced by a refreshingly modest voice and a light touch.<span class="news-quote-by">&mdash; from her endorsement of <em>Rock &lsquo;n&rsquo; Roll on the Wall</em></span>'] },
     { sel: '.news-note', en: '<em>Rock &lsquo;n&rsquo; Roll on the Wall</em> &middot; Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17' },
     { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine Rising' },
     { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald, Silvo Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
