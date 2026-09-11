@@ -317,12 +317,22 @@
 
     .inner { max-width: 1000px; margin: 0 auto; }
 
-    /* ── 문장 끊김 (2026-09-09) ──
-       '세로|토레', '롤란도|가리보티', '(ROCK 'N' ROLL ON|THE WALL)' 처럼 고유명사·원제가
-       줄 사이에서 갈라지고 마지막 줄에 8자만 남는 게 실측됐다.
+    /* ── 문장 끊김 1층: CSS (2026-09-09 도입 → 2026-09-11 확대) ──
+       '세로|토레', '롤란도|가리보티' 처럼 고유명사가 줄 사이에서 갈라지고
+       마지막 줄에 8자만 남는 게 실측됐다.
        pretty 는 문단 끝 몇 줄의 끊김을 다듬고, balance 는 제목을 고르게 나눈다.
-       미지원 브라우저는 그냥 무시한다. 고유명사는 원고에서 &nbsp; 로 묶는다. */
-    p { text-wrap: pretty; }
+       미지원 브라우저는 그냥 무시하므로 손해는 없다.
+
+       ⚠ 처음엔 p 에만 걸었다가 절반이 샜다. 실제로 문제가 난 건 blockquote(멤버십 인용),
+         div.mem-reason-desc, dd·small(영화제 일정), span.footer-contact(주소) — 전부 p 가 아니다.
+         본문성 마크업을 새로 짜면 이 목록에 넣을 것. 아래 HJ조판 의 SEL 과 같이 관리한다.
+       실측(2026-09-11, 같은 검출 기준): 1280px 4건→2건 · 375px 9건→5건.
+       남는 건 2·3층(아래 HJ조판 스크립트)이 받는다. */
+    p, li, dd, dt, blockquote, figcaption, small,
+    .news-text, .news-note, .news-titles, .mem-reason-desc,
+    .pick-quote, .pick-note, .about-body, .modal-desc,
+    .hero-desc, .footer-tagline, .footer-contact,
+    .modal-author, #bdBioText { text-wrap: pretty; }   /* 저자명·저자 소개는 클래스가 없어 따로 짚는다 */
     .section-title, .news-title, .bd-title, .pick-title { text-wrap: balance; }
 
     /* <button> 은 서체를 상속하지 않는다 — 퀴즈 선택지 20개가 Arial 로 그려지고 있었다 */
@@ -2460,7 +2470,7 @@
 
   <!-- Announcement Banner -->
   <div id="banner">
-    <span>신간 · 바람과&nbsp;바위의&nbsp;노래 (2026년 9월 14일 출간 예정) — <a href="#books">도서 목록 보기</a></span>
+    <span>신간 · 바람과 바위의 노래 (2026년 9월 14일 출간 예정) — <a href="#books">도서 목록 보기</a></span>
     <button class="banner-close" onclick="closeBanner()">×</button>
   </div>
 
@@ -2528,7 +2538,7 @@
         <div class="news-body">
           <div class="news-label">신간 · 2026. 9. 14.</div>
           <h3 class="news-title">신간이 나오고, 저자가 옵니다</h3>
-          <p class="news-text">실보&nbsp;카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로&nbsp;토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
+          <p class="news-text">실보 카로 — 1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가입니다. 1988년 그가 오른 세로 토레 남벽은 지금까지 두 번째 등반이 없습니다. 표지의 사진이 바로 그 사람입니다.</p>
           <p class="news-quote">“나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다.”</p>
           <p class="news-note">『바람과 바위의 노래』 · 실보 카로 지음 · 김동수 옮김 · 등반가 시리즈 17</p>
           <div class="news-links">
@@ -2541,7 +2551,7 @@
         <div class="news-body">
           <div class="news-label">특집 · 2026. 9. 19.–20.</div>
           <h3 class="news-title">산악문화상 수상자의 책, 여섯 권 모두 하루재클럽입니다</h3>
-          <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트&nbsp;맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과&nbsp;바위의&nbsp;노래』의 저자 실보&nbsp;카로도 9월 20일 토크에 함께 오릅니다.</p>
+          <p class="news-text">제11회 울산울주세계산악영화제의 산악문화상은 버나데트 맥도널드에게 돌아갔습니다. 그의 한국어판 여섯 권은 모두 하루재클럽에서 냈고, 마지막 북토크는 하루재 편집장 김동수가 진행합니다. 신간 『바람과 바위의 노래』의 저자 실보 카로도 9월 20일 토크에 함께 오릅니다.</p>
 
           <div class="news-books">
             <a href="#book/엘리자베스-홀리" title="엘리자베스 홀리"><span class="cv"><img loading="lazy" decoding="async" src="images/books/07-엘리자베스홀리.jpg" alt="엘리자베스 홀리"></span></a>
@@ -2790,7 +2800,7 @@
           <div class="book-cover">
             <img loading="lazy" decoding="async" src="images/books/38-수직의순례자.jpg" alt="수직의 순례자들"><div class="book-hover-info"><div class="book-hover-title">수직의 순례자들</div><div class="book-hover-sub">미국 등반 150년의 역사</div></div></div>
         </div>
-        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보&nbsp;카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보&nbsp;카로의 자서전. 프란체크&nbsp;크네즈·야네즈&nbsp;예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로&nbsp;토레·토레&nbsp;에거에 신루트를 열었고, 1988년에 오른 세로&nbsp;토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도&nbsp;가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK&nbsp;'N'&nbsp;ROLL&nbsp;ON&nbsp;THE&nbsp;WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보&nbsp;카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크&nbsp;크네즈, 야네즈&nbsp;예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로&nbsp;토레 동벽 초등과 토레&nbsp;에거 남동벽 신루트에 이어 1988년 세로&nbsp;토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
+        <div class="book-card animate animate-delay-1" data-title="바람과 바위의 노래" data-author="실보 카로 (Silvo Karo) / 김동수" data-desc="1980년대 슬로베니아 알피니즘의 황금기를 이끈 거벽 등반가 실보 카로의 자서전. 프란체크 크네즈·야네즈 예글리치와 «삼총사»를 이뤄 파타고니아의 피츠로이·세로 토레·토레 에거에 신루트를 열었고, 1988년에 오른 세로 토레 남벽은 지금까지 재등이 없다. 농장에서 보낸 어린 시절과 유고슬라비아 인민군 복무, 파타고니아와 히말라야, 그리고 하산까지 33개 장으로 엮었다. 한국어판에는 저자가 한국 독자를 위해 쓴 서문과 롤란도 가리보티의 서문이 함께 실렸다. 2026년 9월 14일 출간 예정. (ROCK 'N' ROLL ON THE WALL)" data-year="등반가 시리즈 17" data-lang="" data-img="images/books/43-바람과바위의노래.jpg" data-quote="나는 왜 이런 길을 걸어왔을까? 그건 단지 산으로 이끄는 길이 보였기 때문이다. 얼마나 길고 가파른지도 모른 채 나는 그 길을 따라나섰다. 그게 아마 최선이었을 것이다. 그렇지 않았다면 훨씬 더 일찍 그만두고 돌아섰을 테니까." data-tags="실보 카로, 슬로베니아, 거벽 등반, 자서전, 파타고니아, 세로 토레, 황금피켈상" data-author-bio="실보 카로(1960~ )는 류블랴나에서 멀지 않은 작은 농촌 마을에서 태어났다. 프란체크 크네즈, 야네즈 예글리치와 «삼총사»를 이뤄 1980년대 슬로베니아 알피니즘의 황금기를 만들었다. 세로 토레 동벽 초등과 토레 에거 남동벽 신루트에 이어 1988년 세로 토레 남벽을 올랐고, 1990년에는 바기라티3봉 서벽을 알파인스타일로 등반했다. 2022년 발터 보나티 황금피켈상 평생공로상을 받았다.">
           <div class="book-cover">
             <img loading="lazy" decoding="async" src="images/books/43-바람과바위의노래.jpg" alt="바람과 바위의 노래"><div class="book-hover-info"><div class="book-hover-title">바람과 바위의 노래</div><div class="book-hover-sub">거벽 등반가 실보 카로의 자서전</div></div></div>
         </div>
@@ -3315,6 +3325,108 @@
     </div>
   </footer>
 
+  <!-- ── 문장 끊김 2·3층: 조판 다듬기 (2026-09-11) ───────────────────────────
+       줄 끝에서 문장이 어색하게 갈라지는 걸 "규칙"으로 막는다. 세 층이다.
+
+         1층  CSS  text-wrap: pretty / balance   → 위 <style> 안. 새 원고에도 자동
+         2층  widont — 마지막 두 어절 묶기       → 아래 widont(). 사전 없이 전부 자동
+         3층  고유명사 사전                       → 아래 BIND. 새 이름만 등록하면 된다
+
+       **원고에 &nbsp; 를 직접 박지 않는다.** 눈에 안 보이는 문자라 나중에 원고를
+       고치거나 복사할 때 헷갈린다. 실제로 56개가 박혀 있었고 책을 낼 때마다 늘어날 참이었다.
+       2026-09-11 에 전부 걷어내고 여기서 런타임에 묶는 방식으로 바꿨다.
+       → 원고(HTML)는 사람이 읽는 그대로 두고, 묶는 일은 이 스크립트가 한다.
+
+       실측(2026-09-11, 같은 검출 기준 — 과부·서술어 고립·고유명사 분리·숫자단위 분리):
+         1280px   4건 → 1층 2건 → +2층 0건
+          375px   9건 → 1층 5건 → +2층 3건 → +3층 0건 (가로 넘침 없음, scrollWidth 375)
+       멱등: 언어 4회 전환·HJ조판 10회 반복에도 NBSP 수 불변(KO 74 / EN 85).
+
+       ⚠ 새 책·새 소식을 올릴 때 사람 이름·산 이름·원제가 새로 생기면 BIND 에 한 줄 추가할 것.
+         회보 교정의 tools/회보교정_규칙.json 과 같은 방식이다 — 사전은 회차마다 누적한다.
+       ⚠ 확실한 것만 넣는다. 갈라져도 읽는 데 지장 없는 말은 넣지 않는다.  -->
+  <script>
+  window.HJ조판 = (function () {
+
+    /* ── 3층: 갈라지면 안 되는 고유명사 ──
+       여기 있는 것은 전부 실제로 갈라진 게 실측됐거나, 앞서 확인해 묶기로 한 것이다.
+       추측으로 넣지 말 것. 덩어리가 길면 좁은 화면에서 넘치니 원제는 375px 에서 재보고 넣는다. */
+    const BIND = [
+      // 사람 — 한국어
+      '실보 카로', '프란체크 크네즈', '야네즈 예글리치', '롤란도 가리보티',
+      '버나데트 맥도널드', '발터 보나티',
+      // 사람 — 영어
+      'Silvo Karo', 'Bernadette McDonald', 'Kim Dong-soo',
+      // 산 이름
+      '세로 토레', '토레 에거', 'Cerro Torre',
+      // 책·행사 이름
+      '바람과 바위의 노래', "ROCK 'N' ROLL ON THE WALL", 'Rock \u2018n\u2019 Roll on the Wall',
+      'Alpine Warriors', 'Alpine Rising', 'Alps Cinema',
+    ];
+
+    /* ── 2층이 적용될 본문 요소 ──
+       위 <style> 의 text-wrap: pretty 목록과 같이 관리할 것. 한쪽만 고치면 어긋난다. */
+    const SEL = 'p, li, dd, dt, blockquote, figcaption, small,' +
+                '.news-text, .news-note, .news-titles, .mem-reason-desc,' +
+                '.pick-quote, .pick-note, .about-body, .modal-desc,' +
+                '.hero-desc, .footer-tagline, .footer-contact,' +
+                '.modal-author, #bdBioText';   // 저자 소개는 클래스 없는 div 라 id 로 짚는다
+
+    const NB = '\u00A0';
+    const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    /* 정규식의 ' ' 는 일반 공백만 잡는다(NBSP 는 안 잡힌다) → 이미 묶인 것은 다시 안 걸린다.
+       그래서 몇 번을 돌려도 결과가 같다. 언어 전환·모달 열기마다 다시 도는 구조라 이게 중요하다. */
+    const RE = BIND.filter(t => t.indexOf(' ') > -1)
+                   .map(t => new RegExp(esc(t), 'g'));
+
+    function textNodes(root) {
+      const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(n) {
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          const tag = n.parentNode && n.parentNode.nodeName;
+          return /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/.test(tag)
+               ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const out = []; let n;
+      while ((n = w.nextNode())) out.push(n);
+      return out;
+    }
+
+    // 3층 — 사전에 있는 이름의 공백을 NBSP 로 바꾼다
+    function bind(root) {
+      textNodes(root).forEach(node => {
+        const before = node.nodeValue;
+        let v = before;
+        RE.forEach(re => { v = v.replace(re, m => m.replace(/ /g, NB)); });
+        if (v !== before) node.nodeValue = v;
+      });
+    }
+
+    // 2층 — 마지막 두 어절을 묶는다 (영문 조판의 widow 방지와 같은 규칙)
+    function widont(root) {
+      const els = root.querySelectorAll(SEL);
+      for (let i = 0; i < els.length; i++) {
+        const ns = textNodes(els[i]);
+        if (!ns.length) continue;
+        const last = ns[ns.length - 1];
+        /* [ \t] 로 제한하는 게 핵심이다. \s 를 쓰면 앞서 바꿔 놓은 NBSP 를 다시 만나
+           돌 때마다 한 어절씩 더 묶여 문단 끝이 통째로 내려간다.
+           {1,12} 는 안전장치 — 아주 긴 토큰(URL 등)까지 묶어 좁은 화면을 넘치게 하지 않는다. */
+        last.nodeValue = last.nodeValue.replace(
+          /[ \t]+([^\s\u00A0]{1,12}[\s]*)$/, NB + '$1');
+      }
+    }
+
+    return function (root) {
+      root = root || document.body;
+      if (!root) return;
+      bind(root);
+      widont(root);
+    };
+  })();
+  </script>
+
   <script>
     // ── Scroll Animation ──
     const observer = new IntersectionObserver((entries) => {
@@ -3483,6 +3595,9 @@
       } else {
         buyEl.style.display = 'none';
       }
+
+      // 상세 내용은 data-* 에서 textContent 로 꽂는다 → 다 채운 뒤에 묶어야 한다
+      if (window.HJ조판) window.HJ조판(detailEl);
     }
 
     function openDetail(card) {
@@ -4258,12 +4373,12 @@
         'The book arrives, and so does its author',
         'All six Korean editions by this year&rsquo;s award winner are ours'] },
     { sel: '.news-text', en: [
-        'Silvo&nbsp;Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro&nbsp;Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
-        'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette&nbsp;McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim&nbsp;Dong-soo. Silvo&nbsp;Karo, author of the new <em>Rock&nbsp;&lsquo;n&rsquo;&nbsp;Roll&nbsp;on&nbsp;the&nbsp;Wall</em>, joins the 20 September talk.'] },
+        'Silvo Karo &mdash; the big-wall climber who led the golden age of Slovenian alpinism in the 1980s. The south face of Cerro Torre, which he climbed in 1988, has still never had a second ascent. The man on the cover is him.',
+        'The Ulsan Ulju Mountain Culture Award at the 11th Ulsan Ulju Mountain Film Festival goes to Bernadette McDonald. All six of her books in Korean are published by Haroojae Club, and the closing book talk is hosted by our editor-in-chief Kim Dong-soo. Silvo Karo, author of the new <em>Rock &lsquo;n&rsquo; Roll on the Wall</em>, joins the 20 September talk.'] },
     { sel: '.news-quote', en: '&ldquo;Why did I take this path? Simply because I could see a way that led to the mountains. I set off along it without knowing how long or how steep it would be.&rdquo;' },
-    { sel: '.news-note', en: '<em>Rock&nbsp;&lsquo;n&rsquo;&nbsp;Roll&nbsp;on&nbsp;the&nbsp;Wall</em> &middot; Silvo&nbsp;Karo &middot; translated by Kim&nbsp;Dong-soo &middot; Climbers Series 17' },
-    { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine&nbsp;Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine&nbsp;Rising' },
-    { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps&nbsp;Cinema 2 &mdash; Bernadette&nbsp;McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette&nbsp;McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine&nbsp;Warriors</em>&rsquo;<span><small>10:00 &middot; Alps&nbsp;Cinema 2 &mdash; Bernadette&nbsp;McDonald, Silvo&nbsp;Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine&nbsp;Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim&nbsp;Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
+    { sel: '.news-note', en: '<em>Rock &lsquo;n&rsquo; Roll on the Wall</em> &middot; Silvo Karo &middot; translated by Kim Dong-soo &middot; Climbers Series 17' },
+    { sel: '.news-titles', en: 'Keeper of the Mountains &middot; Freedom Climbers &middot; Alpine Warriors &middot; Art of Freedom &middot; Winter 8000 &middot; Alpine Rising' },
+    { sel: '.news-when', en: '<dl><dt>19 Sep</dt><dd>Talk 1 &mdash; &lsquo;The Courage of the First Sentence&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald</small></span></dd><dt>19 Sep</dt><dd>Forum &mdash; &lsquo;Mountain Literature: Writing and Experience&rsquo;<span><small>14:00 &middot; Seminar Room &mdash; Bernadette McDonald</small></span></dd><dt>20 Sep</dt><dd>Talk 2 &mdash; &lsquo;Slovenian Mountaineering History: <em>Alpine Warriors</em>&rsquo;<span><small>10:00 &middot; Alps Cinema 2 &mdash; Bernadette McDonald, Silvo Karo</small></span></dd><dt>20 Sep</dt><dd>Talk 3 &mdash; <em>Alpine Rising</em> book talk<span><small>14:00 &middot; UMCA Exhibition Hall &mdash; hosted by Kim Dong-soo, Haroojae editor-in-chief</small></span></dd><dt>1&ndash;22 Sep</dt><dd>UMCA Exhibition<span><small>11:00&ndash;18:00 &middot; Coa Gallery</small></span></dd></dl>' },
     { sel: '.news-link', en: ['About the book &rarr;', 'Festival website &nearr;'] },
     // attr 분기는 &rsquo; 만 치환한다(applyLang) — 속성값엔 엔티티 말고 글자를 직접 쓸 것
     { sel: '.news-cover img', attr: 'alt', en: 'Cover of Rock ‘n’ Roll on the Wall — Silvo Karo' },
@@ -4416,6 +4531,9 @@
     const nav = document.getElementById('langToggle');
     if (nav) nav.textContent = lang === 'en' ? 'KO' : 'EN';
     document.querySelectorAll('.mobile-lang').forEach(b => b.textContent = lang === 'en' ? '한국어 · KO' : 'EN · English');
+    // 언어를 갈아끼우면 innerHTML 이 통째로 교체돼 묶음이 날아간다 → 다시 묶는다.
+    // 여러 번 돌아도 결과가 같도록 짜여 있다(HJ조판 주석 참조).
+    if (window.HJ조판) window.HJ조판();
   }
 
   function toggleLang() {
@@ -4427,6 +4545,8 @@
   // 여기서 한 번 부른다 — 안 그러면 숫자 자리가 빈 채로 보인다.
   fillBookCount();
   try { if (localStorage.getItem('hj-lang') === 'en') applyLang('en'); } catch (e) {}
+  // 조판 다듬기 — applyLang 이 돌았다면 그 안에서 이미 한 번 돌았지만 여러 번 돌려도 같다
+  if (window.HJ조판) window.HJ조판();
 </script>
 
 <!-- Cloudflare Web Analytics — 쿠키를 쓰지 않아 동의 배너가 필요 없다.
