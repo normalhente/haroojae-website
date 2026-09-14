@@ -245,6 +245,9 @@ def page_shell(title: str, desc: str, url: str, body: str, ld: dict | None = Non
   <title>{esc(title)} — 하루재클럽</title>
   <meta name="description" content="{esc(desc)}">
   <link rel="canonical" href="{url}">
+  <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="하루재클럽">
   <meta property="og:title" content="{esc(title)} — 하루재클럽">
@@ -361,7 +364,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
         "@context": "https://schema.org", "@type": "Book",
         "name": title, "url": url, "image": img_url, "description": desc,
         "inLanguage": "ko",
-        "publisher": {"@type": "Organization", "name": "하루재클럽", "url": SITE + "/"},
+        "publisher": {"@type": "Organization", "name": "하루재클럽", "url": SITE + "/", "logo": SITE + "/icon-512.png"},
     }
     names = parse_authors(author, ctx["alias"], ctx["unknown"])
     if names:
@@ -413,6 +416,9 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
   <title>{esc(title)} — 하루재클럽</title>
   <meta name="description" content="{esc(desc)}">
   <link rel="canonical" href="{url}">
+  <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="book">
   <meta property="og:site_name" content="하루재클럽">
   <meta property="og:title" content="{esc(title)} — 하루재클럽">
