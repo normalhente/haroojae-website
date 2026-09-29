@@ -266,7 +266,7 @@ def page_shell(title: str, desc: str, url: str, body: str, ld: dict | None = Non
     <div class="nav-links">
       <a href="/#books">전체 도서</a>
       <a href="/authors/">저자</a>
-      <a href="/#membership">북클럽</a>
+      <a href="/bookclub/">북클럽</a>
       <a href="/#about">출판사</a>
     </div>
   </nav>
@@ -437,7 +437,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
     <div class="nav-links">
       <a href="/#books">전체 도서</a>
       <a href="/authors/">저자</a>
-      <a href="/#membership">북클럽</a>
+      <a href="/bookclub/">북클럽</a>
       <a href="/#about">출판사</a>
     </div>
   </nav>
@@ -464,7 +464,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
         <div class="club">
           <div class="label">하루재북클럽</div>
           <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 이 책을 포함한 기발간 도서 네 권을 먼저 보내드립니다.</p>
-          <a href="/#membership">북클럽 안내 보기</a>
+          <a href="/bookclub/">하루재북클럽 안내 보기</a>
         </div>
         <div class="prevnext">{pn(prev, True)}{pn(nxt, False)}</div>
       </article>
@@ -484,11 +484,49 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
 """
 
 
+JOIN_FORM = "https://form.naver.com/response/mI42NGxkCrV1Cq64v3cbcA"
+
+
+def render_bookclub() -> str:
+    """/bookclub/ — '하루재북클럽' 이름 검색의 도착지. 홈은 '멤버십'이라 부르지만 검색하는 사람은 북클럽 이름으로 찾는다.
+    문구는 작업/북클럽_소책자/메일본문.md 에서 확정된 표현만 쓴다(2014년부터·40여 권·해마다 세 권 이상·네 권 증정).
+    영문명은 공식 표기가 없어 만들지 않는다(CLAUDE.md 영문 표기 원칙). HBC 는 공식 블로그가 쓰는 약칭."""
+    url = f"{SITE}/bookclub/"
+    desc = "하루재북클럽(하루재 북클럽, HBC)은 산악·등반 원서 번역 출판사 하루재클럽이 운영하는 회원제입니다. 월 1만 원 회비로 해마다 세 권 이상의 새 산서를 집으로 받아 봅니다."
+    ld = {"@context": "https://schema.org", "@type": "Organization", "name": "하루재북클럽",
+          "alternateName": ["하루재 북클럽", "HBC"], "url": url,
+          "description": desc, "logo": f"{SITE}/icon-512.png",
+          "sameAs": ["https://www.facebook.com/haroojaebooks/"]}
+    body = f"""    <div class="crumb"><a href="/">하루재클럽</a> › 하루재북클럽</div>
+    <div class="a-head">
+      <div class="label">Book Club</div>
+      <h1>하루재북클럽</h1>
+      <p class="a-bio">하루재북클럽은 회원님들의 힘으로 산의 책을 번역해 펴내는 모임입니다. 해외 산서를 번역 출판하는 하루재클럽이 운영하며, 2014년부터 지금까지 40여 권을 펴냈습니다.</p>
+    </div>
+    <div style="max-width:640px">
+      <div class="label">회원이 되면</div>
+      <dl>
+        <dt>회비</dt><dd>월 10,000원 (연 120,000원)</dd>
+        <dt>받는 책</dt><dd>해마다 세 권 이상, 새로 펴낸 산서를 집으로 보내드립니다</dd>
+        <dt>가입 선물</dt><dd>이미 펴낸 책 네 권을 먼저 보내드립니다</dd>
+        <dt>해지</dt><dd>약정 없이 언제든 해지할 수 있습니다</dd>
+      </dl>
+      <div class="buy"><a href="{JOIN_FORM}" target="_blank" rel="noopener noreferrer">하루재북클럽 가입하기</a></div>
+      <div class="club">
+        <div class="label">문의</div>
+        <p>전화 <a href="tel:02-521-0067">02-521-0067</a> · 메일 <a href="mailto:haroojaeclub@naver.com">haroojaeclub@naver.com</a></p>
+        <a href="/#books">하루재클럽이 펴낸 책 모두 보기</a>
+      </div>
+    </div>"""
+    return page_shell("하루재북클럽", desc, url, body, ld)
+
+
 def sitemap(cs: list[dict], author_slugs: list[str] = ()) -> str:
     today = date.today().isoformat()
     urls = [f"  <url>\n    <loc>{SITE}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>"]
     for c in cs:
         urls.append(f"  <url>\n    <loc>{SITE}/books/{quote(page_slug(c['title']))}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>")
+    urls.append(f"  <url>\n    <loc>{SITE}/bookclub/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.9</priority>\n  </url>")
     urls.append(f"  <url>\n    <loc>{SITE}/authors/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
     for a in author_slugs:
         urls.append(f"  <url>\n    <loc>{SITE}/authors/{quote(a)}/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>")
@@ -567,11 +605,13 @@ def main() -> int:
         d = AOUT / author_slug(n)
         d.mkdir(exist_ok=True)
         (d / "index.html").write_text(render_author(n, ctx["by_author"][n], ctx), encoding="utf-8")
+    (ROOT / "bookclub").mkdir(exist_ok=True)
+    (ROOT / "bookclub" / "index.html").write_text(render_bookclub(), encoding="utf-8")
     (ROOT / "sitemap.xml").write_text(sitemap(cs, [author_slug(n) for n in sorted(ctx["multi"])]), encoding="utf-8")
     print(f"authors/ 색인 1장 + 개별 {len(ctx['multi'])}장 ({', '.join(sorted(ctx['multi']))}) · 저자 {len(ctx['by_author'])}명")
     n = 카드링크(cs)
     stale = [p.name for p in OUT.iterdir() if p.is_dir() and p.name not in slugs]
-    print(f"books/ {len(cs)}장 · sitemap {len(cs) + 2 + len(ctx['multi'])}개 · 카드 링크 새로 삽입 {n}곳" + (f" · ⚠ 카드에 없는 폴더 {stale} (직접 지울 것)" if stale else ""))
+    print(f"books/ {len(cs)}장 · sitemap {len(cs) + 3 + len(ctx['multi'])}개 · 카드 링크 새로 삽입 {n}곳" + (f" · ⚠ 카드에 없는 폴더 {stale} (직접 지울 것)" if stale else ""))
 
     # 검증
     bad = []
