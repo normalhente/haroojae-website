@@ -463,7 +463,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
         {others_html(title, names, ctx)}
         <div class="club">
           <div class="label">하루재북클럽</div>
-          <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 이 책을 포함한 기발간 도서 네 권을 먼저 보내드립니다.</p>
+          <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 기발간 도서 네 권을 먼저 보내드립니다.</p>
           <a href="/bookclub/">하루재북클럽 안내 보기</a>
         </div>
         <div class="prevnext">{pn(prev, True)}{pn(nxt, False)}</div>
