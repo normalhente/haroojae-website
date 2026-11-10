@@ -1,0 +1,5 @@
+# GitHub Pages(Jekyll) 설정 — 내부 작업 파일을 사이트 주소로 내보내지 않는다 (2026-11-10)
+# docs/·tools/ 는 저장소에는 그대로 두고, haroojae.co.kr 에서만 뺀다.
+exclude:
+  - docs
+  - tools
