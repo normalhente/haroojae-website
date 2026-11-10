@@ -463,7 +463,7 @@ def render(c: dict, meta: dict, prev: dict | None, nxt: dict | None, ctx: dict) 
         {others_html(title, names, ctx)}
         <div class="club">
           <div class="label">하루재북클럽</div>
-          <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 기발간 도서 네 권을 먼저 보내드립니다.</p>
+          <p>월 1만 원의 회비로 하루재클럽의 새 책을 집으로 받아 보는 회원제입니다. 가입하시면 기발간 도서 가운데 하루재가 고른 네 권을 먼저 보내드립니다.</p>
           <a href="/bookclub/">하루재북클럽 안내 보기</a>
         </div>
         <div class="prevnext">{pn(prev, True)}{pn(nxt, False)}</div>
@@ -508,7 +508,7 @@ def render_bookclub() -> str:
       <dl>
         <dt>회비</dt><dd>월 10,000원 (연 120,000원)</dd>
         <dt>받는 책</dt><dd>해마다 세 권 이상, 새로 펴낸 산서를 집으로 보내드립니다</dd>
-        <dt>가입 선물</dt><dd>이미 펴낸 책 네 권을 먼저 보내드립니다</dd>
+        <dt>가입 선물</dt><dd>이미 펴낸 책 가운데 하루재가 고른 네 권을 먼저 보내드립니다</dd>
         <dt>해지</dt><dd>약정 없이 언제든 해지할 수 있습니다</dd>
       </dl>
       <div class="buy"><a href="{JOIN_FORM}" target="_blank" rel="noopener noreferrer">하루재북클럽 가입하기</a></div>
